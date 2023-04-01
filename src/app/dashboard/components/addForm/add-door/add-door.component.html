@@ -1,0 +1,31 @@
+<div class="container">
+  <div class="title">
+    Add Door
+  </div>
+  <form method="post" [formGroup]="doorForm" (ngSubmit)="onSubmit()">
+    <div class="container">
+        <legend>Information</legend>
+
+      <div class="form-group">
+        <label for="name">Name</label>
+        <input type="text" name="name" id="name" class="my-input" placeholder="Enter your name" required formControlName="name" [(ngModel)] = "porte.nomPorte">
+      </div>
+      <div class="form-group">
+        <label for="email">Type</label>
+        <input type="email" name="email" id="email" class="my-input" placeholder="Enter your email adress" required formControlName="type" [(ngModel)] = "porte.type" >
+      </div>
+      <div class="form-group">
+        <label for="Controller">Controller</label>
+        <select name="Controller" id="Controller" class="my-select" required formControlName="role" (change)="selectChangeRole($event)">
+          <option *ngFor="let c of controllers" value="dep.id_dep">{{c.nomCont}}</option>
+        </select>
+      </div>
+
+      <div class="button-group">
+        <br>
+        <button type="submit" class="my-buttonA">Apply</button>
+        <button type="reset" class="my-buttonC">Cancel</button>
+      </div>
+    </div>
+  </form>
+</div>

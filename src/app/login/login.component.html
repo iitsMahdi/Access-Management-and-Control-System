@@ -1,0 +1,39 @@
+<img class="wave" src="../../assets/wave.png">
+	<div class="container">
+		<div class="img">
+			<img src="../../assets/bg.png">
+		</div>
+		<div class="login-content">
+			<form method="post" [formGroup]="loginForm" (ngSubmit)="login(loginForm)">
+				<img src="../../assets/avatar.svg">
+				<h2 class="title">Welcome</h2>
+          <div class="input-div one">
+           	<div class="i">
+              <mat-icon>account_circle</mat-icon>
+            </div>
+           		   <div class="div">
+           		   	<!--
+                  <h5>Username</h5>
+                  -->
+           		   		<input type="text" class="input" placeholder="Login" formControlName="login" [(ngModel)] = "user.login">
+           		   </div>
+          </div>
+           		<div class="input-div pass">
+           		   <div class="i">
+                  <mat-icon>lock</mat-icon>
+                </div>
+           		   <div class="div">
+                  <!--
+           		    	<h5>Password</h5>
+                  -->
+           		    	<input type="password" class="input" placeholder="password" formControlName="password" [(ngModel)] = "user.password">
+            	   </div>
+            	</div>
+            	<a href="#">Forgot Password?</a>
+            	<button class="btn" type="submit">Login</button>
+            </form>
+        </div>
+    </div>
+
+
+<script type="text/javascript" src="../../assets/main.js"></script>

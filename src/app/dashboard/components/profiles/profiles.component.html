@@ -1,0 +1,32 @@
+
+
+<div class="container">
+  <h2> Profiles List</h2>
+
+  <div class="demo-button-container">
+    <button mat-raised-button (click)="openDialog()" class="demo-button">
+      <mat-icon>add</mat-icon>
+        Add Profile
+    </button>
+  </div>
+
+  <br>
+  <table class = "table table-striped">
+      <thead>
+          <tr>
+              <th> Profile ID</th>
+              <th> Name </th>
+              <th> Users </th>
+
+          </tr>
+      </thead>
+      <tbody>
+          <tr *ngFor = "let prof of profiles" >
+              <td> {{ prof.id_profile }} </td>
+              <td> {{ prof.nom_profile }} </td>
+              <td> 15</td>
+
+          </tr>
+      </tbody>
+  </table>
+  </div>

@@ -1,0 +1,59 @@
+<mat-sidenav-container autosize>
+  <mat-sidenav #sidenav mode="side" opened="isExpanded">
+    <mat-nav-list>
+      <mat-list-item (click)="isExpanded = !isExpanded">
+        <mat-icon mat-list-icon class="chevron-button" [ngClass]="{ rotated: isExpanded }">chevron_right
+        </mat-icon>
+      </mat-list-item>
+<br><br><br><br><br>
+      <mat-list-item [routerLink]="'dashboard'">
+        <mat-icon mat-list-icon>home</mat-icon>
+        <span *ngIf="isExpanded" class="menu-item">Dashboard</span>
+      </mat-list-item>
+<br>
+      <mat-list-item [routerLink]="'alluser'">
+        <mat-icon mat-list-icon>supervisor_account</mat-icon>
+        <span *ngIf="isExpanded" class="menu-item">Users</span>
+      </mat-list-item>
+      <br>
+      <mat-list-item [routerLink]="'alldevices'">
+        <mat-icon mat-list-icon>important_devices</mat-icon>
+        <span *ngIf="isExpanded" class="menu-item">Devices</span>
+      </mat-list-item>
+      <br>
+      <mat-list-item [routerLink]="'alldoors'">
+        <mat-icon mat-list-icon>hexagon</mat-icon>
+        <span *ngIf="isExpanded" class="menu-item">Doors</span>
+      </mat-list-item>
+      <br>
+      <mat-list-item [routerLink]="'alldepartements'">
+        <mat-icon mat-list-icon>supervisor_account</mat-icon>
+        <span *ngIf="isExpanded" class="menu-item">Departements</span>
+      </mat-list-item>
+      <br>
+      <mat-list-item [routerLink]="'accessC'">
+        <mat-icon mat-list-icon>supervisor_account</mat-icon>
+        <span *ngIf="isExpanded" class="menu-item">Access Control</span>
+      </mat-list-item>
+      <br>
+      <mat-list-item [routerLink]="'attendance'">
+        <mat-icon mat-list-icon>supervisor_account</mat-icon>
+        <span *ngIf="isExpanded" class="menu-item">Attendance</span>
+      </mat-list-item>
+
+    </mat-nav-list>
+  </mat-sidenav>
+
+  <!-- Content - rendered Content for the current router path into the <router-outlet>, e.g. /dashboard or /info-->
+  <mat-sidenav-content>
+    <mat-toolbar>
+        <a [matMenuTriggerFor]="menu"><img src="../../../assets/account.png" alt="" ></a>
+        <mat-menu #menu="matMenu">
+          <button mat-menu-item routerLink="">Account</button>
+          <button mat-menu-item>Log Out</button>
+        </mat-menu>
+      </mat-toolbar>
+    <router-outlet></router-outlet>
+  </mat-sidenav-content>
+
+</mat-sidenav-container>

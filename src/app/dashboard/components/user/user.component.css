@@ -1,0 +1,32 @@
+input{
+  max-width: 250px;
+}
+
+
+.title{
+  font-size: 30px;
+  font-weight: bold;
+}
+.demo-button{
+  margin-top: 50px;
+  background-color: #98FB98;
+  border-radius: 30px;
+  padding:0.6em 2em;
+  text-align: center;
+  font-size:1.1em;
+  border: #98FB98;
+  font-weight: bold;
+}
+.demo-button-container :hover{
+  background-color: #bccfbc;
+}
+.delete{
+  background-color: rgb(190, 15, 15)
+}
+.edit{
+  background-color: #98FB98;
+}
+img{
+  width: 6px;
+  margin-left: 98%;
+}

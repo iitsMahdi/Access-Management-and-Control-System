@@ -1,0 +1,97 @@
+<!--
+<div class="container">
+  <div class="title">
+    All User
+  </div>
+<div class="demo-button-container">
+  <button mat-raised-button (click)="addData()" class="demo-button">
+    <mat-icon>add</mat-icon>
+      Add User
+  </button>
+</div>
+
+<br>
+<table mat-table [dataSource]="dataSource" class="mat-elevation-z8 demo-table">
+  <ng-container matColumnDef="id_user">
+    <th mat-header-cell *matHeaderCellDef>ID</th>
+    <td mat-cell *matCellDef="let element">{{element.id_user}}</td>
+  </ng-container>
+
+  <ng-container matColumnDef="user_name">
+    <th mat-header-cell *matHeaderCellDef>Name</th>
+    <td mat-cell *matCellDef="let element">{{element.user_name}}</td>
+  </ng-container>
+  <ng-container matColumnDef="adresse">
+    <th mat-header-cell *matHeaderCellDef>Addresse</th>
+    <td mat-cell *matCellDef="let element">{{element.adresse}}</td>
+  </ng-container>
+
+  <ng-container matColumnDef="email">
+    <th mat-header-cell *matHeaderCellDef>Email</th>
+    <td mat-cell *matCellDef="let element">{{element.email}}</td>
+  </ng-container>
+
+    <ng-container matColumnDef="phone">
+      <th mat-header-cell *matHeaderCellDef>Phone</th>
+      <td mat-cell *matCellDef="let element">{{element.phone}}</td>
+    </ng-container>
+    <ng-container matColumnDef="crud">
+      <th mat-header-cell *matHeaderCellDef>CRUD</th>
+      <td mat-cell *matCellDef="let element">
+        <button class="edit" routerLink="editUser/{{element.id_user}}">
+          <mat-icon>create</mat-icon>
+        </button>
+        <button class="delete">
+          <mat-icon >delete</mat-icon>
+        </button>
+      </td>
+    </ng-container>
+
+  <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+  <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+</table>
+</div>
+-->
+
+<div class="container">
+<h2> User List</h2>
+
+<div class="demo-button-container">
+  <button mat-raised-button (click)="addData()" class="demo-button">
+    <mat-icon>add</mat-icon>
+      Add User
+  </button>
+<img src="../../../assets/3pnt.png" alt="" [matMenuTriggerFor]="menu">
+<mat-menu #menu="matMenu">
+  <button mat-menu-item routerLink="/allProfiles">Manage Profile</button>
+  <button mat-menu-item (click)="fileDownload()">Export CSV</button>
+</mat-menu>
+</div>
+
+<br>
+<table class = "table table-striped">
+    <thead>
+        <tr>
+            <th> User ID</th>
+            <th> Full Name </th>
+            <th> Adresse </th>
+            <th> Phone </th>
+            <th> Email Id</th>
+            <th> Actions </th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor = "let user of users" >
+            <td> {{ user.id_user }} </td>
+            <td> {{ user.user_name }} </td>
+            <td> {{ user.adresse }} </td>
+            <td> {{ user.phone }} </td>
+            <td> {{ user.email }} </td>
+            <td>
+              <button  class = "btn btn-info" (click) = "updateUser(user.id_user)"><mat-icon>create</mat-icon>Update</button>
+              <button class = "btn btn-danger" style="margin-left: 10px" (click) = "deleteUser(user.id_user)"><mat-icon >delete</mat-icon>Delete</button>
+            </td>
+        </tr>
+    </tbody>
+</table>
+</div>

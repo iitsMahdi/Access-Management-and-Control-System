@@ -1,0 +1,16 @@
+<button mat-icon-button> <mat-icon>close</mat-icon></button>
+<mat-dialog-content>
+  <header>
+    <h1>Add Profile</h1>
+    <br><br><br>
+  </header>
+
+    <form method="post" [formGroup]="profileForm" (ngSubmit)="onSubmit()">
+      <input placeholder="Name" type="text" name="nom_profile" formControlName="nom_profile" >
+      <br><br><br>
+      <button type="submit" class="my-buttonA">Apply</button>
+      <button type="reset" class="my-buttonC">Cancel</button>
+
+    </form>
+
+</mat-dialog-content>

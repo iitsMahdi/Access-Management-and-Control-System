@@ -1,0 +1,28 @@
+.charts{
+  margin-left: 12%;
+}
+.operv{
+  width: 100%;
+  background-color: wheat;
+  color: #6b6b5f;
+  height: 50px;
+  text-align: center;
+  font-size: 24px;
+  font-weight: bolder;
+}
+.usage{
+  background-color: #6b6b5f;
+  width: 500px;
+  height: 250px;
+}
+.circle {
+  position:absolute;
+  margin-left: 60%;
+  margin-top: 16%;
+  background: rgba(237, 193, 51, 0.586);
+  border-radius: 60%;
+  width: 150px;
+  height: 150px;
+  text-align: center;
+  font-size: 24px;
+}

@@ -1,0 +1,74 @@
+<div class="container">
+  <div class="title">
+    Add User
+  </div>
+  <form method="post" [formGroup]="userForm" (ngSubmit)="onSubmit()">
+    <div class="container">
+        <legend>Information</legend>
+
+      <div class="form-group">
+        <label for="name">Name</label>
+        <input type="text" name="name" id="name" class="my-input" placeholder="Enter your name" required formControlName="user_name" [(ngModel)] = "user.user_name">
+      </div>
+      <div class="form-group">
+        <label for="email">Email</label>
+        <input type="email" name="email" id="email" class="my-input" placeholder="Enter your email adress" required formControlName="email" [(ngModel)] = "user.email" >
+      </div>
+      <div class="form-group">
+        <label for="phone">Phone</label>
+        <input type="tel" name="phone" id="phone" class="my-input" placeholder="Enter your phone Number" required formControlName="phone" [(ngModel)] = "user.phone">
+      </div>
+      <div class="form-group">
+        <label for="adress">Address</label>
+        <input type="text" name="adresse" id="adresse" class="my-input" placeholder="Enter your adress" required formControlName="adresse" [(ngModel)] = "user.adresse">
+      </div>
+      <div class="form-group">
+        <label for="image">Image</label>
+        <input type="file" name="image" id="image" class="my-input"  required formControlName="image" (change)="onChangeimg($event)" [(ngModel)] = "user.image">
+      </div>
+      <div class="form-group">
+        <label for="profile">Profile</label>
+        <select name="profile" id="profile" class="my-select" required formControlName="profile" (change)="selectChangeProfile($event)">
+          <option *ngFor="let prof of profiles" value="prof.id_profile">{{prof.nom_profile}}</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="department">Department</label>
+        <select name="department" id="department" class="my-select" required formControlName="department" (change)="selectChangeDep($event)">
+          <option *ngFor="let dep of departements" value="dep.id_dep">{{dep.nom_dep}}</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="loginid">Login ID</label>
+        <input type="text" name="loginid" id="loginid" class="my-input" placeholder="Enter your LoginID" required formControlName="login" [(ngModel)] = "user.login">
+      </div>
+      <div class="form-group">
+        <label for="password">Password</label>
+        <input type="password" name="password" id="password" class="my-input" placeholder="Enter your password" required formControlName="password" [(ngModel)] = "user.password">
+      </div>
+      <div class="form-group">
+        <label for="role">Role</label>
+        <select name="role" id="role" class="my-select" required formControlName="role" (change)="selectChangeRole($event)" [(ngModel)] = "user.role">
+          <option value="" selected>Select a role</option>
+          <option value="Admin">Admin</option>
+          <option value="User">User</option>
+        </select>
+      </div>
+
+     <legend>Credential</legend>
+      <div class="form-group">
+        <label for="pin">Pin</label>
+        <input type="text" name="pin" id="pin" class="my-input" placeholder="Enter your PIN code" required formControlName="pin" [(ngModel)] = "user.code">
+      </div>
+      <div class="form-group">
+        <label for="card-number">Card Number</label>
+        <input type="number" name="card-number" id="card-number" class="my-input" placeholder="Enter your Card Number" required formControlName="card" aria-disabled="true">
+      </div>
+      <div class="button-group">
+        <br>
+        <button type="submit" class="my-buttonA">Apply</button>
+        <button type="reset" class="my-buttonC">Cancel</button>
+      </div>
+    </div>
+  </form>
+</div>

@@ -1,8 +1,8 @@
 import { Contoller } from "./Conroller";
 
 export class Porte{
-  idPorte !:bigint;
-  nomPorte!:String;
+  id_porte !:bigint;
+  nom_porte!:String;
   type!:String;
  // cont!: new Contoller();
 }

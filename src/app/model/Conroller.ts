@@ -1,7 +1,8 @@
+import { Departement } from "./Departement";
+
 export class Contoller{
-  idCont !:number;
-  nomCont!:String;
+  id_cont !:bigint;
+  nom_controlleur!:String;
   status !:String;
-
-
+  dept !: Departement; //= new Departement();
 }

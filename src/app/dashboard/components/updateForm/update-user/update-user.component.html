@@ -35,7 +35,7 @@
       <div class="form-group">
         <label for="department">Department</label>
         <select name="department" id="department" class="my-select" required formControlName="department" (change)="selectChangeDep($event)">
-          <option *ngFor="let dep of departements" value="dep.id_dep">{{dep.nom_dep}}</option>
+          <option *ngFor="let dep of departements" value="dep.id_dep">{{dep.nom_departement}}</option>
         </select>
       </div>
       <div class="form-group">

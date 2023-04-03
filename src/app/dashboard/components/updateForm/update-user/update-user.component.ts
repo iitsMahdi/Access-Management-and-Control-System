@@ -18,9 +18,9 @@ export class UpdateUserComponent implements OnInit {
   user: User = new User();
 
   departements:Departement[]=[
-    {id_dep:0,nom_dep:"Select departement"},
-    {id_dep:1,nom_dep:"Informatique"},
-    {id_dep:2,nom_dep:"Finance"},
+    {id_dep:0n,nom_departement:"Select departement"},
+    {id_dep:1n,nom_departement:"Informatique"},
+    {id_dep:2n,nom_departement:"Finance"},
   ];
 
   profiles:Profile[]=[

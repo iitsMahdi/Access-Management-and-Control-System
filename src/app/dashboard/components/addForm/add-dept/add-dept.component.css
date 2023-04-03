@@ -1,0 +1,46 @@
+*{
+  text-align: center;
+}
+.my-buttonA {
+  display: inline-block;
+  font-size: 16px;
+  font-weight: bold;
+  line-height: 1.5;
+  text-align: center;
+  color: #fff;
+  background-color: #13cb56;
+  border: 1px solid #13cb56;
+  border-radius: 4px;
+  cursor: pointer;
+  }
+
+  .my-buttonA:hover {
+  background-color: #27934f;
+  border-color: #27934f;
+  }
+
+  .my-buttonC {
+    font-size: 16px;
+    font-weight: bold;
+    line-height: 1.5;
+    text-align: center;
+    color: #fff;
+    background-color: #be1c1c;
+    border: 1px solid #be1c1c;
+    border-radius: 4px;
+    cursor: pointer;
+    }
+
+    .my-buttonC:hover {
+    background-color: #8a2e2e;
+    border-color: #8a2e2e;
+    }
+    input[type="text"] {
+      font-size: 16px;
+      line-height: 1.5;
+    color: #333;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+    }

@@ -1,1 +1,56 @@
-<p>add-device works!</p>
+<div class="container">
+  <div class="title">
+    Add {{dev}}
+  </div>
+  <br><br><br><br>
+<form method="post">
+  <select name="" id="" (change)="selectChange($event)">
+    <option value="Select A device">Select a device</option>
+    <option value="Controller">Controller</option>
+    <option value="Reader">Reader</option>
+  </select>
+</form>
+
+
+<div class="title">{{dev}}</div>
+
+<div *ngIf="dev ==='Controller'; else elseBlock">
+<form method="post">
+    <div class="form-group">
+      <label for="name">Controller</label>
+      <input type="text" name="name" id="name" class="my-input" placeholder="Enter your controller" required formControlName="name">
+    </div>
+    <div class="form-group">
+      <label for="name">Status</label>
+      <input type="text" name="name" id="name" class="my-input" placeholder="Enter your Status" required formControlName="name">
+    </div>
+    <div class="form-group">
+      <label for="name">Departement</label>
+      <input type="text" name="name" id="name" class="my-input" placeholder="Enter your controller" required formControlName="name">
+    </div>
+    <div class="button-group">
+      <br>
+      <button type="submit" class="my-buttonA">Apply</button>
+      <button type="reset" class="my-buttonC">Cancel</button>
+    </div>
+</form>
+</div>
+
+<ng-template #elseBlock>
+<form method="post">
+    <div class="form-group">
+      <label for="name">Reader</label>
+      <input type="text" name="name" id="name" class="my-input" placeholder="Enter your @IP" required formControlName="name">
+    </div>
+    <div class="form-group">
+      <label for="name">Porte</label>
+      <input type="text" name="name" id="name" class="my-input" placeholder="Enter your Porte" required formControlName="name">
+    </div>
+    <div class="button-group">
+      <br>
+      <button type="submit" class="my-buttonA">Apply</button>
+      <button type="reset" class="my-buttonC">Cancel</button>
+    </div>
+</form>
+</ng-template>
+</div>

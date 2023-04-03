@@ -17,9 +17,9 @@ export class DoorsComponent implements OnInit{
     }
 
     doors :Porte[] = [
-    {idPorte: 1n, nomPorte: 'Hydrogen',type:'rue pelastine'},
-    {idPorte: 2n, nomPorte: 'Hydrogen',type:'rue pelastine'},
-    {idPorte: 3n, nomPorte: 'Hydrogen',type:'rue pelastine'},
+    {id_porte: 1n, nom_porte: 'Hydrogen',type:'rue pelastine'},
+    {id_porte: 2n, nom_porte: 'Hydrogen',type:'rue pelastine'},
+    {id_porte: 3n, nom_porte: 'Hydrogen',type:'rue pelastine'},
   ];
 
   addData() {
@@ -32,11 +32,11 @@ export class DoorsComponent implements OnInit{
 
 
 
-  updateUser(id: bigint){
-    this.router.navigate(['updateUser', id]);
+  updateDoor(id: bigint){
+    this.router.navigate(['updateDoor', id]);
   }
 
-  deleteUser(id: bigint){
+  deleteDoor(id: bigint){
 
     }
 

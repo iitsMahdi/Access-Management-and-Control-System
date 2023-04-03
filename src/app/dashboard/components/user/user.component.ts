@@ -3,6 +3,8 @@ import { Router } from '@angular/router';
 import { User } from 'src/app/model/User';
 import { UserService } from 'src/app/Service/user.service';
 import { ngxCsv } from 'ngx-csv/ngx-csv';
+import { Departement } from 'src/app/model/Departement';
+import { Profile } from 'src/app/model/Profile';
 
 
 @Component({
@@ -19,8 +21,8 @@ export class UserComponent  implements OnInit{
     }
 
     users :User[] = [
-    {id_user: 1n, user_name: 'Hydrogen',adresse:'rue pelastine',code:'IT', email: "aaa@aaa.com",image:'Engineering',login:"ana", password: '55487961', phone: '55487961',role:'D/U'},
-    {id_user: 2n, user_name: 'Hydrogen',adresse:'rue pelastine',code:'IT', email: "aaa@aaa.com",image:'Engineering',login:"an", password: '55487961', phone: '55487961',role:'D/U'},
+    {id_user: 1n, user_name: 'Hydrogen',adresse:'rue pelastine',code:'IT', email: "aaa@aaa.com",image:'Engineering',login:"ana", password: '55487961', phone: '55487961',role:'D/U',depar:new Departement(),prof:new Profile()},
+    {id_user: 2n, user_name: 'Hydrogen',adresse:'rue pelastine',code:'IT', email: "aaa@aaa.com",image:'Engineering',login:"ana", password: '55487961', phone: '55487961',role:'D/U',depar:new Departement(),prof:new Profile()},
   ];
 
   addData() {

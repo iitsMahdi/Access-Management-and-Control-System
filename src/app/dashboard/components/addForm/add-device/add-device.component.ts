@@ -7,4 +7,9 @@ import { Component } from '@angular/core';
 })
 export class AddDeviceComponent {
 
+
+  dev:string='';
+  selectChange(event : any){
+    this.dev=event.target.value;
+  }
 }

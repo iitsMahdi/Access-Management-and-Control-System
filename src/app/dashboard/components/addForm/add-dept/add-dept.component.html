@@ -1,1 +1,18 @@
-<p>add-dept works!</p>
+<button mat-dialog-close>
+  <mat-icon>close</mat-icon>
+</button>
+<mat-dialog-content>
+  <header>
+    <h1>Add Departement</h1>
+    <br><br><br>
+  </header>
+
+    <form method="post" [formGroup]="depForm" (ngSubmit)="onSubmit()">
+      <input placeholder=" Departement Name" type="text" name="nom_dep" formControlName="nom_dep" >
+      <br><br><br>
+      <button type="submit" class="my-buttonA">Apply</button>
+      <button mat-dialog-close type="reset" class="my-buttonC">Cancel</button>
+
+    </form>
+
+</mat-dialog-content>

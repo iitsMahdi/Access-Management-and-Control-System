@@ -1,7 +1,6 @@
-import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { DoorService } from 'src/app/Service/door.service';
 import { Contoller } from 'src/app/model/Conroller';
 import { Departement } from 'src/app/model/Departement';
@@ -9,15 +8,16 @@ import { Porte } from 'src/app/model/Porte';
 import Swal from 'sweetalert2';
 
 @Component({
-  selector: 'app-add-door',
-  templateUrl: './add-door.component.html',
-  styleUrls: ['./add-door.component.css']
+  selector: 'app-update-door',
+  templateUrl: './update-door.component.html',
+  styleUrls: ['./update-door.component.css']
 })
-export class AddDoorComponent implements OnInit{
+export class UpdateDoorComponent implements OnInit{
 
   file!:File;
   doorForm !:FormGroup;
   cardNumber!: string;
+  id!: number;
 
   controllers:Contoller[]=[
     {id_cont:0n,nom_controlleur:"Select departement",status:"Connected",dept:new Departement()},
@@ -25,7 +25,7 @@ export class AddDoorComponent implements OnInit{
     {id_cont:0n,nom_controlleur:"C2",status:"Connected",dept:new Departement()},
   ];
 
-  constructor(private router: Router,private formBuilder: FormBuilder,private doorService : DoorService) {}
+  constructor(private router: Router,private formBuilder: FormBuilder,private doorService : DoorService,private route: ActivatedRoute) {}
 
   porte: Porte = new Porte();
 
@@ -35,6 +35,13 @@ export class AddDoorComponent implements OnInit{
       name:['',Validators.required],
       type:['',Validators.required],
     });
+
+    this.id = this.route.snapshot.params['user_id'];
+
+    this.doorService.getDoorById(this.id).subscribe(data => {
+      this.porte = data;
+    }, error => console.log(error));
+
   }
 
   cont:string='';
@@ -50,29 +57,17 @@ export class AddDoorComponent implements OnInit{
         );
   }
 */
-  saveDoor():void{
-    this.porte.nom_porte=this.doorForm.value.name;
-    this.porte.type=this.doorForm.value.type;
-    this.doorService.createDoor(this.porte).subscribe( data =>{
-      console.log(data);
-      this.goToDoorList();
-    },
-    error => console.log(error));
-  }
 
   goToDoorList(){
     this.router.navigate(['/alldoor']);
   }
 
   onSubmit(){
-    console.log(this.porte);
-    Swal.fire({
-      position: 'center',
-      icon: 'success',
-      title: 'User added successfully',
-      showConfirmButton: false,
-      timer: 1500
-    })
-    this.saveDoor();
+    this.doorService.updateDoor(this.id, this.porte).subscribe( data =>{
+      this.goToDoorList();
+    }
+    , error => console.log(error));
   }
+
+
 }

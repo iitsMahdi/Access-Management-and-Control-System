@@ -20,7 +20,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
-import { UpdateUserComponent } from './components/update-user/update-user.component';
+import { UpdateUserComponent } from './components/updateForm/update-user/update-user.component';
 import { MatMenuModule } from '@angular/material/menu';
 import { ProfilesComponent } from './components/profiles/profiles.component';
 import { MatDialogModule } from '@angular/material/dialog';
@@ -31,7 +31,9 @@ import { AddDoorComponent } from './components/addForm/add-door/add-door.compone
 import { AddDeviceComponent } from './components/addForm/add-device/add-device.component';
 import { AddDeptComponent } from './components/addForm/add-dept/add-dept.component';
 import { AddReaderComponent } from './components/addForm/add-reader/add-reader.component';
-
+import { AccountComponent } from './components/account/account.component';
+import { UpdateDoorComponent } from './components/updateForm/update-door/update-door.component';
+import { AuthGuard } from '../auth/auth.guard';
 
 @NgModule({
   declarations: [
@@ -51,7 +53,9 @@ import { AddReaderComponent } from './components/addForm/add-reader/add-reader.c
     AddDoorComponent,
     AddDeviceComponent,
     AddDeptComponent,
-    AddReaderComponent
+    AddReaderComponent,
+    UpdateDoorComponent,
+    AccountComponent
   ],
   imports: [
     CommonModule,
@@ -70,6 +74,9 @@ import { AddReaderComponent } from './components/addForm/add-reader/add-reader.c
     MatMenuModule,
     MatDialogModule,
     NgChartsModule
+  ],
+  providers: [
+    AuthGuard
   ]
 })
 export class DashboardModule { }

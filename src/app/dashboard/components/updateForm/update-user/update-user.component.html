@@ -1,74 +1,95 @@
+<br>
 <div class="container">
   <div class="title">
-    Update User
-  </div>
+    Update user
+  </div><br>
+  <legend>User details</legend>
   <form method="post" [formGroup]="userForm" (ngSubmit)="onSubmit()">
-    <div class="container">
-        <legend>Information</legend>
 
+      <div class="row">
+        <div class="col">
       <div class="form-group">
-        <label for="name">Name</label>
-        <input type="text" name="name" id="name" class="my-input" placeholder="Enter your name" required formControlName="user_name" [(ngModel)] = "user.user_name">
-      </div>
+        <label for="name">First Name</label>
+        <input type="text" name="firstname" id="firstname" class="my-input" placeholder="Enter your First name" required formControlName="firstname">
+      </div></div>
+      <div class="col">
       <div class="form-group">
-        <label for="email">Email</label>
-        <input type="email" name="email" id="email" class="my-input" placeholder="Enter your email adress" required formControlName="email" [(ngModel)] = "user.email" >
+        <label for="name">Last Name</label>
+        <input type="text" name="lastname" id="lastname" class="my-input" placeholder="Enter your Last name" required formControlName="lastname" >
+      </div></div>
+    </div>
+    <div class="row">
+      <div class="col">
+        <div class="form-group">
+          <label for="phone">Phone</label>
+          <input type="tel" name="phone" id="phone" class="my-input" placeholder="Enter your phone Number" required formControlName="phone" >
+        </div>
       </div>
-      <div class="form-group">
-        <label for="phone">Phone</label>
-        <input type="tel" name="phone" id="phone" class="my-input" placeholder="Enter your phone Number" required formControlName="phone" [(ngModel)] = "user.phone">
+      <div class="col">
+        <div class="form-group">
+          <label for="adress">Address</label>
+          <input type="text" name="adresse" id="adresse" class="my-input" placeholder="Enter your adress" required formControlName="adresse">
+        </div>
       </div>
-      <div class="form-group">
-        <label for="adress">Address</label>
-        <input type="text" name="adresse" id="adresse" class="my-input" placeholder="Enter your adress" required formControlName="adresse" [(ngModel)] = "user.adresse">
-      </div>
+    </div>
       <div class="form-group">
         <label for="image">Image</label>
-        <input type="file" name="image" id="image" class="my-input"  required formControlName="image" (change)="onChangeimg($event)" [(ngModel)] = "user.image">
+        <input type="file" name="image" id="image" class="my-input"  required  (change)="onChangeimg($event)">
       </div>
+      <div class="row">
+        <div class="col">
       <div class="form-group">
         <label for="profile">Profile</label>
         <select name="profile" id="profile" class="my-select" required formControlName="profile" (change)="selectChangeProfile($event)">
-          <option *ngFor="let prof of profiles" value="prof.id_profile">{{prof.nom_profile}}</option>
+          <option *ngFor="let prof of profiles" value="{{prof.idProf}}">{{prof.nomProfile}}</option>
         </select>
-      </div>
+      </div></div>
+      <div class="col">
       <div class="form-group">
         <label for="department">Department</label>
         <select name="department" id="department" class="my-select" required formControlName="department" (change)="selectChangeDep($event)">
-          <option *ngFor="let dep of departements" value="dep.id_dep">{{dep.nom_departement}}</option>
+          <option *ngFor="let dep of departements" value="{{dep.idDep}}">{{dep.nomDep}}</option>
         </select>
-      </div>
+      </div></div>
+    </div>
+    <div class="row">
+      <div class="col">
       <div class="form-group">
-        <label for="loginid">Login ID</label>
-        <input type="text" name="loginid" id="loginid" class="my-input" placeholder="Enter your LoginID" required formControlName="login" [(ngModel)] = "user.login">
-      </div>
+        <label for="email">Email</label>
+        <input type="email" name="email" id="email" class="my-input" placeholder="Enter your email adress" required formControlName="email" >
+      </div></div>
+      <div class="col">
       <div class="form-group">
         <label for="password">Password</label>
-        <input type="password" name="password" id="password" class="my-input" placeholder="Enter your password" required formControlName="password" [(ngModel)] = "user.password">
-      </div>
+        <input type="password" name="password" id="password" class="my-input" placeholder="Enter your password" required formControlName="password">
+      </div></div>
+    </div>
       <div class="form-group">
         <label for="role">Role</label>
-        <select name="role" id="role" class="my-select" required formControlName="role" (change)="selectChangeRole($event)" [(ngModel)] = "user.role">
+        <select name="role" id="role" class="my-select" required formControlName="role" (change)="selectChangeRole($event)">
           <option value="" selected>Select a role</option>
-          <option value="Admin">Admin</option>
-          <option value="User">User</option>
+          <option value="ADMIN">Admin</option>
+          <option value="USER">User</option>
         </select>
       </div>
 
-     <legend>Credential</legend>
+     <legend>User credentials</legend>
+     <div class="row">
+      <div class="col">
       <div class="form-group">
         <label for="pin">Pin</label>
-        <input type="text" name="pin" id="pin" class="my-input" placeholder="Enter your PIN code" required formControlName="pin" [(ngModel)] = "user.code">
-      </div>
+        <input type="number" name="pin" id="pin" class="my-input" placeholder="Enter your PIN code" required formControlName="pin" >
+      </div></div>
+      <div class="col">
       <div class="form-group">
         <label for="card-number">Card Number</label>
-        <input type="text" name="card-number" id="card-number" class="my-input" placeholder="Enter your Card Number" required formControlName="card">
-      </div>
+        <input type="number" name="card-number" id="card-number" class="my-input" placeholder="Enter your Card Number" required formControlName="card" aria-disabled="true">
+      </div></div>
+    </div>
       <div class="button-group">
-        <br>
+        <br><br>
         <button type="submit" class="my-buttonA">Apply</button>
         <button type="reset" class="my-buttonC">Cancel</button>
       </div>
-    </div>
   </form>
 </div>

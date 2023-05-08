@@ -1,8 +1,14 @@
-import { Contoller } from "./Conroller";
+import { Departement } from "./Departement";
 
 export class Porte{
-  id_porte !:bigint;
-  nom_porte!:String;
+  IdPorte !:number;
+  nomPorte!:String;
   type!:String;
- // cont!: new Contoller();
+  dep! : Departement;
+
+/*
+  constructor(id:bigint){
+    this.id_porte=id;
+  }
+*/
 }

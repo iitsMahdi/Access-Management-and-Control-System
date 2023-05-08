@@ -1,0 +1,24 @@
+<div class="container">
+  <div class="title">
+    Update Reader
+  </div>
+  <br><br>
+
+<form method="post" [formGroup]="readerForm" (ngSubmit)="onSubmit()">
+    <div class="form-group">
+      <label for="name">Reader</label>
+      <input type="text" name="ip" id="ip" class="my-input" placeholder="Enter your @IP" required formControlName="ip">
+    </div>
+    <div class="form-group">
+      <label for="department">Door</label>
+      <select name="door" id="door" class="my-select" required formControlName="door" (change)="selectChangeDoor($event)"formControlName="door">
+        <option *ngFor="let dr of doors" value="{{dr.idPorte}}">{{dr.nomPorte}}</option>
+      </select>
+    </div>
+    <div class="button-group">
+      <br>
+      <button type="submit" class="my-buttonA">Apply</button>
+      <button type="reset" class="my-buttonC">Cancel</button>
+    </div>
+</form>
+</div>

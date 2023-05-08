@@ -5,40 +5,44 @@
         <mat-icon mat-list-icon class="chevron-button" [ngClass]="{ rotated: isExpanded }">chevron_right
         </mat-icon>
       </mat-list-item>
-<br><br><br><br><br>
-      <mat-list-item [routerLink]="'dashboard'">
+
+      <div class="">
+        <img class="logo" src="../../../assets/easy.png"  alt="">
+      </div>
+<br>
+      <mat-list-item [routerLink]="'dashboard'" (click)="set('Dashboard')">
         <mat-icon mat-list-icon>home</mat-icon>
-        <span *ngIf="isExpanded" class="menu-item">Dashboard</span>
+        <span *ngIf="isExpanded" class="menu-item" >Dashboard</span>
       </mat-list-item>
 <br>
-      <mat-list-item [routerLink]="'alluser'">
+      <mat-list-item [routerLink]="'alluser'" (click)="set('Users')">
         <mat-icon mat-list-icon>supervisor_account</mat-icon>
         <span *ngIf="isExpanded" class="menu-item">Users</span>
       </mat-list-item>
       <br>
-      <mat-list-item [routerLink]="'alldevices'">
+      <mat-list-item [routerLink]="'alldevices'" (click)="set('Devices')">
         <mat-icon mat-list-icon>important_devices</mat-icon>
         <span *ngIf="isExpanded" class="menu-item">Devices</span>
       </mat-list-item>
       <br>
-      <mat-list-item [routerLink]="'alldoors'">
+      <mat-list-item [routerLink]="'alldoors'" (click)="set('Doors')">
         <mat-icon mat-list-icon>hexagon</mat-icon>
         <span *ngIf="isExpanded" class="menu-item">Doors</span>
       </mat-list-item>
       <br>
-      <mat-list-item [routerLink]="'alldepartements'">
+      <mat-list-item [routerLink]="'alldepartements'" (click)="set('Departements')">
         <mat-icon mat-list-icon>supervisor_account</mat-icon>
         <span *ngIf="isExpanded" class="menu-item">Departements</span>
       </mat-list-item>
       <br>
-      <mat-list-item [routerLink]="'accessC'">
+      <mat-list-item [routerLink]="'accessC'" (click)="set('Access Control')">
         <mat-icon mat-list-icon>supervisor_account</mat-icon>
         <span *ngIf="isExpanded" class="menu-item">Access Control</span>
       </mat-list-item>
       <br>
-      <mat-list-item [routerLink]="'attendance'">
+      <mat-list-item [routerLink]="'attendance'" (click)="set('Attendance')">
         <mat-icon mat-list-icon>supervisor_account</mat-icon>
-        <span *ngIf="isExpanded" class="menu-item">Attendance</span>
+        <span *ngIf="isExpanded" class="menu-item">Monitoring</span>
       </mat-list-item>
 
     </mat-nav-list>
@@ -47,13 +51,15 @@
   <!-- Content - rendered Content for the current router path into the <router-outlet>, e.g. /dashboard or /info-->
   <mat-sidenav-content>
     <mat-toolbar>
-        <a [matMenuTriggerFor]="menu"><img src="../../../assets/account.png" alt="" ></a>
+     <p>{{target}}</p>
+        <a [matMenuTriggerFor]="menu"><img class="acc" src="../../../assets/account.png" alt="" ></a>
         <mat-menu #menu="matMenu">
           <button mat-menu-item routerLink="/account">Account</button>
-          <button mat-menu-item>Log Out</button>
+          <button mat-menu-item (click)="logOut()">Log Out</button>
         </mat-menu>
       </mat-toolbar>
     <router-outlet></router-outlet>
+    <lib-ng-toast></lib-ng-toast>
   </mat-sidenav-content>
 
 </mat-sidenav-container>

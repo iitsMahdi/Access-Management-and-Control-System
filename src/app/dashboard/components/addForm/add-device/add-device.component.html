@@ -2,31 +2,30 @@
   <div class="title">
     Add {{dev}}
   </div>
-  <br><br><br><br>
+  <br><br>
 <form method="post">
   <select name="" id="" (change)="selectChange($event)">
-    <option value="Select A device">Select a device</option>
-    <option value="Controller">Controller</option>
     <option value="Reader">Reader</option>
+    <option value="Controller">Controller</option>
+    <option value="Waveshare">Waveshare</option>
   </select>
 </form>
-
-
-<div class="title">{{dev}}</div>
-
-<div *ngIf="dev ==='Controller'; else elseBlock">
-<form method="post">
+<br><br>
+<div *ngIf="dev ==='Controller'">
+<form method="post" [formGroup]="contForm" (ngSubmit)="onSubmit()">
     <div class="form-group">
       <label for="name">Controller</label>
       <input type="text" name="name" id="name" class="my-input" placeholder="Enter your controller" required formControlName="name">
     </div>
     <div class="form-group">
-      <label for="name">Status</label>
-      <input type="text" name="name" id="name" class="my-input" placeholder="Enter your Status" required formControlName="name">
+      <label for="status">Status</label>
+      <input type="text" name="status" id="status" class="my-input" placeholder="Enter your Status" required formControlName="status">
     </div>
     <div class="form-group">
-      <label for="name">Departement</label>
-      <input type="text" name="name" id="name" class="my-input" placeholder="Enter your controller" required formControlName="name">
+      <label for="department">Department</label>
+      <select name="department" id="department" class="my-select" required formControlName="department" (change)="selectChangeDep($event)" formControlName="dep">
+        <option *ngFor="let dep of depts" value="{{dep.idDep}}">{{dep.nomDep}}</option>
+      </select>
     </div>
     <div class="button-group">
       <br>
@@ -36,21 +35,44 @@
 </form>
 </div>
 
-<ng-template #elseBlock>
-<form method="post">
-    <div class="form-group">
-      <label for="name">Reader</label>
-      <input type="text" name="name" id="name" class="my-input" placeholder="Enter your @IP" required formControlName="name">
-    </div>
-    <div class="form-group">
-      <label for="name">Porte</label>
-      <input type="text" name="name" id="name" class="my-input" placeholder="Enter your Porte" required formControlName="name">
-    </div>
-    <div class="button-group">
-      <br>
-      <button type="submit" class="my-buttonA">Apply</button>
-      <button type="reset" class="my-buttonC">Cancel</button>
-    </div>
-</form>
-</ng-template>
+<div *ngIf="dev ==='Reader'">
+  <form method="post" [formGroup]="readerForm" (ngSubmit)="onSubmit()">
+      <div class="form-group">
+        <label for="name">Reader</label>
+        <input type="text" name="ip" id="ip" class="my-input" placeholder="Enter your @IP" required formControlName="ip">
+      </div>
+      <div class="form-group">
+        <label for="department">Door</label>
+        <select name="door" id="door" class="my-select" required formControlName="door" (change)="selectChangeDoor($event)"formControlName="door">
+          <option *ngFor="let dr of doors" value="{{dr.idPorte}}">{{dr.nomPorte}}</option>
+        </select>
+      </div>
+      <div class="button-group">
+        <br>
+        <button type="submit" class="my-buttonA">Apply</button>
+        <button type="reset" class="my-buttonC">Cancel</button>
+      </div>
+  </form>
+</div>
+
+<div *ngIf="dev ==='Waveshare'">
+  <form method="post" [formGroup]="waveForm" (ngSubmit)="onSubmit()">
+      <div class="form-group">
+        <label for="name">Name</label>
+        <input type="text" name="ip" id="ip" class="my-input" placeholder="Enter the waveshare name" required formControlName="name">
+      </div>
+      <div class="form-group">
+        <label for="name">Adresse IP</label>
+        <input type="text" name="ip" id="ip" class="my-input" placeholder="Enter the @IP" required formControlName="adresse">
+      </div>
+      <div class="form-group">
+        <label for="name">Statut</label>
+        <input type="text" name="ip" id="ip" class="my-input" placeholder="Enter the @statut" required formControlName="status">
+      </div>
+      <div class="button-group">
+        <br>
+        <button type="submit" class="my-buttonA">Apply</button>
+        <button type="reset" class="my-buttonC">Cancel</button>
+      </div>
+  </form>
 </div>

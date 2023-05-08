@@ -2,7 +2,7 @@ import { Departement } from "./Departement";
 import { Profile } from "./Profile";
 
 export class User{
-  id_user!:bigint;
+  id!:bigint;
   adresse!:String;
   code!:String;
   email !:String;
@@ -10,8 +10,8 @@ export class User{
   password !:String;
   phone !:String;
   role !:String;
-  user_name !:String;
-  login!:String;
-  prof !:Profile;
-  depar!:Departement;
+  firstname !:String;
+  lastname !:String;
+  prof: Profile | null = null;
+  depar: Departement | null = null;
 }

@@ -1,5 +1,5 @@
+<!--
 <div class="container">
-  <h2> Dashboard</h2>
   <div class="operv">
     Operview
   </div>
@@ -26,6 +26,88 @@
     Alert
   </div>
 </div>
+-->
+    <!-- Montserrat Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
 
+    <!-- Material Icons -->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined" rel="stylesheet">
+<div class="container">
+    <div class="grid-container">
+      <!-- Main -->
+      <main class="container">
+        <!--
+        <div class="main-title">
+          <h2>DASHBOARD</h2>
+        </div>-->
+        <div class="main-cards">
 
+          <div class="card">
+            <div class="card-inner">
+              <a routerLink="/alluser"><h3>Users</h3></a>
+              <span class="material-icons-outlined">groups</span>
 
+            </div>
+            <h1>249</h1>
+          </div>
+
+          <div class="card">
+            <div class="card-inner">
+              <h3>Departements</h3>
+              <span class="material-icons-outlined">category</span>
+            </div>
+            <h1>5</h1>
+          </div>
+
+          <div class="card">
+            <div class="card-inner">
+              <h3>Doors</h3>
+              <span class="material-icons-outlined">inventory_2</span>
+            </div>
+            <h1>96</h1>
+          </div>
+          <div class="card">
+            <div class="card-inner">
+              <h3>ALERTS</h3>
+              <span class="material-icons-outlined">notification_important</span>
+            </div>
+            <h1>175</h1>
+          </div>
+        </div>
+        <div class="charts">
+          <!--Bar chart-->
+          <div class="charts-card">
+            <h2 class="chart-title">Title Chart 1</h2>
+            <div id="bar-chart">
+              <div class="chart-container">
+                <canvas  id="MyChart">{{ chart }}</canvas>
+              </div>
+            </div>
+            <br><br>
+          </div>
+          <!--Pie chart-->
+          <div class="charts-card">
+            <h2 class="chart-title">Title Chart 2</h2>
+            <div id="area-chart">
+              <div class="chart-container">
+                <canvas  id="MyChart2" >{{ pie }}</canvas>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!--Line chart-->
+        <div class="chartsLine">
+        <div class="main-charts-card">
+          <h2 class="chart-title">Title Chart 2</h2>
+          <div id="area-chart">
+            <div class="chart-container">
+              <canvas  id="MyChart3" >{{ lineChart }}</canvas>
+            </div>
+          </div>
+          <br><br>
+        </div>
+      </div>
+      </main>
+      <!-- End Main -->
+    </div>
+  </div>

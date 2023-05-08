@@ -2,8 +2,11 @@ import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { forkJoin } from 'rxjs';
+import { ControllerService } from 'src/app/Service/controller.service';
+import { DepartementService } from 'src/app/Service/departement.service';
 import { DoorService } from 'src/app/Service/door.service';
-import { Contoller } from 'src/app/model/Conroller';
+import { Contoller } from 'src/app/model/Controller';
 import { Departement } from 'src/app/model/Departement';
 import { Porte } from 'src/app/model/Porte';
 import Swal from 'sweetalert2';
@@ -19,13 +22,14 @@ export class AddDoorComponent implements OnInit{
   doorForm !:FormGroup;
   cardNumber!: string;
 
-  controllers:Contoller[]=[
-    {id_cont:0n,nom_controlleur:"Select departement",status:"Connected",dept:new Departement()},
-    {id_cont:0n,nom_controlleur:"C1",status:"Connected",dept:new Departement()},
-    {id_cont:0n,nom_controlleur:"C2",status:"Connected",dept:new Departement()},
-  ];
+  deptss:any
 
-  constructor(private router: Router,private formBuilder: FormBuilder,private doorService : DoorService) {}
+  constructor(private contService : ControllerService,
+    private router: Router,
+    private formBuilder: FormBuilder,
+    private doorService : DoorService,
+    private deptsService : DepartementService
+    ) {}
 
   porte: Porte = new Porte();
 
@@ -34,34 +38,55 @@ export class AddDoorComponent implements OnInit{
     this.doorForm=this.formBuilder.group({
       name:['',Validators.required],
       type:['',Validators.required],
+      Departement:['',Validators.required]
     });
+    this.getDepts()
   }
 
-  cont:string='';
+  getDepts(){
+    this.deptsService.getDepList().subscribe((data)=>{
+      this.deptss=data;
+      console.log(data)
+    })
+  }
+
+  dep:string='';
   selectChangeCont(event : any){
-    this.cont=event.target.value;
+    this.dep=event.target.value;
   }
-/*
-  onSubmit(){
-    alert(this.doorForm.value.name +"\n" +
-          this.doorForm.value.type +"\n" +
-          this.cont
+  type:string='';
 
-        );
+  selectChangeType(event : any){
+    this.type=event.target.value;
   }
-*/
+
   saveDoor():void{
-    this.porte.nom_porte=this.doorForm.value.name;
-    this.porte.type=this.doorForm.value.type;
-    this.doorService.createDoor(this.porte).subscribe( data =>{
-      console.log(data);
-      this.goToDoorList();
-    },
-    error => console.log(error));
+    this.porte.nomPorte=this.doorForm.value.name;
+    this.porte.type=this.type;
+
+    const deptObs = this.deptsService.getDepById(Number(this.dep))
+    forkJoin([deptObs]).subscribe(([depData]) => {
+      this.porte.dep=depData;
+      console.log(depData);
+
+      this.doorService.createDoor(this.porte).subscribe( data =>{
+        console.log(this.porte)
+        Swal.fire({
+          position: 'center',
+          icon: 'success',
+          title: 'Door added successfully',
+          showConfirmButton: false,
+          timer: 1500
+        });
+        this.goToDoorList();
+      },
+      error => console.log(error));
+    });
+
   }
 
   goToDoorList(){
-    this.router.navigate(['/alldoor']);
+    this.router.navigate(['/alldoors']);
   }
 
   onSubmit(){

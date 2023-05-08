@@ -1,4 +1,7 @@
+import { Porte } from "./Porte";
+
 export class Reader{
-  id_lecteur !:bigint;
-  ip_adresse !: String;
+  idLecteur !:bigint;
+  ipAdresse !: String;
+  prt!:Porte;
 }

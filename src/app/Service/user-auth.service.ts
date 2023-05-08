@@ -33,4 +33,9 @@ export class UserAuthService {
   public isLoggedIn() {
     return this.getRoles() && this.getToken();
   }
+
+  public logOut(){
+    return localStorage.removeItem('jwtToken')
+  }
+
 }

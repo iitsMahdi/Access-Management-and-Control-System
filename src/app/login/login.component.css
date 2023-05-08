@@ -103,7 +103,7 @@ form{
 	bottom: -2px;
 	width: 0%;
 	height: 2px;
-	background-color: #D79771;
+	background-color: #576CBC;
 	transition: .4s;
 }
 
@@ -125,7 +125,7 @@ form{
 }
 
 .input-div.focus > .i > mat-icon{
-	color: #D79771;
+	color: #576CBC;
 }
 
 .input-div > div > input{
@@ -157,7 +157,7 @@ a{
 }
 
 a:hover{
-	color: #D79771;
+	color: #2b273b;
 }
 
 .btn{
@@ -167,7 +167,7 @@ a:hover{
 	border-radius: 25px;
 	outline: none;
 	border: none;
-	background-image: linear-gradient(to right, #D79771, #D79771, #D79771);
+	background-image: linear-gradient(to right, #2b273b, #2b273b, #2b273b);
 	background-size: 200%;
 	font-size: 1.2rem;
 	color: #fff;
@@ -179,8 +179,8 @@ a:hover{
 }
 .btn:hover{
 	background-position: right;
-	background-color: #b95820;
-	color: #b95820;
+	background-color: #576CBC;
+	color: #576CBC;
 }
 
 

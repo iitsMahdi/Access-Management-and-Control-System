@@ -1,8 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { ngxCsv } from 'ngx-csv';
+import { DoorService } from 'src/app/Service/door.service';
+import { UserAuthService } from 'src/app/Service/user-auth.service';
 import { UserService } from 'src/app/Service/user.service';
+import { Contoller } from 'src/app/model/Controller';
 import { Porte } from 'src/app/model/Porte';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-doors',
@@ -10,34 +14,54 @@ import { Porte } from 'src/app/model/Porte';
   styleUrls: ['./doors.component.css']
 })
 export class DoorsComponent implements OnInit{
-  constructor(private userService: UserService,
-    private router: Router) { }
-
+  constructor(private doorService: DoorService,
+    private router: Router,
+    private userAuthService:UserAuthService
+    ) { }
+roless=this.userAuthService.getRoles()
     ngOnInit(): void {
+      this.getDoors()
     }
 
-    doors :Porte[] = [
-    {id_porte: 1n, nom_porte: 'Hydrogen',type:'rue pelastine'},
-    {id_porte: 2n, nom_porte: 'Hydrogen',type:'rue pelastine'},
-    {id_porte: 3n, nom_porte: 'Hydrogen',type:'rue pelastine'},
-  ];
+    doors :any;
+
 
   addData() {
     this.router.navigate(['/addDoor']);
   }
   MenageProfile(){
   this.router.navigate(['/']);
+  }
 
-}
-
-
+  getDoors(){
+    this.doorService.getDoorsList().subscribe((data:any)=>{
+    this.doors=data;
+    console.log(data)
+    })
+  }
 
   updateDoor(id: bigint){
     this.router.navigate(['updateDoor', id]);
   }
 
   deleteDoor(id: bigint){
+    this.doorService.deleteDoor(id,this.roless).subscribe((response:any)=>{
+      console.log(response);
+      this.router.navigate(['/alldoors']);
+      window.location.reload();
 
+      Swal.fire({
+        position: 'center',
+        icon: 'success',
+        title: 'Door Deleted successfully',
+        showConfirmButton: false,
+        timer: 1500
+      });
+    },
+    (error) => {
+      console.log(error);
+    }
+    )
     }
 
 

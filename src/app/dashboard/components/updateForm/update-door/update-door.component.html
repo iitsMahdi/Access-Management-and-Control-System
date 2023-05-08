@@ -8,16 +8,16 @@
 
       <div class="form-group">
         <label for="name">Name</label>
-        <input type="text" name="name" id="name" class="my-input" placeholder="Enter your name" required formControlName="name" [(ngModel)] = "porte.nom_porte">
+        <input type="text" name="name" id="name" class="my-input" placeholder="Enter your name" required formControlName="name">
       </div>
       <div class="form-group">
         <label for="email">Type</label>
-        <input type="email" name="email" id="email" class="my-input" placeholder="Enter your email adress" required formControlName="type" [(ngModel)] = "porte.type" >
+        <input type="email" name="email" id="email" class="my-input" placeholder="Enter your email adress" required formControlName="type"  >
       </div>
       <div class="form-group">
         <label for="Controller">Controller</label>
-        <select name="Controller" id="Controller" class="my-select" required formControlName="role" (change)="selectChangeCont($event)">
-          <option *ngFor="let c of controllers" value="{{c.id_cont}}">{{c.nom_controlleur}}</option>
+        <select name="Controller" id="Controller" class="my-select" required formControlName="cont" (change)="selectChangeCont($event)">
+          <option *ngFor="let c of controllers" value="{{c.idCont}}">{{c.nomCont}}</option>
         </select>
       </div>
 

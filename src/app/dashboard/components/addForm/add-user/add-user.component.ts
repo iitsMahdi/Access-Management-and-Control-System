@@ -3,10 +3,12 @@ import { Component, HostListener, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { UserService } from 'src/app/Service/user.service';
-import { Departement } from 'src/app/model/Departement';
 import { User } from 'src/app/model/User';
-import { Profile } from 'src/app/model/Profile';
 import Swal from 'sweetalert2';
+import { DepartementService } from 'src/app/Service/departement.service';
+import { ProfileService } from 'src/app/Service/profile.service';
+import { forkJoin } from 'rxjs';
+import { DoorService } from 'src/app/Service/door.service';
 
 
 @Component({
@@ -17,48 +19,108 @@ import Swal from 'sweetalert2';
 export class AddUserComponent implements OnInit{
 
   file!:File;
-  userForm !:FormGroup;
+  userInfForm !:FormGroup;
+  userPrevForm !:FormGroup;
+  userCredForm !:FormGroup;
   cardNumber!: string;
-
-  departements:Departement[]=[
-    {id_dep:0n,nom_departement:"Select departement"},
-    {id_dep:1n,nom_departement:"Informatique"},
-    {id_dep:2n,nom_departement:"Finance"},
-  ];
-
-  profiles:Profile[]=[
-    {id_profile:0,nom_profile:"Select profile"},
-    {id_profile:1,nom_profile:"Ingénieur"},
-    {id_profile:2,nom_profile:"Technicien"},
-  ];
-/*
-  readonly URL="http://localhost:8080";
-  readonly ENDPOINT="/addUser";*/
-
-  constructor(private router: Router,private formBuilder: FormBuilder , private http:HttpClient,private userService: UserService,) {}
-
+  departements:any;
+  profiles:any
+  portes:any
+  selectedDoors: any[] = [];
+  selectedDepts: any[] = [];
+  selDr: any[] = [];
+  step = 1;
+  personal_step = false;
+  address_step = false;
+  education_step = false;
+  idUser:any;
   user: User = new User();
+  constructor(
+    private deptService: DepartementService,
+    private profService:ProfileService,
+    private router: Router,
+    private formBuilder: FormBuilder ,
+    private http:HttpClient,
+    private userService: UserService,
+    private doorServices : DoorService
+    ) {}
 
 
   ngOnInit(): void {
-
-    this.userForm=this.formBuilder.group({
-      user_name:['',Validators.required],
+    this.userInfForm=this.formBuilder.group({
+      firstname:['',Validators.required],
+      lastname:['',Validators.required],
       adresse:['',Validators.required],
-      email:['',Validators.required],
       image:['',Validators.required],
-      password:['',Validators.required],
       phone:['',Validators.required],
-      login:['',Validators.required],
+      profile:['',Validators.required],
+      role:['',Validators.required],
+    });
+
+    this.userPrevForm=this.formBuilder.group({
+      department:['',Validators.required],
+      porte:['',Validators.required],
+    });
+
+    this.userCredForm=this.formBuilder.group({
+      email:['',Validators.required],
+      password:['',Validators.required],
       pin:['',Validators.required],
       card:['',Validators.required],
-      profile:['',Validators.required],
-      department:['',Validators.required],
-      role:['',Validators.required],
-
     });
+
+    this.getDepatement();
+    this.getProfiles()
   }
 
+  next(){
+
+    if(this.step==1){
+          this.personal_step = true;
+          if (this.userInfForm.invalid) {
+            return
+          }
+          this.step++;
+          this.saveUI();
+    }
+
+    else if(this.step==2){
+        this.address_step = true;
+        if (this.userPrevForm.invalid) {
+          return
+        }
+        this.step++;
+    }
+  }
+
+  previous(){
+    this.step--
+    if(this.step==1){
+      this.address_step = false;
+    }
+    if(this.step==2){
+      this.education_step = false;
+    }
+  }
+
+  getDepatement(){
+    this.deptService.getDepList().subscribe((data)=>{
+      this.departements=data;
+      console.log(data);
+    })}
+    getProfiles(){
+      this.profService.getProfilesList().subscribe((data)=>{
+        this.profiles=data
+        console.log(this.profiles)
+      })
+    }
+    getPortes(dep:any){
+      this.doorServices.getDoorByDep(dep).subscribe((data)=>{
+        this.portes=data
+        console.log("liste des portes")
+        console.log(data)
+      })
+    }
   onChangeimg(event:any){
     this.file=event.target.files[0];
   }
@@ -66,6 +128,38 @@ export class AddUserComponent implements OnInit{
   profile:string='';
   selectChangeProfile(event : any){
     this.profile=event.target.value;
+  }
+
+  checkedDep:boolean=false
+  depName:string=''
+  isCheckboxChecked(event: any,dep:any) {
+    console.log("haw id dep : "+dep.idDep)
+    if (event.target.checked) {
+      this.checkedDep=true
+      this.depName=dep.nomDep
+      console.log("raw khtar checkedDep")
+      this.getPortes(dep.idDep);
+      //this.selectedDepts.push(data);
+    }
+  }
+
+  isDoorChecked(event:any,data:any){
+    if (event.target.checked) {
+      this.selectedDoors.push(data)
+      console.log("raw zed "+data)
+      console.log(this.selectedDoors)
+    }
+  }
+
+  pin:boolean=false
+  isPinSelected(event:any){
+    if (event.target.checked) {
+      this.pin=true
+    }
+  }
+
+  selectChangeDr(event : any){
+    this.selDr.push(event.target.value);
   }
 
   departement:string='';
@@ -77,40 +171,69 @@ export class AddUserComponent implements OnInit{
   selectChangeRole(event : any){
     this.role=event.target.value;
   }
-/*
-  onSubmit(){
-    alert(this.userForm.value.adresse +"\n" +
-          this.userForm.value.user_name +"\n" +
-          this.userForm.value.email +"\n" +
-          this.file.name +"\n" +
-          this.profile+"\n" +
-          this.departement+"\n" +
-          this.userForm.value.password +"\n" +
-          this.userForm.value.phone +"\n" +
-          this.userForm.value.login +"\n" +
-          this.role+"\n" +
-          this.userForm.value.pin +"\n" +
-          this.userForm.value.card +"\n"
-        );
-  }*/
+
+  saveUI(){
+    this.user.firstname=this.userInfForm.value.firstname;
+    this.user.lastname=this.userInfForm.value.lastname;
+    this.user.adresse=this.userInfForm.value.adresse;
+    this.user.image=this.file.name;
+    this.user.phone=this.userInfForm.value.phone;
+    this.user.role=this.role;
+    const profObs = this.profService.getProfById(Number(this.profile));
+    forkJoin([profObs]).subscribe(([profData]) => {
+      this.user.prof = profData;
+    });
+  }
 
   saveEmployee(){
+    this.user.code=this.userCredForm.value.card;
+    this.user.email=this.userCredForm.value.email;
+    this.user.password=this.userCredForm.value.password
 
-    this.user.user_name=this.userForm.value.user_name;
-    this.user.adresse=this.userForm.value.email;
-    this.user.email=this.userForm.value.email;
-    this.user.image=this.file.name;
-    this.user.password=this.userForm.value.password;
-    this.user.phone=this.userForm.value.phone;
-    this.user.login=this.userForm.value.login;
-    //this.user.code=this.userForm.value.pin;
-    this.user.code=this.cardNumber;
 
-    this.user.role=this.role;
 
-    this.userService.createUser(this.user).subscribe( data =>{
+    /*
+    this.userService.createUser(this.user,this.selectedDoors).subscribe(data => {
+      Swal.fire({
+          position: 'center',
+          icon: 'success',
+          title: 'User added successfully',
+          showConfirmButton: false,
+          timer: 1500
+        });
+        console.log(data);
+        this.goToUserList();
+      },
+      error => console.log(error));*/
+  }
+
+  assignUser(id:any){
+    for (let i = 0; i < this.selectedDoors.length; i++) {
+      this.userService.assignPortes(this.selectedDoors[i],id).subscribe(()=>{
+        console.log("zedetlek lbibeeen lel user")
+      },
+      error =>
+              console.log(error));
+              console.log("erroor")
+
+    }
+  }
+  postUser(){
+    this.saveEmployee()
+    console.log(this.user)
+    console.log(this.selectedDoors)
+    this.http.post(`http://localhost:8080/User/add`,this.user).subscribe(data => {
+      Swal.fire({
+        position: 'center',
+        icon: 'success',
+        title: 'User added successfully',
+        showConfirmButton: false,
+        timer: 1500
+      });
       console.log(data);
+      this.assignUser(data);
       this.goToUserList();
+      return data
     },
     error => console.log(error));
   }
@@ -120,21 +243,7 @@ export class AddUserComponent implements OnInit{
   }
 
   onSubmit(){
-    console.log(this.user);
-    Swal.fire({
-      position: 'center',
-      icon: 'success',
-      title: 'User added successfully',
-      showConfirmButton: false,
-      timer: 1500
-    })
-    this.saveEmployee();
+    this.postUser();
   }
 
- /* @HostListener("input", ['$event.target'])
-  onInput(event: HTMLInputElement) {
-    const cardNumber= "0014246313"
-    this.cardNumber = cardNumber;
-    event.value = cardNumber; // update input field value
-}*/
 }

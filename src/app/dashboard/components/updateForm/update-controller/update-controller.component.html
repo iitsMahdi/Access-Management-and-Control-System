@@ -1,0 +1,26 @@
+<div class="container">
+  <div class="title">
+    Update Controller {{id}}
+  </div>
+  <br><br><br><br>
+<form method="post" [formGroup]="contForm" (ngSubmit)="onSubmit()">
+    <div class="form-group">
+      <label for="name">Controller</label>
+      <input type="text" name="name" id="name" class="my-input" placeholder="Enter your controller" required formControlName="name">
+    </div>
+    <div class="form-group">
+      <label for="status">Status</label>
+      <input type="text" name="status" id="status" class="my-input" placeholder="Enter your Status" required formControlName="status">
+    </div>
+    <div class="form-group">
+      <label for="department">Department</label>
+      <select name="department" id="department" class="my-select" required formControlName="department" (change)="selectChangeDep($event)" formControlName="dep">
+        <option *ngFor="let dep of depts" value="{{dep.idDep}}">{{dep.nomDep}}</option>
+      </select>
+    </div>
+    <div class="button-group">
+      <br>
+      <button type="submit" class="my-buttonA">Apply</button>
+      <button type="reset" class="my-buttonC">Cancel</button>
+    </div>
+</form>

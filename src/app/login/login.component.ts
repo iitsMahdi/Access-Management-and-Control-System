@@ -16,51 +16,81 @@ export class LoginComponent implements OnInit{
   file!:File;
   loginForm !:FormGroup;
   user: User = new User();
-
-
-
+  role!:any
+  rls!:any
   constructor(private router: Router,private formBuilder: FormBuilder,private userService :UserService , private userAuthService:UserAuthService) { }
 
   ngOnInit(): void {
+    this.userAuthService.clear();
+    console.log("role : "+this.userAuthService.getRoles())
 
     this.loginForm=this.formBuilder.group({
+      email:['',Validators.required],
       password:['',Validators.required],
-      login:['',Validators.required],
   });
 }
 
-onSubmit(){
-  console.log (this.loginForm.value);//.login + " "+ this.loginForm.value.password);
-  Swal.fire({
-    position: 'center',
-    icon: 'success',
-    title: 'Loged in to your account successfully',
-    showConfirmButton: false,
-    timer: 1500
-  })
-  this.router.navigate(['/dashboard']);
-}
+login(loginForm: FormGroup,rls:String) {
+  /*this.userService.getUserByEmail(this.loginForm.value.email).subscribe((data)=>{
+    console.log("User reterned by Email : ")
+    console.log(data)
+  },
+  (error) => {
 
-login(loginForm: FormGroup) {
-  console.log(loginForm.value)
-
-  this.userService.login(loginForm.value).subscribe(
+    console.log(error);
+  })*/
+  console.log("role : "+this.userAuthService.getRoles())
+  this.userService.login(loginForm).subscribe(
     (response: any) => {
-      this.userAuthService.setRoles(response.user.role);
-      this.userAuthService.setToken(response.jwtToken);
+      Swal.fire({
+        position: 'center',
+        icon: 'success',
+        title: 'Loged in to your account successfully',
+        showConfirmButton: false,
+        timer: 1500
+      })
+      console.log(response);
 
-      const role = response.user.role[0].roleName;
-      if (role === 'Admin') {
+      this.role = JSON.parse(atob(response.token.split('.')[1])).aud.toLowerCase()
+      this.role=this.role.substring(1,this.role.length-1)
+      this.userAuthService.setRoles(this.role);
+      this.userAuthService.setToken(response.token);
+      console.log("connected")
+      console.log(this.role)
+      if (this.role === 'admin') {
         this.router.navigate(['/dashboard']);
       } else {
-        this.router.navigate(['/user']);
+        this.router.navigate(['/alluser']);
       }
+
     },
     (error) => {
+      Swal.fire({
+        icon: 'error',
+        title: 'Oops...',
+        text: 'Wrong email or password!'
+    })
       console.log(error);
     }
   );
 }
 
+getUserRole(loginForm:FormGroup):string{
+  this.userService.getUserByEmail(loginForm.value.email).subscribe((data)=>{
+    console.log("User reterned by Email : ")
+    console.log(data)
+    return data.role;
+  },
+  (error) => {
+
+    console.log(error);
+  })
+  return "";
+}
+
+onSubmit(loginForm: FormGroup){
+  //this.role=this.getUserRole(loginForm)
+  this.login(loginForm,this.role)
+}
 
 }

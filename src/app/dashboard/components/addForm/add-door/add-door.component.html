@@ -8,16 +8,20 @@
 
       <div class="form-group">
         <label for="name">Name</label>
-        <input type="text" name="name" id="name" class="my-input" placeholder="Enter your name" required formControlName="name" [(ngModel)] = "porte.nom_porte">
+        <input type="text" name="name" id="name" class="my-input" placeholder="Enter your name" required formControlName="name">
       </div>
       <div class="form-group">
         <label for="email">Type</label>
-        <input type="email" name="email" id="email" class="my-input" placeholder="Enter your email adress" required formControlName="type" [(ngModel)] = "porte.type" >
+        <select name="Type" id="Type" class="my-select" required formControlName="type" (change)="selectChangeType($event)">
+          <option value="">Select Type</option>
+          <option value="Porte_Departement"> Porte Departement</option>
+          <option value="Porte_Principal">Porte Principal</option>
+        </select>
       </div>
       <div class="form-group">
-        <label for="Controller">Controller</label>
-        <select name="Controller" id="Controller" class="my-select" required formControlName="role" (change)="selectChangeCont($event)">
-          <option *ngFor="let c of controllers" value="{{c.id_cont}}">{{c.nom_controlleur}}</option>
+        <label for="Departement">Departement</label>
+        <select name="Departement" id="Departement" class="my-select" required formControlName="Departement" (change)="selectChangeCont($event)">
+          <option *ngFor="let d of deptss" value="{{d.idDep}}">{{d.nomDep}}</option>
         </select>
       </div>
 

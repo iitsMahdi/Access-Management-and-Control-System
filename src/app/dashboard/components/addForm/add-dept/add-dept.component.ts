@@ -31,17 +31,23 @@ export class AddDeptComponent implements OnInit {
   }
 
   saveDep() {
-    this.dept.nom_departement = this.depForm.value.nom_dep;
-    const token = 'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJtbUBtbSIsImlhdCI6MTY4MDUyMDgzMywiZXhwIjoxNjgwNTIyMjczfQ.e0lxzTHJkbGyPzdBSa4U5OYP3059BUIz7FQAVK_mJgU';
-    this.departementService.createDep(token, this.dept).subscribe(data => {
+    this.dept.nomDep = this.depForm.value.nom_dep;
+    this.departementService.createDep(this.dept).subscribe(data => {
       console.log('created');
       console.log(data);
       this.goToProfileList();
+      Swal.fire({
+      position: 'center',
+      icon: 'success',
+      title: 'Departement added successfully',
+      showConfirmButton: false,
+      timer: 1500
+    });
     });
   }
 
   goToProfileList() {
-    this.router.navigate(['/alldept']);
+    this.router.navigate(['/alldepartements']);
   }
 
   onSubmit() {

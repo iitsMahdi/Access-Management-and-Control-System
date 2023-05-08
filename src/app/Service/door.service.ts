@@ -1,37 +1,44 @@
 import { HttpHeaders, HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { Porte } from '../model/Porte';
 
 @Injectable({
   providedIn: 'root'
 })
 export class DoorService {
-  private baseURL = "http://localhost:8080/porte";
+  private baseURL = "http://localhost:8080/Porte";
+  private SecURL = "http://localhost:8080/Departement";
 
 
-  requestHeader =new HttpHeaders(
-    { "No-Auth":"True"}
-  );
   constructor(private httpClient: HttpClient) { }
 
-  getUsersList(): Observable<Porte[]>{
-    return this.httpClient.get<Porte[]>(`${this.baseURL}`);
+  getDoorsList(): Observable<Porte[]>{
+    return this.httpClient.get<Porte[]>(`${this.baseURL}/all`);
   }
 
   createDoor(porte: Porte): Observable<Object>{
-    return this.httpClient.post(`${this.baseURL}`, porte);
+    return this.httpClient.post(`${this.baseURL}/add`, porte);
   }
 
   getDoorById(id: number): Observable<Porte>{
-    return this.httpClient.get<Porte>(`${this.baseURL}/${id}`);
+    return this.httpClient.get<Porte>(`${this.baseURL}/get/${id}`);
+  }
+
+  getDoorByDep(dep: any): Observable<Porte>{
+    return this.httpClient.get<Porte>(`${this.SecURL}/getByDep/${dep}`);
   }
 
   updateDoor(id: number, door: Porte): Observable<Object>{
-    return this.httpClient.put(`${this.baseURL}/${id}`, door);
+    return this.httpClient.put(`${this.baseURL}/update/${id}`, door);
   }
 
-  deleteDoor(id: bigint): Observable<Object>{
-    return this.httpClient.delete(`${this.baseURL}/${id}`);
+  deleteDoor(id: bigint,role:any): Observable<Object|null>{
+    if(role==="admin"){
+      console.log(id)
+      return this.httpClient.delete(`${this.baseURL}/delete/${id}`);
+    }else{
+      return of(null)
+    }
   }
 }

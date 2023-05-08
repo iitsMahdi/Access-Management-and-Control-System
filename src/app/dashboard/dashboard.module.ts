@@ -19,7 +19,7 @@ import { AddUserComponent } from './components/addForm/add-user/add-user.compone
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { HttpClientModule } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { UpdateUserComponent } from './components/updateForm/update-user/update-user.component';
 import { MatMenuModule } from '@angular/material/menu';
 import { ProfilesComponent } from './components/profiles/profiles.component';
@@ -34,6 +34,17 @@ import { AddReaderComponent } from './components/addForm/add-reader/add-reader.c
 import { AccountComponent } from './components/account/account.component';
 import { UpdateDoorComponent } from './components/updateForm/update-door/update-door.component';
 import { AuthGuard } from '../auth/auth.guard';
+import { AuthInterceptorService } from '../auth/auth-interceptor.service';
+import { UpdateDeptComponent } from './components/updateForm/update-dept/update-dept.component';
+import { Ng2OrderModule } from 'ng2-order-pipe';
+import { NgxPaginationModule } from 'ngx-pagination';
+import { UpdateControllerComponent } from './components/updateForm/update-controller/update-controller.component';
+import { UpdateReaderComponent } from './components/updateForm/update-reader/update-reader.component';
+import { HasRoleGuard } from '../auth/has-role.guard';
+import { InjectableRxStomp } from './rx-stomp';
+import { NgApexchartsModule } from 'ng-apexcharts';
+import { NgToastModule } from 'ng-angular-popup';
+
 
 @NgModule({
   declarations: [
@@ -55,7 +66,10 @@ import { AuthGuard } from '../auth/auth.guard';
     AddDeptComponent,
     AddReaderComponent,
     UpdateDoorComponent,
-    AccountComponent
+    AccountComponent,
+    UpdateDeptComponent,
+    UpdateControllerComponent,
+    UpdateReaderComponent,
   ],
   imports: [
     CommonModule,
@@ -73,10 +87,14 @@ import { AuthGuard } from '../auth/auth.guard';
     HttpClientModule,
     MatMenuModule,
     MatDialogModule,
-    NgChartsModule
+    NgChartsModule,
+    NgxPaginationModule,
+    NgApexchartsModule,
+    NgToastModule
   ],
   providers: [
-    AuthGuard
+    {provide:HTTP_INTERCEPTORS,useClass:AuthInterceptorService,multi:true},
+    AuthGuard,HasRoleGuard
   ]
 })
 export class DashboardModule { }

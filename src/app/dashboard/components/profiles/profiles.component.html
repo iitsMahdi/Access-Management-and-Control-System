@@ -1,7 +1,6 @@
 
 
 <div class="container">
-  <h2> Profiles List</h2>
 
   <div class="demo-button-container">
     <button mat-raised-button (click)="openDialog()" class="demo-button">
@@ -22,8 +21,8 @@
       </thead>
       <tbody>
           <tr *ngFor = "let prof of profiles" >
-              <td> {{ prof.id_profile }} </td>
-              <td> {{ prof.nom_profile }} </td>
+              <td> {{ prof.idProf }} </td>
+              <td> {{ prof.nomProfile }} </td>
               <td> 15</td>
 
           </tr>

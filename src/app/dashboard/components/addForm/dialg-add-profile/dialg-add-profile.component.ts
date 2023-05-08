@@ -20,36 +20,34 @@ constructor(private router: Router,private formBuilder: FormBuilder ,private pro
 ngOnInit(): void {
 
   this.profileForm=this.formBuilder.group({
-    nom_profile:['',Validators.required],
+    NomProfile:['',Validators.required],
   });
 }
 
 
 saveProfile(){
 
-  this.profile.nom_profile=this.profileForm.value.nom_profile;
+  this.profile.NomProfile=this.profileForm.value.NomProfile;
   this.profileService.createProfile(this.profile).subscribe(data =>{
     console.log(data)
+    Swal.fire({
+      position: 'center',
+      icon: 'success',
+      title: 'Profile added successfully',
+      showConfirmButton: false,
+      timer: 1500
+    });
     this.goToProfileList();
   })
 
 }
 
 goToProfileList(){
-  this.router.navigate(['/allProfile']);
+  this.router.navigate(['/allProfiles']);
 }
 
 onSubmit(){
-  console.log(this.profile)
   this.saveProfile();
-  Swal.fire({
-    position: 'center',
-    icon: 'success',
-    title: 'Profile added successfully',
-    showConfirmButton: false,
-    timer: 1500
-  })
-
 }
 
 }

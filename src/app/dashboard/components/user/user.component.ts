@@ -5,6 +5,7 @@ import { UserService } from 'src/app/Service/user.service';
 import { ngxCsv } from 'ngx-csv/ngx-csv';
 import { Departement } from 'src/app/model/Departement';
 import { Profile } from 'src/app/model/Profile';
+import { UserAuthService } from 'src/app/Service/user-auth.service';
 
 
 @Component({
@@ -13,40 +14,57 @@ import { Profile } from 'src/app/model/Profile';
   styleUrls: ['./user.component.css']
 })
 export class UserComponent  implements OnInit{
+
+  users :User[] = [];
+  search:any;
+  p:number=1;
+  roless = this.userAuthService.getRoles()
+
   constructor(private userService: UserService,
-    private router: Router) { }
+    private router: Router,private userAuthService:UserAuthService) { }
 
-    ngOnInit(): void {
-      this.getUsers();
+  ngOnInit(): void {
+    this.getUsers();
+  }
+
+  Search(){
+    if(this.search == ""){
+      this.ngOnInit()
+    }else{
+      this.users = this.users.filter( res => {
+        return (res.firstname.toLowerCase().match(this.search.toLowerCase()) ||
+                res.lastname.toLowerCase().match(this.search.toLowerCase()) ||
+                res.email.toLowerCase().match(this.search.toLowerCase())||
+                res.id.toString().toLowerCase().match(this.search.toLowerCase())
+        );
+      })
     }
-
-    users :User[] = [
-    {id_user: 1n, user_name: 'Hydrogen',adresse:'rue pelastine',code:'IT', email: "aaa@aaa.com",image:'Engineering',login:"ana", password: '55487961', phone: '55487961',role:'D/U',depar:new Departement(),prof:new Profile()},
-    {id_user: 2n, user_name: 'Hydrogen',adresse:'rue pelastine',code:'IT', email: "aaa@aaa.com",image:'Engineering',login:"ana", password: '55487961', phone: '55487961',role:'D/U',depar:new Departement(),prof:new Profile()},
-  ];
+  }
 
   addData() {
     this.router.navigate(['/addUser']);
   }
   MenageProfile(){
-  this.router.navigate(['/']);
-
-}
+    this.router.navigate(['/']);
+  }
 
   private getUsers(){
     this.userService.getUsersList().subscribe(data => {
       this.users = data;
+      console.log(this.users)
     });
   }
+
+
 
   updateUser(id: bigint){
     this.router.navigate(['updateUser', id]);
   }
-
   deleteUser(id: bigint){
-    this.userService.deleteUser(id).subscribe( data => {
-      console.log(data);
+    this.userService.deleteUser(id,this.roless).subscribe( () => {
+      console.log("deleted");
       this.getUsers();
+      window.location.reload();
     })
   }
 
@@ -59,7 +77,7 @@ export class UserComponent  implements OnInit{
       showTitle: true,
       title: 'User Data',
       useBom: true,
-      headers: ['id_user','user_name','adresse','code','email','image','login', 'password', 'phone','role']
+      headers: ['id','firstname','lastname','email','password','','', '', '','','email','phone','image','code']
     };
 
     new ngxCsv(this.users, "Users", options);

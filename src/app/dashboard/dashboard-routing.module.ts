@@ -1,7 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
-import { InfoComponent } from './components/info/info.component';
 import { UserComponent } from './components/user/user.component';
 import { SidenavwrapperComponent } from './components/sidenavwrapper/sidenavwrapper.component';
 import { DoorsComponent } from './components/doors/doors.component';
@@ -19,6 +18,10 @@ import { AccountComponent } from './components/account/account.component';
 import { LoginComponent } from '../login/login.component';
 import { AuthGuard } from '../auth/auth.guard';
 import { UpdateDoorComponent } from './components/updateForm/update-door/update-door.component';
+import { UpdateDeptComponent } from './components/updateForm/update-dept/update-dept.component';
+import { UpdateControllerComponent } from './components/updateForm/update-controller/update-controller.component';
+import { HasRoleGuard } from '../auth/has-role.guard';
+import { UpdateReaderComponent } from './components/updateForm/update-reader/update-reader.component';
 
 const routes: Routes = [
   // Sidenavwrapper Component acts like a shell & the active child Component gets rendered into the <router-outlet>
@@ -29,58 +32,114 @@ const routes: Routes = [
       {
         path: 'dashboard',
         component: DashboardComponent,
-        /*canActivate:[AuthGuard], data:{roles:['Admin']}*/ },
+        canActivate:[AuthGuard,HasRoleGuard],
+        data:{
+          roles:['admin','user']
+        }
+      },
       {
         path: 'alluser',
-        component: UserComponent
+        component: UserComponent,
+        canActivate:[AuthGuard,HasRoleGuard],
+        data:{
+          roles:['user','admin']
+        }
       },
       {
         path: 'alldoors',
-        component: DoorsComponent
+        component: DoorsComponent,
+        canActivate:[AuthGuard,HasRoleGuard],
+        data:{
+          roles:['user','admin']
+        }
       },
       {
         path: 'alldevices',
-        component: DevicesComponent
+        component: DevicesComponent,
+        canActivate:[AuthGuard,HasRoleGuard],
+        data:{
+          roles:['user','admin']
+        }
       },
       {
         path: 'alldepartements',
-        component: DepartementsComponent
+        component: DepartementsComponent,
+        canActivate:[AuthGuard,HasRoleGuard],
+        data:{
+          roles:['user','admin']
+        }
       },
       {
         path: 'accessC',
-        component: AccessControlComponent
+        component: AccessControlComponent,
+        canActivate:[AuthGuard,HasRoleGuard],
+        data:{
+          roles:['user','admin']
+        }
       },
       {
         path: 'attendance',
-        component: AttendanceComponent
+        component: AttendanceComponent,
+        canActivate:[AuthGuard,HasRoleGuard],
+        data:{
+          roles:['user','admin']
+        }
       },
       {
         path:'addUser',
-        component:AddUserComponent
+        component:AddUserComponent,
+        canActivate:[AuthGuard,HasRoleGuard],
+        data:{
+          roles:['admin']
+        }
       },
       {
         path:'addDoor',
-        component:AddDoorComponent
+        component:AddDoorComponent,
+        canActivate:[AuthGuard,HasRoleGuard],
+        data:{
+          roles:['admin']
+        }
       },
       {
         path:'addDept',
-        component:AddDeptComponent
+        component:AddDeptComponent,
+        canActivate:[AuthGuard,HasRoleGuard],
+        data:{
+          roles:['admin']
+        }
       },
       {
         path:'addDevice',
-        component:AddDeviceComponent
+        component:AddDeviceComponent,
+        canActivate:[AuthGuard,HasRoleGuard],
+        data:{
+          roles:['admin']
+        }
       },
       {
         path:'updateUser/:id',
-        component:UpdateUserComponent
+        component:UpdateUserComponent,
+        canActivate:[AuthGuard,HasRoleGuard],
+        data:{
+          roles:['admin']
+        }
       },
       {
         path:'allProfiles',
-        component:ProfilesComponent
+        component:ProfilesComponent,
+        canActivate:[AuthGuard,HasRoleGuard],
+        data:{
+          roles:['user','admin']
+        }
       },
       {
         path:'account',
-        component:AccountComponent
+        component:AccountComponent,
+        canActivate:[AuthGuard,HasRoleGuard],
+        data:{
+          roles:['admin','user']
+        }
       },
       {
         path:'login',
@@ -88,7 +147,34 @@ const routes: Routes = [
       },
       {
         path:'updateDoor/:id',
-        component:UpdateDoorComponent
+        component:UpdateDoorComponent,
+        canActivate:[AuthGuard,HasRoleGuard],
+        data:{
+          roles:['admin']
+        }
+      },
+      {
+        path:'updateDep/:id',
+        component:UpdateDeptComponent,
+        canActivate:[AuthGuard],data:{
+          roles:['admin',HasRoleGuard]
+        }
+      },
+      {
+        path:'updateCont/:id',
+        component:UpdateControllerComponent,
+        canActivate:[AuthGuard],
+        data:{
+          roles:['admin',HasRoleGuard]
+        }
+      },
+      {
+        path:'updateRea/:id',
+        component:UpdateReaderComponent,
+        canActivate:[AuthGuard],
+        data:{
+          roles:['admin',HasRoleGuard]
+        }
       }
     ]
   },

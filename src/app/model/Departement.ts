@@ -1,6 +1,6 @@
 export class Departement{
-  id_dep !:bigint;
-  nom_departement !:String;
+  idDep !:bigint;
+  nomDep !:String;
 
 /*
 public Departement(nameD:String){

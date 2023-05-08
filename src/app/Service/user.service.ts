@@ -1,59 +1,78 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http'
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { User } from '../model/User';
 import { FormGroup } from '@angular/forms';
 import {UserAuthService} from '../Service/user-auth.service'
+import { Router } from '@angular/router';
 @Injectable({
   providedIn: 'root'
 })
 export class UserService {
-  private baseURL = "http://localhost:8080/users";
+  private baseURL = "http://localhost:8080";
+  private AuthURL = "http://localhost:8080/api/v1/auth/authenticate"
+  private EndPoint ="/User"
 
-
-  requestHeader =new HttpHeaders(
-    { "No-Auth":"True"}
-  );
-  constructor(private httpClient: HttpClient,private userAuthService : UserAuthService) { }
+  constructor(private router: Router,private httpClient: HttpClient,private userAuthService : UserAuthService) { }
 
   getUsersList(): Observable<User[]>{
-    return this.httpClient.get<User[]>(`${this.baseURL}`);
+    return this.httpClient.get<User[]>(`${this.baseURL}`+this.EndPoint+"/all" );
   }
 
-  createUser(user: User): Observable<Object>{
-    return this.httpClient.post(`${this.baseURL}`, user);
+  createUser(user: User,arr:any): Observable<Object>{
+    console.log(user);
+    return this.httpClient.post<User>(`${this.baseURL}`+this.EndPoint+"/add/"+arr,user);
   }
 
-  getUserById(id: number): Observable<User>{
-    return this.httpClient.get<User>(`${this.baseURL}/${id}`);
+  getUserById( id: number): Observable<User>{
+    return this.httpClient.get<User>(`${this.baseURL}`+this.EndPoint+"/get/"+id);
+  }
+
+  getUserByEmail( email: String): Observable<User>{
+    return this.httpClient.get<User>(`${this.baseURL}`+this.EndPoint+"/getByEmail/"+email);
   }
 
   updateUser(id: number, user: User): Observable<Object>{
-    return this.httpClient.put(`${this.baseURL}/${id}`, user);
+    return this.httpClient.put(`${this.baseURL}`+this.EndPoint+"/update/"+id, user);
   }
 
-  deleteUser(id: bigint): Observable<Object>{
-    return this.httpClient.delete(`${this.baseURL}/${id}`);
-  }
-
-  login(loginForm:FormGroup){
-    return this.httpClient.post(this.baseURL+"/authenticate"+loginForm,{headers:this.requestHeader});
-  }
-
-
-  public roleMatch(allowedRoles: any): boolean {
-    const userRoles: any = this.userAuthService.getRoles();
-    if (userRoles != null) {
-      for (let i = 0; i < userRoles.length; i++) {
-        for (let j = 0; j < allowedRoles.length; j++) {
-          if (userRoles[i].roleName === allowedRoles[j]) {
-            return true;
-          }
-        }
-      }
+  deleteUser(id: bigint,role:any): Observable<Object|null>{
+    if(role==="admin"){
+      console.log(id)
+      return this.httpClient.delete(`${this.baseURL}`+this.EndPoint+"/delete/"+id);
+    }else{
+      return of(null)
     }
-
-    return false;
   }
+  login(loginForm:FormGroup){
+    console.log(loginForm.value)
+    return this.httpClient.post<any>(`${this.AuthURL}`,loginForm.value);
+  }
+
+  logoutUser(){
+    this.userAuthService.logOut();
+    this.userAuthService.clear();
+    this.router.navigate([''])
+  }
+
+  register(role:String,user:any){
+    const userRequest = {
+      firstname: user.firstname,
+      lastname: user.lastname,
+      email: user.email,
+      password: user.password,
+      role: user.role // assign the role parameter value to the role field
+    };
+    if (role=="ADMIN"){
+      return this.httpClient.post<User>(`${this.baseURL}/api/v1/auth`+"/registerAdmin",userRequest );
+    }else{
+      return this.httpClient.post<User>(`${this.baseURL}/api/v1/auth`+"/register",userRequest );
+    }
+  }
+
+  assignPortes(i:any,u:any):Observable<Object>{
+    return this.httpClient.get<User>(`${this.baseURL}`+this.EndPoint+"/addd/"+i+"/"+u);
+  }
+
 
 }

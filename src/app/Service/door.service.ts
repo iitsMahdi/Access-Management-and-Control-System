@@ -22,7 +22,7 @@ export class DoorService {
   }
 
   getDoorById(id: number): Observable<Porte>{
-    return this.httpClient.get<Porte>(`${this.baseURL}/get/${id}`);
+    return this.httpClient.get<Porte>(`${this.baseURL}/get-one/${id}`);
   }
 
   getDoorByDep(dep: any): Observable<Porte>{

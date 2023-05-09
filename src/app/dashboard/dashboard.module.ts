@@ -44,6 +44,8 @@ import { HasRoleGuard } from '../auth/has-role.guard';
 import { InjectableRxStomp } from './rx-stomp';
 import { NgApexchartsModule } from 'ng-apexcharts';
 import { NgToastModule } from 'ng-angular-popup';
+import { AddWaveComponent } from './components/addForm/add-wave/add-wave.component';
+import { UpdateWaveComponent } from './components/updateForm/update-wave/update-wave.component';
 
 
 @NgModule({
@@ -70,6 +72,8 @@ import { NgToastModule } from 'ng-angular-popup';
     UpdateDeptComponent,
     UpdateControllerComponent,
     UpdateReaderComponent,
+    AddWaveComponent,
+    UpdateWaveComponent,
   ],
   imports: [
     CommonModule,

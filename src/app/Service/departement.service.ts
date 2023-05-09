@@ -33,7 +33,7 @@ export class DepartementService {
 
   getDepById(id: number): Observable<Departement>{
 
-    return this.httpClient.get<Departement>(`${this.baseURL}/Departement/get/${id}`);
+    return this.httpClient.get<Departement>(`${this.baseURL}/Departement/get-one/${id}`);
   }
 
   updateDep( id: bigint, dep: Departement): Observable<Object>{

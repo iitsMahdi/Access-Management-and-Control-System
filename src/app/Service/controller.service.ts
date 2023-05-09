@@ -24,7 +24,7 @@ export class ControllerService {
   }
 
   getContById(id: number): Observable<Contoller>{
-    return this.httpClient.get<Contoller>(`${this.baseURL}/get/${id}`);
+    return this.httpClient.get<Contoller>(`${this.baseURL}/get-one/${id}`);
   }
 
   updateCont(id: number, dep: Contoller): Observable<Object>{

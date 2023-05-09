@@ -10,7 +10,7 @@ import { SharedService } from 'src/app/Service/shared.service';
 })
 export class AttendanceComponent implements  OnInit{
   messages : Message[]=[]
-  msg:Message={type:"msg",data:{etatevt:"Entry_open",dateevnt:"05/05/2023",idevent:"1",idporte:"5"}}
+  msg:Message={type:"msg",data:'{ "etatevt": "Entry_open", "dateevnt": "05/05/2023", "idevent": "1", "idporte": "5" }'}
 
   constructor(
     private websocketService: WebSocketService,
@@ -23,10 +23,17 @@ export class AttendanceComponent implements  OnInit{
     this.messages=this.shared.getVariable()
     this.websocketService.connect().subscribe(
       (message: any) => {
-        console.log('Received message:', message);
-        this.toast.warning({detail:"New Event",summary:message.data.etatevt,duration:500})
-        this.messages.push(message);
-        this.shared.setVariable(message);
+        const jsonString = message.data;
+        if (jsonString && jsonString.trim().startsWith('{') && jsonString.trim().endsWith('}')) {
+          const jsonObject = JSON.parse(jsonString);
+          const msg = {type: 'msg', data: jsonObject};
+          console.log('Received message:', msg);
+          this.toast.warning({detail:"New Event",summary:msg.data.etatevt,duration:500})
+          this.messages.push(msg);
+          this.shared.setVariable(msg);
+        } else {
+          console.error('Received invalid JSON:', jsonString);
+        }
       },
       (error:any) => {
         console.error('WebSocket error:', error);

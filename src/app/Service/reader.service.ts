@@ -25,7 +25,7 @@ export class ReaderService {
 
   getReaderById(id: number): Observable<Reader>{
 
-    return this.httpClient.get<Reader>(`${this.baseURL}/get/${id}`);
+    return this.httpClient.get<Reader>(`${this.baseURL}/get-one/${id}`);
   }
 
   updateReader(id: number, dep: Reader): Observable<Object>{

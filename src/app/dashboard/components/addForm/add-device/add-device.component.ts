@@ -60,10 +60,9 @@ export class AddDeviceComponent implements OnInit {
       adresse:['',Validators.required],
     });
 
-
-
     this.getDepartement()
-    this.getDoors()  }
+    this.getDoors()
+  }
 
   dev:string='Reader';
   selectChange(event : any){
@@ -74,7 +73,6 @@ export class AddDeviceComponent implements OnInit {
     this.DepService.getDepList().subscribe((data)=>{
       this.depts=data;
       console.log(data)
-
     })
   }
   getDoors(){
@@ -107,7 +105,6 @@ export class AddDeviceComponent implements OnInit {
     forkJoin([deptObs]).subscribe(([deptData]) => {
       this.savedCont.dept=deptData;
       console.log(deptData);
-
       this.contService.createCont(this.savedCont).subscribe( data =>{
         Swal.fire({
           position: 'center',
@@ -116,7 +113,6 @@ export class AddDeviceComponent implements OnInit {
           showConfirmButton: false,
           timer: 1500
         });
-
         console.log(data);
         this.goToDeviceList();
       },

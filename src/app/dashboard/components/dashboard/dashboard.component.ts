@@ -12,12 +12,21 @@ import { EventService } from 'src/app/Service/event.service';
 })
 export class DashboardComponent implements OnInit {
   data:Number[]=[]
+  dataI:Number[]=[]
   public chart: any;
   public pieChart: any;
   pie:any
   lineChart: any;
   messages : Message[]=[]
   entry_alarm:number=0
+  Entry_Close:number=0
+  Exist_Open:number=0
+  Close_Exit:number=0
+  Intrusion_Alarm:number=0
+  Stayed_On:number=0
+  Tailing_Alarm:number=0
+  Reverse_Alarm:number=0
+
   other_alarm:number=0;
   yesterday:any = new Date();
   y:any
@@ -33,29 +42,27 @@ export class DashboardComponent implements OnInit {
       private enventService:EventService
       ) {
   }
-  ngOnInit(): void {
+  async ngOnInit() {
 
-    this.enventService.count("Entry_open")
-      .then((count: number) => {
-        this.entry_alarm = count;
-        console.log(this.entry_alarm);
-        this.data.push(count)
-      })
-      .catch((error) => {
-        console.error(error);
-      });
+    try {
+      const counts = await Promise.all([
+        this.enventService.count("Entry_Open"),
+        this.enventService.count("Entry_Close"),
+        this.enventService.count("Exist_Open"),
+        this.enventService.count("Close_Exit"),
+        this.enventService.count("Intrusion_Alarm"),
+        this.enventService.count("Stayed_On"),
+        this.enventService.count("Tailing_Alarm"),
+        this.enventService.count("Reverse_Alarm"),
+      ]);
+      this.dataI = counts.map(count => count ?? 0);
+      console.log(this.dataI)
 
-      this.enventService.count("Entry_Close")
-      .then((count: number) => {
-        this.other_alarm = count;
-        console.log(this.other_alarm);
-        this.data.push(count)
-      })
-      .catch((error) => {
-        console.error(error);
-      });
-      console.warn(this.data)
-
+    } catch (error) {
+      console.error(error);
+    }
+    this.createPieChart()
+    this.updateChartData(this.pie, this.dataI, 0);
       //this.updateChartData(this.pie, this.data, 0);
 
       /* this.websocketService.connect().subscribe(
@@ -67,23 +74,43 @@ export class DashboardComponent implements OnInit {
         console.error('WebSocket error:', error);
       }
     );*/
-    let alarmes = this.shared.getVariable()
-    for (let index = 0; index < alarmes.length; index++) {
-      console.log(alarmes[index].data.etatevt)
-      if(alarmes[index].data.etatevt=="Entry_open"){
-        this.entry_alarm++
-      }else{
-        this.other_alarm++
-      }
 
+    let alarmes = this.shared.getVariable()
+    console.log(alarmes)
+    if(alarmes.length>0){
+    try{
+      for (let index = 0; index < alarmes.length; index++) {
+        console.log(alarmes[index].data.etatevt)
+        if(alarmes[index].data.etatevt=="Entry_open"){
+          this.entry_alarm++
+        }else if(alarmes[index].data.etatevt=="Entry_Close"){
+          this.Entry_Close++
+        }else if(alarmes[index].data.etatevt=="Exist_Open"){
+          this.Exist_Open++
+        }else if(alarmes[index].data.etatevt=="Close_Exit"){
+          this.Close_Exit++
+        }else if(alarmes[index].data.etatevt=="Intrusion_Alarm"){
+          this.Intrusion_Alarm++
+        }else if(alarmes[index].data.etatevt=="Stayed_On"){
+          this.Stayed_On++
+        }else if(alarmes[index].data.etatevt=="Tailing_Alarm"){
+          this.Tailing_Alarm++
+        }else if(alarmes[index].data.etatevt=="Reverse_Alarm"){
+          this.Reverse_Alarm++
+        }
+        else{
+          this.other_alarm++
+        }
+      }
       this.data=this.updateWSAlarm()
       this.updateChartData(this.pie, this.data, 0);
-    }
+    }catch (error) {
+      console.error(error);
+    }}
+
 
     this.createChart();
-    this.createPieChart()
     this.CreatelineChart()
-
 /*
     this.websocketService.connect().subscribe(
       (message: any) => {
@@ -101,14 +128,10 @@ export class DashboardComponent implements OnInit {
         console.error('WebSocket error:', error);
       }
     );*/
-
-
-
   }
 
-
 updateWSAlarm(){
-  const arr:Number[]=[this.entry_alarm,this.other_alarm];
+  const arr:Number[]=[this.entry_alarm,this.Entry_Close,this.Exist_Open,this.Close_Exit,this.Intrusion_Alarm,this.Stayed_On,this.Tailing_Alarm,this.Reverse_Alarm,];
   return arr
 }
   createChart(){
@@ -147,16 +170,15 @@ updateWSAlarm(){
     });
   }
   createPieChart(){
-    console.warn(this.data)
     this.pie = new Chart('MyChart2',{
     type: 'pie',
     data: {
       datasets: [{
-        data: this.data,
-        backgroundColor: ["red","orange"],
-        label: 'Dataset 1'
+        data: [1,1,1,1,1,1,1,1],
+        backgroundColor: ['Red', 'Pink','Green','Yellow','Orange','Blue', 'Purple','Grey'],
+        label: 'Event'
       }],
-      labels: ['Entry_Onpe','other']
+      labels: ['Entry_Open','Entry_Close','Exist_Open','Close_Exit','Intrusion_alarm','Stayed_On','Tailing_Alarm','Reverse_Alarm']
     }
   })
   }
@@ -224,10 +246,13 @@ updateWSAlarm(){
       chart.update();
   }
 
-  updateChartData(chart:any, data:any, dataSetIndex:any){
-    chart.data.datasets[dataSetIndex].data = data;
-    chart.update();
-}
+  updateChartData(chart: any, data: any, dataSetIndex: any) {
+    console.log("hedhi data to update " + data)
+    if (chart && chart.data) { // check if chart and chart.data are defined
+      chart.data.datasets[dataSetIndex].data = data;
+      chart.update();
+    }
+  }
 
 
 }

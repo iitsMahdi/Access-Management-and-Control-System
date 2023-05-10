@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Waveshare } from '../model/Waveshare';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -29,7 +29,12 @@ export class WaveshareService {
     return this.httpClient.put(`${this.baseURL}/update/${id}`, w);
   }
 
-  deleteWave(id: bigint,role:any): Observable<Object>{
-    return this.httpClient.delete(`${this.baseURL}/delete/${id}`);
+  deleteWave(id: bigint,role:any):  Observable<Object|null>{
+    if(role==="admin"){
+      console.log(id)
+      return this.httpClient.delete(`${this.baseURL}/delete/${id}`);
+    }else{
+      return of(null)
+    }
   }
 }

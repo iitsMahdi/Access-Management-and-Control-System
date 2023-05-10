@@ -63,13 +63,11 @@ export class UpdateControllerComponent implements OnInit {
 
   goToDeviceList(){
     this.router.navigate(['/alldevices']);
-
   }
 
   UpdateCont(){
     this.cont.nomCont=this.contForm.value.name;
     this.cont.status=this.contForm.value.status;
-
     const deptObs = this.DepService.getDepById(Number(this.departement))
     forkJoin([deptObs]).subscribe(([deptData]) => {
       this.cont.dept=deptData;

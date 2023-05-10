@@ -1,95 +1,128 @@
-<br>
-<div class="container">
-  <div class="title">
-    Update user
-  </div><br>
-  <legend>User details</legend>
-  <form method="post" [formGroup]="userForm" (ngSubmit)="onSubmit()">
+<div class="cont">
+  <div class="container">
 
-      <div class="row">
-        <div class="col">
-      <div class="form-group">
-        <label for="name">First Name</label>
-        <input type="text" name="firstname" id="firstname" class="my-input" placeholder="Enter your First name" required formControlName="firstname">
-      </div></div>
-      <div class="col">
-      <div class="form-group">
-        <label for="name">Last Name</label>
-        <input type="text" name="lastname" id="lastname" class="my-input" placeholder="Enter your Last name" required formControlName="lastname" >
-      </div></div>
-    </div>
     <div class="row">
-      <div class="col">
-        <div class="form-group">
-          <label for="phone">Phone</label>
-          <input type="tel" name="phone" id="phone" class="my-input" placeholder="Enter your phone Number" required formControlName="phone" >
-        </div>
-      </div>
-      <div class="col">
-        <div class="form-group">
-          <label for="adress">Address</label>
-          <input type="text" name="adresse" id="adresse" class="my-input" placeholder="Enter your adress" required formControlName="adresse">
-        </div>
-      </div>
-    </div>
-      <div class="form-group">
-        <label for="image">Image</label>
-        <input type="file" name="image" id="image" class="my-input"  required  (change)="onChangeimg($event)">
-      </div>
-      <div class="row">
-        <div class="col">
-      <div class="form-group">
-        <label for="profile">Profile</label>
-        <select name="profile" id="profile" class="my-select" required formControlName="profile" (change)="selectChangeProfile($event)">
-          <option *ngFor="let prof of profiles" value="{{prof.idProf}}">{{prof.nomProfile}}</option>
-        </select>
-      </div></div>
-      <div class="col">
-      <div class="form-group">
-        <label for="department">Department</label>
-        <select name="department" id="department" class="my-select" required formControlName="department" (change)="selectChangeDep($event)">
-          <option *ngFor="let dep of departements" value="{{dep.idDep}}">{{dep.nomDep}}</option>
-        </select>
-      </div></div>
-    </div>
-    <div class="row">
-      <div class="col">
-      <div class="form-group">
-        <label for="email">Email</label>
-        <input type="email" name="email" id="email" class="my-input" placeholder="Enter your email adress" required formControlName="email" >
-      </div></div>
-      <div class="col">
-      <div class="form-group">
-        <label for="password">Password</label>
-        <input type="password" name="password" id="password" class="my-input" placeholder="Enter your password" required formControlName="password">
-      </div></div>
-    </div>
-      <div class="form-group">
-        <label for="role">Role</label>
-        <select name="role" id="role" class="my-select" required formControlName="role" (change)="selectChangeRole($event)">
-          <option value="" selected>Select a role</option>
-          <option value="ADMIN">Admin</option>
-          <option value="USER">User</option>
-        </select>
-      </div>
+      <div class="col-md-12 col-md-offset-3">
+          <form [formGroup]="userInfForm" id="msform">
+              <!-- progressbar -->
+              <ul id="progressbar">
+                  <li [ngClass]="step>=1 ? 'active ' : 'inactive'">User Information</li>
+                  <li [ngClass]="step>=2 ? 'active' : 'inactive'">User privilege</li>
+                  <li [ngClass]="step==3 ? 'active' : 'inactive'">User credential</li>
+              </ul>
+              <!-- fieldsets -->
 
-     <legend>User credentials</legend>
-     <div class="row">
-      <div class="col">
-      <div class="form-group">
-        <label for="pin">Pin</label>
-        <input type="number" name="pin" id="pin" class="my-input" placeholder="Enter your PIN code" required formControlName="pin" >
-      </div></div>
-      <div class="col">
-      <div class="form-group">
-        <label for="card-number">Card Number</label>
-        <input type="number" name="card-number" id="card-number" class="my-input" placeholder="Enter your Card Number" required formControlName="card" aria-disabled="true">
-      </div></div>
-    </div>
-      <div class="button-group">
-        <br><br>
-        <button type="submit" class="my-buttonA">Apply</button>
-        <button type="reset" class="my-buttonC">Cancel</button>
+              <fieldset  *ngIf="step == 1" >
+                  <h2 class="fs-title">User Information</h2>
+                  <br><br><br>
+                <div class="row">
+                  <div class="col">
+                    <div class="title"><b>First Name</b></div>
+                    <input type="text" name="firstname" id="firstname" class="my-input" placeholder="Enter your First name" required formControlName="firstname">
+                  </div>
+                  <div class="col">
+                    <div class="title"><b>Last Name</b></div>
+                    <input type="text" name="lastname" id="lastname" class="my-input" placeholder="Enter your Last name" required formControlName="lastname" >
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col">
+                    <div class="title"><b>Phone</b></div>
+                    <input type="tel" name="phone" id="phone" class="my-input" placeholder="Enter your phone Number" required formControlName="phone" >
+
+                  </div>
+                  <div class="col">
+                    <div class="title"><b>Address</b></div>
+                    <input type="text" name="adresse" id="adresse" class="my-input" placeholder="Enter your adress" required formControlName="adresse">
+                  </div>
+                </div>
+                <div class="row">
+
+                  <div class="col">
+                    <div class="title"><b>Image</b></div>
+                    <input type="file" name="image" id="image" class="my-input"  required  (change)="onChangeimg($event)" formControlName="image">
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col">
+                    <div class="title"><b>Profile</b></div>
+                    <select name="profile" id="profile" class="my-select" required formControlName="profile" (change)="selectChangeProfile($event)">
+                      <option value="" selected>Select a profile</option>
+                      <option *ngFor="let prof of profiles" value="{{prof.idProf}}">{{prof.nomProfile}}</option>
+                    </select>
+                  </div>
+                  <div class="col">
+                    <div class="title"><b>Role</b></div>
+                    <select name="role" id="role" class="my-select" required formControlName="role" (change)="selectChangeRole($event)">
+                      <option value="" selected>Select a role</option>
+                      <option value="ADMIN">Admin</option>
+                      <option value="USER">User</option>
+                    </select>
+                  </div>
+                </div>
+                <br><br>
+                  <input (click)="next()" type="button" name="next" class="next action-button" value="Next"/>
+              </fieldset>
+          </form>
+           <form [formGroup]="userPrevForm" id="msform">
+              <fieldset *ngIf="step == 2" >
+                  <h2 class="fs-title">User privilege</h2>
+                  <br><br><br>
+                  <div class="title">Departements</div>
+                  <div class="souTitle">Check the departement that user can access to it</div><br>
+                    <div class="row">
+                      <div class="col" *ngFor="let dep of departements">
+                      <input type="checkbox" name="departments" value="{{dep.idDep}}" (change)="isCheckboxChecked($event,dep)" formControlName="department">
+                      {{dep.nomDep}}
+                    </div>
+                    </div>
+                    <br>
+                  <div *ngIf="checkedDep">
+                  <div class="title">Portes du departement {{depName}} </div>
+                    <div class="row">
+                      <div *ngFor="let pr of portes" class="col">
+                          <input type="checkbox" name="portes" value="{{pr.idPorte}}"  (change)="isDoorChecked($event,pr.idPorte)" formControlName="porte">
+                          {{pr.nomPorte}}
+                        <br>
+                      </div>
+                    </div>
+                  </div>
+                  <input (click)="previous()" type="button" name="previous" class="previous action-button-previous" value="Previous"/>
+                  <input  (click)="next()" type="button" name="next" class="next action-button" value="Next"/>
+              </fieldset>
+          </form>
+           <form [formGroup]="userCredForm" id="msform" (ngSubmit)="onSubmit()">
+              <fieldset *ngIf="step == 3">
+                <br>
+                <div class="row">
+                  <div class="col">
+                    <div class="title"><b>Email</b></div>
+                    <input type="email" name="email" id="email" class="my-input" placeholder="Enter your email adress" required formControlName="email" >
+                  </div>
+                  <div class="col">
+                    <div class="title"><b>Password</b></div>
+                    <input type="password" name="password" id="password" class="my-input" placeholder="Enter your password" required formControlName="password">
+                  </div>
+                </div>
+                  <h2 class="fs-title">User credential</h2>
+                  <br>
+                  <div class="title">UID</div>
+                  <div class="souTitle"></div>
+                  <input type="number" name="card-number" id="card-number" class="my-input" placeholder="Enter the user's UID" required formControlName="card" aria-disabled="true">
+                  <input type="checkbox" name="departments" value="" (change)="isPinSelected($event)" >Add PIN
+                  <br><br>
+                  <div *ngIf="pin">
+                    <div class="title">PIN Code</div>
+                    <input type="number" name="pin" id="pin" class="my-input" placeholder="Enter your PIN code" required formControlName="pin" >
+                    </div>
+                    <br><br>
+                  <input (click)="previous()" type="button" name="previous" class="previous action-button-previous" value="Previous"/>
+                  <input type="submit" name="submit" class="submit action-button" value="Add User"/>
+              </fieldset>
+          </form>
+
       </div>
-  </form>
-</div>
+  </div>
+  </div>
+
+  </div>

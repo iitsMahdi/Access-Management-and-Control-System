@@ -22,6 +22,7 @@ import { UpdateDeptComponent } from './components/updateForm/update-dept/update-
 import { UpdateControllerComponent } from './components/updateForm/update-controller/update-controller.component';
 import { HasRoleGuard } from '../auth/has-role.guard';
 import { UpdateReaderComponent } from './components/updateForm/update-reader/update-reader.component';
+import { UpdateWaveComponent } from './components/updateForm/update-wave/update-wave.component';
 
 const routes: Routes = [
   // Sidenavwrapper Component acts like a shell & the active child Component gets rendered into the <router-outlet>
@@ -171,6 +172,14 @@ const routes: Routes = [
       {
         path:'updateRea/:id',
         component:UpdateReaderComponent,
+        canActivate:[AuthGuard],
+        data:{
+          roles:['admin',HasRoleGuard]
+        }
+      },
+      {
+        path:'updateWave/:id',
+        component:UpdateWaveComponent,
         canActivate:[AuthGuard],
         data:{
           roles:['admin',HasRoleGuard]

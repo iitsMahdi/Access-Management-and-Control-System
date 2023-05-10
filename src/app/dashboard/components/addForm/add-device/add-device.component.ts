@@ -159,8 +159,8 @@ export class AddDeviceComponent implements OnInit {
 
   }
   saveWave(){
-    this.sevedWaveShare.nomWave=this.waveForm.value.name;
-    this.sevedWaveShare.adrWave=this.waveForm.value.adresse;
+    //this.sevedWaveShare.nomWave=this.waveForm.value.name;
+    this.sevedWaveShare.adresse=this.waveForm.value.adresse;
     this.sevedWaveShare.status=this.waveForm.value.status;
     this.waveService.createWave(this.sevedWaveShare).subscribe( (data) =>{
       Swal.fire({
@@ -182,6 +182,8 @@ export class AddDeviceComponent implements OnInit {
       this.saveController();
     }else if (this.dev == "Reader"){
       this.saveReader();
+    }else if (this.dev=="Waveshare"){
+      this.saveWave()
     }
 
   }

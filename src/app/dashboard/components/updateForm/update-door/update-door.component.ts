@@ -21,6 +21,7 @@ export class UpdateDoorComponent implements OnInit{
   doorForm !:FormGroup;
   cardNumber!: string;
   id!: number;
+  deptss:any
 
   controllers:any
 
@@ -38,9 +39,9 @@ export class UpdateDoorComponent implements OnInit{
     this.doorForm=this.formBuilder.group({
       name:['',Validators.required],
       type:['',Validators.required],
-      dep:['',Validators.required]
+      Departement:['',Validators.required]
     });
-    this.getControllers()
+    this.getDepts()
 
     this.id = this.route.snapshot.params['id'];
     this.doorService.getDoorById(this.id).subscribe(data => {
@@ -48,10 +49,9 @@ export class UpdateDoorComponent implements OnInit{
       console.log(data)
       this.doorForm.controls["name"].setValue(data.nomPorte)
       this.doorForm.controls["type"].setValue(data.type)
-      this.doorForm.controls["cont"].setValue(data.dep)
-
-
     }, error => console.log(error));
+
+
 
   }
   getControllers(){
@@ -60,20 +60,30 @@ export class UpdateDoorComponent implements OnInit{
       console.log(data)
     })
   }
-  cont:string='';
-  selectChangeCont(event : any){
-    this.cont=event.target.value;
-  }
 
+  dep:string='';
+  selectChangeCont(event : any){
+    this.dep=event.target.value;
+  }
   goToDoorList(){
     this.router.navigate(['/alldoors']);
   }
+  type:string='';
 
+  selectChangeType(event : any){
+    this.type=event.target.value;
+  }
+  getDepts(){
+    this.deptsService.getDepList().subscribe((data)=>{
+      this.deptss=data;
+      console.log(data)
+    })
+  }
   onSubmit(){
     this.porte.nomPorte=this.doorForm.value.name;
     this.porte.type=this.doorForm.value.type;
 
-/*
+
     const deptObs = this.deptsService.getDepById(Number(this.dep))
     forkJoin([deptObs]).subscribe(([depData]) => {
       this.porte.dep=depData;
@@ -91,7 +101,7 @@ export class UpdateDoorComponent implements OnInit{
         this.goToDoorList();
       },
       error => console.log(error));
-    });*/
+    });
   }
 
 

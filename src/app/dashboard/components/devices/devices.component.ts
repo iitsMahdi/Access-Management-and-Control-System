@@ -81,6 +81,10 @@ updateCont(id: bigint){
 updateRea(id: bigint){
   this.router.navigate(['updateRea', id]);
 }
+
+updateWave(id:bigint){
+  this.router.navigate(['updateWave', id]);
+}
 deleteCont(id: bigint){
   this.controllerService.deleteCont(id,this.roless).subscribe(()=>{
     console.log('deleted')
@@ -94,6 +98,13 @@ deleteRea(id: bigint){
     console.log('deleted')
     window.location.reload();
 
+  }
+  )
+}
+deleteWave(id: bigint){
+  this.waveService.deleteWave(id,this.roless).subscribe(()=>{
+    console.log('deleted')
+    window.location.reload();
   }
   )
 }

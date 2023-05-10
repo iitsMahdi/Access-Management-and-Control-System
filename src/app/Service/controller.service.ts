@@ -27,9 +27,9 @@ export class ControllerService {
     return this.httpClient.get<Contoller>(`${this.baseURL}/get-one/${id}`);
   }
 
-  updateCont(id: number, dep: Contoller): Observable<Object>{
+  updateCont(id: number, cont: Contoller): Observable<Object>{
 
-    return this.httpClient.put(`${this.baseURL}/update/${id}`, dep);
+    return this.httpClient.put(`${this.baseURL}/update/${id}`, cont);
   }
 
   deleteCont(id: bigint,role:any): Observable<Object>{

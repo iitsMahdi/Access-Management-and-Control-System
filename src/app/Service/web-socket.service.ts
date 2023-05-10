@@ -16,9 +16,9 @@ export class WebSocketService {
    * Creates a new WebSocket subject and send it to the messages subject
    * @param cfg if true the observable will be retried.
    */
-  public connect(): Observable<any> {
+  public connect(param:any): Observable<any> {
     if (!this.socket$ || this.socket$.closed) {
-      this.socket$ = this.getNewWebSocket();
+      this.socket$ = this.getNewWebSocket(param);
       this.socket$.pipe(
         map(msg => {
           console.log('Received message of type: ' + typeof msg);
@@ -33,7 +33,7 @@ export class WebSocketService {
     return this.messages$;
   }
 
-  sendMessage(msg: Message): void {
+    sendMessage(msg: Message): void {
     this.socket$.next(msg);
   }
 
@@ -41,9 +41,9 @@ export class WebSocketService {
   /**
    * Return a custom WebSocket subject which reconnects after failure
    */
-  private getNewWebSocket(): WebSocketSubject<any> {
+  private getNewWebSocket(param:any): WebSocketSubject<any> {
     return webSocket({
-      url: "ws://localhost:8080/websocket",
+      url: "ws://localhost:8080/"+param,
       binaryType: 'arraybuffer',
       deserializer: ({ data }) => {
         let buffer = data;
@@ -70,7 +70,7 @@ export class WebSocketService {
         next: () => {
           console.log(`[WebSocketService]: connection closed`);
           this.socket$ = undefined! ;
-          this.connect();
+          this.connect(param);
         }
       }
     });

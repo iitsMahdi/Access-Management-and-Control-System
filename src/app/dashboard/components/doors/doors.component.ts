@@ -39,7 +39,11 @@ roless=this.userAuthService.getRoles()
     console.log(data)
     })
   }
+  type:string='';
 
+  selectChangeType(event : any){
+    this.type=event.target.value;
+  }
   updateDoor(id: bigint){
     this.router.navigate(['updateDoor', id]);
   }

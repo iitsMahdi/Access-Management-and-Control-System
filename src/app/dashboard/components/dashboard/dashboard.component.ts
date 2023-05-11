@@ -104,8 +104,26 @@ export class DashboardComponent implements OnInit {
           console.log(this.dates)
           this.createChart();
         })
-      }catch{
+      }catch (error) {
+        console.error(error);
       }
+      //uPdate Bar Chart from webSocket
+      /*this.clientServ.connect("websocket/").subscribe(
+        (message: any) => {
+          const msg = {type: 'msg', data: message};
+          console.log('Received message:', msg);
+          if(msg.data=="Accepted"){
+            this.accUsers[0]++
+          }else{
+            this.denUsers[0]++
+          }
+          this.updateChartData(this.chart, this.accUsers, 0);
+          this.updateChartData(this.chart, this.denUsers, 1);
+        },
+        (error:any) => {
+          console.error('WebSocket error:', error);
+        }
+      );*/
 
 
       /* this.websocketService.connect().subscribe(
@@ -117,21 +135,16 @@ export class DashboardComponent implements OnInit {
         console.error('WebSocket error:', error);
       }
     );*/
-  this.CreatelineChart()
+    this.CreatelineChart()
   }
-/*
-updateWSAlarm(){
-  const arr:Number[]=[this.entry_alarm,this.Entry_Close,this.Exist_Open,this.Close_Exit,this.Intrusion_Alarm,this.Stayed_On,this.Tailing_Alarm,this.Reverse_Alarm,];
-  return arr
-}*/
 
-reverseDates(){
-  return this.dates.reverse()
-}
-reverseUsers(){
-  this.accUsers.reverse()
-  this.denUsers.reverse()
-}
+  reverseDates(){
+    return this.dates.reverse()
+  }
+  reverseUsers(){
+    this.accUsers.reverse()
+    this.denUsers.reverse()
+  }
   createChart(){
     this.chart = new Chart("MyChart", {
       type: 'bar', //this denotes tha type of chart
@@ -249,5 +262,4 @@ reverseUsers(){
   getVariable() {
     return this.message$; // return the Subject instead of the myVariable array
   }
-
 }

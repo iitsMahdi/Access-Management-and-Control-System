@@ -31,14 +31,7 @@ export class LoginComponent implements OnInit{
 }
 
 login(loginForm: FormGroup,rls:String) {
-  /*this.userService.getUserByEmail(this.loginForm.value.email).subscribe((data)=>{
-    console.log("User reterned by Email : ")
-    console.log(data)
-  },
-  (error) => {
 
-    console.log(error);
-  })*/
   console.log("role : "+this.userAuthService.getRoles())
   this.userService.login(loginForm).subscribe(
     (response: any) => {

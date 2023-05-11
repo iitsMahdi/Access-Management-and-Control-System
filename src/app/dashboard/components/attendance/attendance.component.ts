@@ -29,7 +29,7 @@ export class AttendanceComponent implements  OnInit{
           console.log('Received message:', msg);
           this.toast.warning({detail:"New Event",summary:msg.data.etatevt,duration:1500})
           this.messages.push(msg);
-          this.shared.setVariable(msg);
+          //this.shared.setVariable(msg);
       },
       (error:any) => {
         console.error('WebSocket error:', error);

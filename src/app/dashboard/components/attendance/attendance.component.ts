@@ -3,6 +3,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Message } from 'src/app/model/message';
 import { NgToastService } from 'ng-angular-popup';
 import { SharedService } from 'src/app/Service/shared.service';
+import { ClientService } from 'src/app/Service/client.service';
 @Component({
   selector: 'app-attendance',
   templateUrl: './attendance.component.html',
@@ -15,17 +16,18 @@ export class AttendanceComponent implements  OnInit{
   constructor(
     private websocketService: WebSocketService,
     private toast:NgToastService,
-    private shared : SharedService
+    private shared : SharedService,
+    private clientServ:ClientService
   ) { }
 
 
   ngOnInit(): void {
-    //this.messages=this.shared.getVariable()
+
     this.websocketService.connect("websocket").subscribe(
       (message: any) => {
           const msg = {type: 'msg', data: message};
           console.log('Received message:', msg);
-          this.toast.warning({detail:"New Event",summary:msg.data.etatevt,duration:500})
+          this.toast.warning({detail:"New Event",summary:msg.data.etatevt,duration:1500})
           this.messages.push(msg);
           this.shared.setVariable(msg);
       },
@@ -33,11 +35,12 @@ export class AttendanceComponent implements  OnInit{
         console.error('WebSocket error:', error);
       }
     );
-    this.websocketService.connect("websocket/client1").subscribe(
+    //this.messages=this.shared.getVariable()
+    this.clientServ.connect("websocket/client1").subscribe(
       (message: any) => {
           const msg = {type: 'msg', data: message};
           console.log('Received message:', msg);
-          this.toast.warning({detail:"New Event",summary:msg.data.etatevt,duration:500})
+          this.toast.warning({detail:"New Event",summary:msg.data.etatevt,duration:1500})
           this.messages.push(msg);
           //this.shared.setVariable(msg);
       },
@@ -45,6 +48,7 @@ export class AttendanceComponent implements  OnInit{
         console.error('WebSocket error:', error);
       }
     );
+
   }
 
   public sendMessage(): void {

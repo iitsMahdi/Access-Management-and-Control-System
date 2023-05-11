@@ -5,6 +5,8 @@ import { NgToastService } from 'ng-angular-popup';
 import { WebSocketService } from 'src/app/Service/web-socket.service';
 import { SharedService } from 'src/app/Service/shared.service';
 import { EventService } from 'src/app/Service/event.service';
+import { ClientService } from 'src/app/Service/client.service';
+import { Subject } from 'rxjs';
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
@@ -18,16 +20,7 @@ export class DashboardComponent implements OnInit {
   pie:any
   lineChart: any;
   messages : Message[]=[]
-  entry_alarm:number=0
-  Entry_Close:number=0
-  Exist_Open:number=0
-  Close_Exit:number=0
-  Intrusion_Alarm:number=0
-  Stayed_On:number=0
-  Tailing_Alarm:number=0
-  Reverse_Alarm:number=0
-
-  other_alarm:number=0;
+  message$ = new Subject<Message[]>();
   yesterday:any = new Date();
   y:any
   y1:any
@@ -35,8 +28,10 @@ export class DashboardComponent implements OnInit {
   y3:any
   y4:any
   y5:any
+  alarmes:any
   constructor(
       private websocketService: WebSocketService,
+      private clientServ:ClientService,
       private shared:SharedService,
       private toast:NgToastService,
       private enventService:EventService
@@ -44,26 +39,52 @@ export class DashboardComponent implements OnInit {
   }
   async ngOnInit() {
 
+    //Init of Pie chart
     try {
       const counts = await Promise.all([
-        this.enventService.count("Entry_Open"),
-        this.enventService.count("Entry_Close"),
-        this.enventService.count("Exist_Open"),
-        this.enventService.count("Close_Exit"),
         this.enventService.count("Intrusion_Alarm"),
         this.enventService.count("Stayed_On"),
         this.enventService.count("Tailing_Alarm"),
         this.enventService.count("Reverse_Alarm"),
       ]);
       this.dataI = counts.map(count => count ?? 0);
-      console.log(this.dataI)
-
     } catch (error) {
       console.error(error);
     }
     this.createPieChart()
     this.updateChartData(this.pie, this.dataI, 0);
-      //this.updateChartData(this.pie, this.data, 0);
+    //uPdate Pie Chart from webSocket
+    this.clientServ.connect("websocket/client1").subscribe(
+      (message: any) => {
+          const msg = {type: 'msg', data: message};
+          console.log('Received message:', msg);
+          if(message.etatevt=="Intrusion_Alarm"){
+            if (typeof this.dataI[0] === 'number'){
+              this.dataI[0]++;
+            }
+          }else if(message.etatevt=="Stayed_On"){
+            if (typeof this.dataI[1] === 'number'){
+              this.dataI[1]++;
+            }
+          }else if(message.etatevt=="Tailing_Alarm"){
+            if (typeof this.dataI[2] === 'number'){
+              this.dataI[2]++;
+            }
+          }else if(message.etatevt=="Reverse_Alarm"){
+            if (typeof this.dataI[3] === 'number'){
+              this.dataI[3]++;
+            }
+          }
+          this.updateChartData(this.pie, this.dataI, 0);
+          this.toast.warning({detail:"New Event",summary:msg.data.etatevt,duration:1500})
+      },
+      (error:any) => {
+        console.error('WebSocket error:', error);
+      }
+    );
+    
+    
+
 
       /* this.websocketService.connect().subscribe(
       (message: any) => {
@@ -74,66 +95,14 @@ export class DashboardComponent implements OnInit {
         console.error('WebSocket error:', error);
       }
     );*/
-
-    let alarmes = this.shared.getVariable()
-    console.log(alarmes)
-    if(alarmes.length>0){
-    try{
-      for (let index = 0; index < alarmes.length; index++) {
-        console.log(alarmes[index].data.etatevt)
-        if(alarmes[index].data.etatevt=="Entry_open"){
-          this.entry_alarm++
-        }else if(alarmes[index].data.etatevt=="Entry_Close"){
-          this.Entry_Close++
-        }else if(alarmes[index].data.etatevt=="Exist_Open"){
-          this.Exist_Open++
-        }else if(alarmes[index].data.etatevt=="Close_Exit"){
-          this.Close_Exit++
-        }else if(alarmes[index].data.etatevt=="Intrusion_Alarm"){
-          this.Intrusion_Alarm++
-        }else if(alarmes[index].data.etatevt=="Stayed_On"){
-          this.Stayed_On++
-        }else if(alarmes[index].data.etatevt=="Tailing_Alarm"){
-          this.Tailing_Alarm++
-        }else if(alarmes[index].data.etatevt=="Reverse_Alarm"){
-          this.Reverse_Alarm++
-        }
-        else{
-          this.other_alarm++
-        }
-      }
-      this.data=this.updateWSAlarm()
-      this.updateChartData(this.pie, this.data, 0);
-    }catch (error) {
-      console.error(error);
-    }}
-
-
-    this.createChart();
-    this.CreatelineChart()
-/*
-    this.websocketService.connect().subscribe(
-      (message: any) => {
-        console.log('Received message:', message);
-        this.toast.warning({detail:"New Event",summary:message.data.etatevt,duration:500})
-        if(message.etatevt=="Entry_open"){
-          this.entry_alarm++
-        }else if(message.etatevt=="other"){
-          this.other_alarm++
-        }
-        this.data=this.updateWSAlarm()
-        this.updateChartData(this.pieChart, this.data, 0);
-      },
-      (error:any) => {
-        console.error('WebSocket error:', error);
-      }
-    );*/
+  this.createChart();
+  this.CreatelineChart()
   }
-
+/*
 updateWSAlarm(){
   const arr:Number[]=[this.entry_alarm,this.Entry_Close,this.Exist_Open,this.Close_Exit,this.Intrusion_Alarm,this.Stayed_On,this.Tailing_Alarm,this.Reverse_Alarm,];
   return arr
-}
+}*/
   createChart(){
     const now = new Date();
     const today=now.toLocaleDateString();
@@ -174,11 +143,11 @@ updateWSAlarm(){
     type: 'pie',
     data: {
       datasets: [{
-        data: [1,1,1,1,1,1,1,1],
-        backgroundColor: ['Red', 'Pink','Green','Yellow','Orange','Blue', 'Purple','Grey'],
+        data: [],
+        backgroundColor: ['Red', 'Pink','Green','Yellow'],
         label: 'Event'
       }],
-      labels: ['Entry_Open','Entry_Close','Exist_Open','Close_Exit','Intrusion_alarm','Stayed_On','Tailing_Alarm','Reverse_Alarm']
+      labels: ['Intrusion_alarm','Stayed_On','Tailing_Alarm','Reverse_Alarm']
     }
   })
   }
@@ -253,6 +222,13 @@ updateWSAlarm(){
       chart.update();
     }
   }
+  setVariable(value: any) {
+    this.messages.push(value);
+    this.message$.next(this.messages); // emit the updated myVariable array
+  }
 
+  getVariable() {
+    return this.message$; // return the Subject instead of the myVariable array
+  }
 
 }

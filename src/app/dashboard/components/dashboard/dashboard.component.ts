@@ -7,6 +7,7 @@ import { SharedService } from 'src/app/Service/shared.service';
 import { EventService } from 'src/app/Service/event.service';
 import { ClientService } from 'src/app/Service/client.service';
 import { Subject } from 'rxjs';
+import { HistoriqueService } from 'src/app/Service/historique.service';
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
@@ -29,12 +30,17 @@ export class DashboardComponent implements OnInit {
   y4:any
   y5:any
   alarmes:any
+  hist:any
+  accUsers:any[]=[]
+  dates:any[]=[]
+  denUsers:any[]=[]
   constructor(
       private websocketService: WebSocketService,
       private clientServ:ClientService,
       private shared:SharedService,
       private toast:NgToastService,
-      private enventService:EventService
+      private enventService:EventService,
+      private histService:HistoriqueService
       ) {
   }
   async ngOnInit() {
@@ -83,7 +89,23 @@ export class DashboardComponent implements OnInit {
       }
     );
     
-    
+      //Init of Bar chart
+      try{
+        this.histService.getHistList().subscribe((data:any)=>{
+          this.hist=data
+          console.log(this.hist)
+          for (let index = 0; index < data.length; index++) {
+              this.dates.push(data[index].date) 
+              this.accUsers.push(data[index].acc)            
+              this.denUsers.push(data[index].den)            
+          }
+          this.reverseDates()
+          this.reverseUsers()
+          console.log(this.dates)
+          this.createChart();
+        })
+      }catch{
+      }
 
 
       /* this.websocketService.connect().subscribe(
@@ -95,7 +117,6 @@ export class DashboardComponent implements OnInit {
         console.error('WebSocket error:', error);
       }
     );*/
-  this.createChart();
   this.CreatelineChart()
   }
 /*
@@ -103,31 +124,29 @@ updateWSAlarm(){
   const arr:Number[]=[this.entry_alarm,this.Entry_Close,this.Exist_Open,this.Close_Exit,this.Intrusion_Alarm,this.Stayed_On,this.Tailing_Alarm,this.Reverse_Alarm,];
   return arr
 }*/
+
+reverseDates(){
+  return this.dates.reverse()
+}
+reverseUsers(){
+  this.accUsers.reverse()
+  this.denUsers.reverse()
+}
   createChart(){
-    const now = new Date();
-    const today=now.toLocaleDateString();
-    this.yesterday = new Date();
-    this.y =this.yesterday.setDate(this.yesterday.getDate() - 1)
-    this.y1 =this.yesterday.setDate(this.yesterday.getDate() - 1);
-    this.y2 =this.yesterday.setDate(this.yesterday.getDate() - 1);
-    this.y3 =this.yesterday.setDate(this.yesterday.getDate() - 1);
-    this.y4 =this.yesterday.setDate(this.yesterday.getDate() - 1);
-    this.y5 =this.yesterday.setDate(this.yesterday.getDate() - 1);
-    console.log(this.yesterday + " "+this.y)
     this.chart = new Chart("MyChart", {
       type: 'bar', //this denotes tha type of chart
 
       data: {// values on X-Axis
-        labels: [this.y5, this.y4, this.y3,this.y2,this.y1,this.y,today],
+        labels: this.dates,
 	       datasets: [
           {
-            label: "Sales",
-            data: ['467','576', '572', '79', '92','574', '573'],
+            label: "Accepted Users",
+            data: this.accUsers,
             backgroundColor: 'blue'
           },
           {
-            label: "Profit",
-            data: ['542', '542', '536', '327', '17','0.00', '538', '541'],
+            label: "Denied Users",
+            data: this.denUsers,
             backgroundColor: 'limegreen'
           }
         ]

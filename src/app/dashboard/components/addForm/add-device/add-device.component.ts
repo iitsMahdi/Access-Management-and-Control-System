@@ -53,6 +53,9 @@ export class AddDeviceComponent implements OnInit {
       name:['',Validators.required],
       status:['',Validators.required],
       dep:['',Validators.required],
+      Adresse:['',Validators.required],
+      sn:['',Validators.required],
+
     });
     this.waveForm=this.formBuilder.group({
       name:['',Validators.required],
@@ -100,6 +103,8 @@ export class AddDeviceComponent implements OnInit {
   saveController():void{
     this.savedCont.nomCont=this.contForm.value.name;
     this.savedCont.status=this.contForm.value.status;
+    this.savedCont.ipAdresse=this.contForm.value.Adresse;
+    this.savedCont.serial_Number=this.contForm.value.sn;
 
     const deptObs = this.DepService.getDepById(Number(this.departement))
     forkJoin([deptObs]).subscribe(([deptData]) => {

@@ -31,6 +31,9 @@ export class UpdateControllerComponent implements OnInit {
       name:['',Validators.required],
       status:['',Validators.required],
       dep:['',Validators.required],
+      Adresse:['',Validators.required],
+      sn:['',Validators.required],
+
     });
 
     this.id = this.route.snapshot.params['id'];
@@ -40,6 +43,9 @@ export class UpdateControllerComponent implements OnInit {
         console.log(data)
         this.contForm.controls["name"].setValue(data.nomCont)
         this.contForm.controls["status"].setValue(data.status)
+        this.contForm.controls["Adresse"].setValue(data.ipAdresse)
+        this.contForm.controls["sn"].setValue(data.serial_Number)
+
 
       },
         error => console.log(error)
@@ -68,6 +74,8 @@ export class UpdateControllerComponent implements OnInit {
   UpdateCont(){
     this.cont.nomCont=this.contForm.value.name;
     this.cont.status=this.contForm.value.status;
+    this.cont.ipAdresse=this.contForm.value.Adresse;
+    this.cont.serial_Number=this.contForm.value.sn;
     const deptObs = this.DepService.getDepById(Number(this.departement))
     forkJoin([deptObs]).subscribe(([deptData]) => {
       this.cont.dept=deptData;

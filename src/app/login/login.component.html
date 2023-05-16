@@ -12,10 +12,11 @@
               <mat-icon>account_circle</mat-icon>
             </div>
            		   <div class="div">
-           		   	<!--
-                  <h5>Username</h5>
-                  -->
-           		   		<input type="text" class="input" placeholder="email" formControlName="email" >
+           		   		<input type="email" class="input" placeholder="email" formControlName="email" >
+                    <br><br>
+                      <div style="color: red;font-weight: bold;" *ngIf="loginForm.get('email')!.hasError('email') && loginForm.get('email')!.touched" class="error">
+                        L'adresse e-mail n'est pas valide.
+                      </div>
            		   </div>
           </div>
            		<div class="input-div pass">

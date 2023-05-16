@@ -14,4 +14,14 @@ export class HistoriqueService {
   getHistList(): Observable<Historique[]>{
     return this.httpClient.get<Historique[]>(`${this.baseURL}/counthis` );
   }
+
+
+  getHistToday(): Observable<Historique[]>{
+    return this.httpClient.get<Historique[]>(`${this.baseURL}/today` );
+  }/*
+  getFilterHist(fEV: FilterHist): Observable<Object>{
+    return this.httpClient.post(`${this.baseURL}/filterHist`, fEV);
+  }
+*/
+
 }

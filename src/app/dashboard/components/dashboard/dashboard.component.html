@@ -40,17 +40,14 @@
             </span>
           </li>
         </ul>
-
         <div class="charts">
-          <!--Bar chart-->
           <div class="charts-card">
-            <h2 class="chart-title">Title Chart 1</h2>
-            <div id="bar-chart">
+            <h2 class="chart-title">Title Chart 2</h2>
+            <div id="area-chart">
               <div class="chart-container">
-                <canvas  id="MyChart">{{ chart }}</canvas>
+                <canvas  id="MyChart3" >{{ lineChart }}</canvas>
               </div>
             </div>
-            <br><br>
           </div>
           <!--Pie chart-->
           <div class="charts-card">
@@ -65,71 +62,15 @@
         <!--Line chart-->
         <div class="charts">
           <div class="charts-card">
-            <h2 class="chart-title">Title Chart 2</h2>
-            <div id="area-chart">
-              <div class="chart-container">
-                <canvas  id="MyChart3" >{{ lineChart }}</canvas>
-              </div>
-            </div>
-          </div>
-          <div class="charts-card">
             <h2 class="chart-title">Title Chart 1</h2>
-            <div class="table-data">
-              <div class="order">
-                <div class="head">
-                  <h3>Recent Orders</h3>
-                  <i class='bx bx-search' ></i>
-                  <i class='bx bx-filter' ></i>
-                </div>
-                <table>
-                  <thead>
-                    <tr>
-                      <th>User</th>
-                      <th>Date Order</th>
-                      <th>Status</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr>
-                      <td>
-                        <p>John Doe</p>
-                      </td>
-                      <td>01-10-2021</td>
-                      <td><span class="status completed">Completed</span></td>
-                    </tr>
-                    <tr>
-                      <td>
-                        <p>John Doe</p>
-                      </td>
-                      <td>01-10-2021</td>
-                      <td><span class="status pending">Pending</span></td>
-                    </tr>
-                    <tr>
-                      <td>
-                        <p>John Doe</p>
-                      </td>
-                      <td>01-10-2021</td>
-                      <td><span class="status process">Process</span></td>
-                    </tr>
-                    <tr>
-                      <td>
-                        <p>John Doe</p>
-                      </td>
-                      <td>01-10-2021</td>
-                      <td><span class="status pending">Pending</span></td>
-                    </tr>
-                    <tr>
-                      <td>
-                        <p>John Doe</p>
-                      </td>
-                      <td>01-10-2021</td>
-                      <td><span class="status completed">Completed</span></td>
-                    </tr>
-                  </tbody>
-                </table>
+            <div id="bar-chart">
+              <div class="chart-container">
+                <canvas  id="MyChart">{{ chart }}</canvas>
               </div>
             </div>
+            <br><br>
           </div>
+
         </div>
       <!-- End Main -->
     </main>

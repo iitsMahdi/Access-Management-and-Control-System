@@ -25,7 +25,7 @@ export class LoginComponent implements OnInit{
     console.log("role : "+this.userAuthService.getRoles())
 
     this.loginForm=this.formBuilder.group({
-      email:['',Validators.required],
+      email:['',[Validators.required, Validators.email]],
       password:['',Validators.required],
   });
 }

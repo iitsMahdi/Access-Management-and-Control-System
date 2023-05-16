@@ -37,7 +37,11 @@
            		   	<!--
                   <h5>Username</h5>
                   -->
-           		   		<input type="text" class="input" placeholder="email" formControlName="email" [class.is-invalid] = "registerForm.get('primaryEmail')">
+           		   		<input type="text" class="input" placeholder="email" formControlName="email">
+                      <br><br>
+                      <div style="color: red;font-weight: bold;" *ngIf="registerForm.get('email')!.hasError('email') && registerForm.get('email')!.touched" class="error">
+                        L'adresse e-mail n'est pas valide.
+                      </div>
            		   </div>
           </div>
            	<div class="input-div pass">

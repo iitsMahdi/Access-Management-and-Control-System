@@ -5,4 +5,6 @@ export class Contoller{
   nomCont!:String;
   status !:String;
   dept !: Departement; //= new Departement();
+  serial_Number!:any
+  ipAdresse!:any
 }

@@ -27,7 +27,7 @@ export class AccessControlComponent implements OnInit {
   [x: string]: any;
   messages : Message[]=[]
   socketMessages : Message[]=[]
-  msg:any={ "etatevt": "Stayed_On", "dateevnt": "05/05/2023", "idevent": "1", "idporte": "5","departement":"Informatique" ,"timeevnt":"10:12:09","prt":"Porte_I1"}
+  msg:any={ "etatevt": "Entry_Open", "dateevnt": "05/05/2023", "idevent": "1", "idporte": "5","departement":"Informatique" ,"timeevnt":"10:12:09","prt":"Porte_I1"}
   closeResult!:string
   filterForm !:FormGroup;
   savedFilter:FilterEV=new FilterEV()

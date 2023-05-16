@@ -1,17 +1,34 @@
-import { AfterViewInit, Component } from '@angular/core';
+import { AfterViewInit, Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { UserAuthService } from 'src/app/Service/user-auth.service';
 import { UserService } from 'src/app/Service/user.service';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-sidenavwrapper',
   templateUrl: './sidenavwrapper.component.html',
   styleUrls: ['./sidenavwrapper.component.css']
 })
-export class SidenavwrapperComponent implements AfterViewInit {
+export class SidenavwrapperComponent implements AfterViewInit,OnInit {
   isExpanded: boolean = true;
   target!:string;
-  constructor(private userService : UserService,    private router: Router,
+  constructor(private userService : UserService,    private router: Router,private userAuthServ : UserAuthService
     ) {}
+
+
+  ngOnInit(): void {
+    let token=this.userAuthServ.getToken();
+    let x=this.tokenExpired(token)
+    console.warn("token valide")
+    if (x){
+      this.router.navigate(['/login']);
+      Swal.fire({
+        icon: 'error',
+        title: 'Oops...',
+        text: 'Token Expired!'
+      })
+    }
+  }
 
   ngAfterViewInit(): void {const allSideMenu = document.querySelectorAll('#sidebar .side-menu.top li a');
 
@@ -79,6 +96,10 @@ export class SidenavwrapperComponent implements AfterViewInit {
   prof(){
     this.router.navigate(['/account']);
 
+  }
+  private tokenExpired(token: string) {
+    const expiry = (JSON.parse(atob(token.split('.')[1]))).exp;
+    return (Math.floor((new Date).getTime() / 1000)) >= expiry;
   }
 }
 

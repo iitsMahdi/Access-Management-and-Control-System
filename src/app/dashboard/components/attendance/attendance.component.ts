@@ -70,6 +70,7 @@ export class AttendanceComponent implements  OnInit{
   }
   clear() {
     this.messages.splice(0, this.messages.length);
+    this.socketMessages.splice(0, this.socketMessages.length);
   }
   fileDownload(){}
 
@@ -97,7 +98,6 @@ export class AttendanceComponent implements  OnInit{
 		}
 	}
   onSubmit(){
-
     if((this.filterForm.value.dateDeb && !this.filterForm.value.dateFin ) ||(!this.filterForm.value.dateDeb && this.filterForm.value.dateFin ) ){
       Swal.fire({
         icon: 'error',

@@ -1,17 +1,77 @@
-.demo-table {
+/*  import google fonts */
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap");
+
+.container{
+  display: flex;
+}
+
+/* MAin Section */
+.main{
+  position: relative;
+  padding: 20px;
   width: 100%;
 }
+/*Attendance List serction  */
+.attendance{
+  text-transform: capitalize;
+}
+.attendance-list{
+  width: 100%;
+  padding: 10px;
+  margin-top: 10px;
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: 0 20px 35px rgba(0, 0, 0, 0.1);
+}
+.table{
+  border-collapse: collapse;
+  margin: 25px 0;
+  font-size: 15px;
+  min-width: 100%;
+  overflow: hidden;
+  border-radius: 5px 5px 0 0;
+}
+table thead tr{
+  color: #fff;
+  background: -webkit-linear-gradient(to right, #131614, #5CBA63);
+  background: linear-gradient(to right, #131614, #5CBA63);
 
-.demo-button-container {
-  padding-bottom: 16px;
+  text-align: left;
+  font-weight: bold;
 }
 
-.demo-button + .demo-button {
-  margin-left: 8px;
+.table th{
+  height:"50%" ;
+  width:"70%";
+  text-align: center;
 }
+.table td{
+  padding: 12px 15px;
+    text-align: center;
 
-table{
-  margin-left: 50px;
-  width: 8px
 }
-
+.table tbody tr{
+  border-bottom: 1px solid #ddd;
+}
+.table tbody tr:nth-of-type(odd){
+  background: #f3f3f3;
+}
+.table tbody tr.active{
+  font-weight: bold;
+  color: #4AD489;
+}
+.table tbody tr:last-of-type{
+  border-bottom: 2px solid #4AD489;
+}
+.table button{
+  padding: 6px 20px;
+  border-radius: 10px;
+  cursor: pointer;
+  background: transparent;
+  border: 1px solid #4AD489;
+}
+.table button:hover{
+  background: #4AD489;
+  color: #fff;
+  transition: 0.5rem;
+}

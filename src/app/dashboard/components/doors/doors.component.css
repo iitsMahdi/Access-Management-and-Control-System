@@ -1,22 +1,43 @@
+/*
 input{
   max-width: 250px;
 }
-
-
+*/
+.my-input {
+  width: 40%;
+  border-radius: 10px;
+  background-color: rgb(243, 233, 233);
+  border: none #1b5084 ;
+  padding: 10px;
+  font-size: 18px;
+  outline: none;
+  color: #fff;
+  background: -webkit-linear-gradient(to right, #ffffff, #3C91E6);
+  background: linear-gradient(to right, #ffffff, #3C91E6);
+  /* Add other styles as needed */
+}
 .title{
   font-size: 30px;
   font-weight: bold;
 }
 .demo-button{
   margin-top: 50px;
-  background-color: #98FB98;
   border-radius: 30px;
   padding:0.6em 2em;
   text-align: center;
   font-size:1.1em;
-  border: #98FB98;
   font-weight: bold;
+  color: #fff;
+  background: -webkit-linear-gradient(to right, #c2c9c4, #3C91E6);
+  background: linear-gradient(to right, #c2c9c4, #3C91E6);
 }
+.demo-button:hover {
+
+  cursor: pointer;
+  transform: translateY(-2px);
+}
+
+
 .demo-button-container :hover{
   background-color: #bccfbc;
 }
@@ -30,3 +51,103 @@ img{
   width: 6px;
   margin-left: 98%;
 }
+
+
+.btn {
+  display: inline-block;
+  padding: 0.375rem 0.75rem;
+  font-size: 0.875rem;
+  font-weight: 400;
+  line-height: 1.5;
+  color: #fff;
+  background-color: #007bff;
+  border: 1px solid #007bff;
+  border-radius: 0.25rem;
+  transition: all 0.2s ease;
+  text-decoration: none;
+}
+
+.btn:hover {
+  background-color: #0069d9;
+  border-color: #0062cc;
+  cursor: pointer;
+  transform: translateY(-2px);
+}
+
+.btn-danger {
+  background-color: #dc3545;
+  border-color: #dc3545;    transform: translateY(-2px);
+
+}
+
+.btn-danger:hover {
+  background-color: #c82333;
+  border-color: #bd2130;    transform: translateY(-2px);
+
+}
+
+/******************************************************/
+/*  import google fonts */
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap");
+
+.container{
+  display: flex;
+}
+
+/* MAin Section */
+.main{
+  position: relative;
+  padding: 10px;
+  width: 100%;
+}
+/*Attendance List serction  */
+.attendance{
+  text-transform: capitalize;
+}
+.attendance-list{
+  width: 100%;
+  padding: 5px;
+  margin-top: 5px;
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: 0 20px 35px rgba(0, 0, 0, 0.1);
+}
+.table{
+  border-collapse: collapse;
+  margin: 25px 0;
+  font-size: 15px;
+  min-width: 100%;
+  overflow: hidden;
+  border-radius: 5px 5px 0 0;
+}
+table thead tr{
+  color: #fff;
+  background: -webkit-linear-gradient(to right, #131614, #3C91E6);
+  background: linear-gradient(to right, #131614, #3C91E6);
+  text-align: left;
+  font-weight: bold;
+}
+
+.table th{
+  height:"50%" ;
+  width:"70%";
+  text-align: center;
+}
+.table td{
+  padding: 12px 15px;
+  text-align: center;
+}
+.table tbody tr{
+  border-bottom: 1px solid #ddd;
+}
+.table tbody tr:nth-of-type(odd){
+  background: #f3f3f3;
+}
+.table tbody tr.active{
+  font-weight: bold;
+  color: #4AD489;
+}
+.table tbody tr:last-of-type{
+  border-bottom: 2px solid #3C91E6;
+}
+

@@ -1,65 +1,95 @@
-<mat-sidenav-container autosize>
-  <mat-sidenav #sidenav mode="side" opened="isExpanded">
-    <mat-nav-list>
-      <mat-list-item (click)="isExpanded = !isExpanded">
-        <mat-icon mat-list-icon class="chevron-button" [ngClass]="{ rotated: isExpanded }">chevron_right
-        </mat-icon>
-      </mat-list-item>
+<link href='https://unpkg.com/boxicons@2.0.9/css/boxicons.min.css' rel='stylesheet'>
+	<!-- SIDEBAR -->
+	<section id="sidebar">
+		<a routerLink="dashboard" class="brand">
+      <img class="easy" src="../../../assets/easy.png"  alt="">
+		</a>
 
-      <div class="">
-        <img class="logo" src="../../../assets/easy.png"  alt="">
-      </div>
-<br>
-      <mat-list-item [routerLink]="'dashboard'" (click)="set('Dashboard')">
-        <mat-icon mat-list-icon>home</mat-icon>
-        <span *ngIf="isExpanded" class="menu-item" >Dashboard</span>
-      </mat-list-item>
-<br>
-      <mat-list-item [routerLink]="'alluser'" (click)="set('Users')">
-        <mat-icon mat-list-icon>supervisor_account</mat-icon>
-        <span *ngIf="isExpanded" class="menu-item">Users</span>
-      </mat-list-item>
-      <br>
-      <mat-list-item [routerLink]="'alldevices'" (click)="set('Devices')">
-        <mat-icon mat-list-icon>important_devices</mat-icon>
-        <span *ngIf="isExpanded" class="menu-item">Devices</span>
-      </mat-list-item>
-      <br>
-      <mat-list-item [routerLink]="'alldoors'" (click)="set('Doors')">
-        <mat-icon mat-list-icon>hexagon</mat-icon>
-        <span *ngIf="isExpanded" class="menu-item">Doors</span>
-      </mat-list-item>
-      <br>
-      <mat-list-item [routerLink]="'alldepartements'" (click)="set('Departements')">
-        <mat-icon mat-list-icon>supervisor_account</mat-icon>
-        <span *ngIf="isExpanded" class="menu-item">Departements</span>
-      </mat-list-item>
-      <br>
-      <mat-list-item [routerLink]="'accessC'" (click)="set('Access Control')">
-        <mat-icon mat-list-icon>supervisor_account</mat-icon>
-        <span *ngIf="isExpanded" class="menu-item">Access Control</span>
-      </mat-list-item>
-      <br>
-      <mat-list-item [routerLink]="'attendance'" (click)="set('Attendance')">
-        <mat-icon mat-list-icon>supervisor_account</mat-icon>
-        <span *ngIf="isExpanded" class="menu-item">Monitoring</span>
-      </mat-list-item>
+    <br>
+    <hr>
+		<ul class="side-menu top">
+			<li class="active">
+				<a routerLink="dashboard">
+					<i class='bx bxs-dashboard' ></i>
+					<span class="text">Dashboard</span>
+				</a>
+			</li>
+			<li>
+				<a routerLink="alluser">
+					<i class='bx bxs-group' ></i>
+					<span class="text">Users</span>
+				</a>
+			</li>
+			<li>
+				<a [routerLink]="'alldevices'">
+					<i class='bx bxs-devices' ></i>
+					<span class="text">Devices</span>
+				</a>
+			</li>
+			<li>
+				<a [routerLink]="'alldoors'">
+					<i class='bx bxs-door-open' ></i>
+					<span class="text">Doors</span>
+				</a>
+			</li>
+			<li>
+				<a [routerLink]="'alldepartements'">
+					<i class='bx bxs-group' ></i>
+					<span class="text">Departements</span>
+				</a>
+			</li>
+      <li>
+				<a [routerLink]="'history'">
+					<i class='bx bxs-lock' ></i>
+					<span class="text">Alert History</span>
+				</a>
+			</li>
+      <li>
+				<a [routerLink]="'accessC'">
+					<i class='bx bxs-lock' ></i>
+					<span class="text">Access Control</span>
+				</a>
+			</li>
+      <li>
+				<a [routerLink]="'attendance'">
+					<i class='bx bxs-show' ></i>
+					<span class="text">Monitoring</span>
+				</a>
+			</li>
+		</ul>
+<br><br><br><br>
+		<ul class="side-menu">
+					<li>
+				<a href="#" class="logout">
+					<i class='bx bxs-log-out-circle' ></i>
+					<span class="text" onclick="logOut()">Logout</span>
+				</a>
+			</li>
+		</ul>
+	</section>
+	<!-- SIDEBAR -->
 
-    </mat-nav-list>
-  </mat-sidenav>
 
-  <!-- Content - rendered Content for the current router path into the <router-outlet>, e.g. /dashboard or /info-->
-  <mat-sidenav-content>
-    <mat-toolbar>
-     <p>{{target}}</p>
-        <a [matMenuTriggerFor]="menu"><img class="acc" src="../../../assets/account.png" alt="" ></a>
-        <mat-menu #menu="matMenu">
-          <button mat-menu-item routerLink="/account">Account</button>
-          <button mat-menu-item (click)="logOut()">Log Out</button>
+
+	<!-- CONTENT -->
+	<section id="content">
+		<!-- NAVBAR -->
+    <nav>
+			<i class='bx bx-menu' ></i>
+				<img src="../../../../assets/account.png" [matMenuTriggerFor]="menu" class="profile">
+        <mat-menu #menu="matMenu" >
+          <button mat-menu-item (click)="prof()"><i class='bx bxs-group' ></i>Profile</button>
+          <a href="#" class="logout" mat-menu-item><i class='bx bxs-log-out-circle' ></i>
+            <span class="text" onclick="logOut()">Logout</span>
+          </a>
         </mat-menu>
-      </mat-toolbar>
-    <router-outlet></router-outlet>
-    <lib-ng-toast></lib-ng-toast>
-  </mat-sidenav-content>
+		</nav>
+		<!-- NAVBAR -->
 
-</mat-sidenav-container>
+		<!-- MAIN -->
+		<main>
+			<router-outlet></router-outlet>
+		</main>
+		<!-- MAIN -->
+	</section>
+	<!-- CONTENT -->

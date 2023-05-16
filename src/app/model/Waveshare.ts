@@ -1,6 +1,6 @@
 export class Waveshare{
   idWave !:bigint;
-  nomWave!:String;
+  nameDevice!:String;
   adresse!:String
   status !:String;
 }

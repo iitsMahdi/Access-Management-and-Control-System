@@ -1,52 +1,45 @@
-   <!-- Montserrat Font -->
+    <!-- Montserrat Font -->
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
 
     <!-- Material Icons -->
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined" rel="stylesheet">
-<div class="container">
-    <div class="grid-container">
+<main>
+      <div class="head-title">
+				<div class="left">
+					<h1>Dashboard</h1>
+				</div>
+			</div>
       <!-- Main -->
-      <main class="container">
-        <!--
-        <div class="main-title">
-          <h2>DASHBOARD</h2>
-        </div>-->
-        <div class="main-cards">
-
-          <div class="card">
-            <div class="card-inner">
-              <a routerLink="/alluser"><h3>Users</h3></a>
-              <span class="material-icons-outlined">groups</span>
-
-            </div>
-            <h1>249</h1>
-          </div>
-
-          <div class="card">
-            <div class="card-inner">
-              <h3>Departements</h3>
-              <span class="material-icons-outlined">category</span>
-            </div>
-            <h1>5</h1>
-          </div>
-
-          <div class="card">
-            <div class="card-inner">
-              <h3>Doors</h3>
-              <span class="material-icons-outlined">inventory_2</span>
-            </div>
-            <h1>96</h1>
-          </div>
-          <div class="card">
-            <div class="card-inner">
-              <h3>ALERTS</h3>
-              <span class="material-icons-outlined">notification_important</span>
-            </div>
-            <h1>175</h1>
-          </div>
-        </div>
-        <button (click)="updDen()">den</button>
-        <button (click)="updAcc()">acc</button>
+        <ul class="box-info">
+          <li>
+            <i class='bx bxs-group' ></i>
+            <span class="text">
+              <h3>66</h3>
+              <p>User</p>
+            </span>
+          </li>
+          <li>
+            <i class='bx bxs-group' ></i>
+            <span class="text">
+              <h3>6</h3>
+              <p>Departement</p>
+            </span>
+          </li>
+          <li>
+            <i class='bx bxs-door-open' ></i>
+            <span class="text">
+              <h3>30</h3>
+              <p>Door</p>
+            </span>
+          </li>
+          <li>
+            <i class='bx bxs-bell' ></i>
+            <span class="text">
+              <h3>204</h3>
+              <p>Alert</p>
+            </span>
+          </li>
+        </ul>
 
         <div class="charts">
           <!--Bar chart-->
@@ -70,18 +63,73 @@
           </div>
         </div>
         <!--Line chart-->
-        <div class="chartsLine">
-        <div class="main-charts-card">
-          <h2 class="chart-title">Title Chart 2</h2>
-          <div id="area-chart">
-            <div class="chart-container">
-              <canvas  id="MyChart3" >{{ lineChart }}</canvas>
+        <div class="charts">
+          <div class="charts-card">
+            <h2 class="chart-title">Title Chart 2</h2>
+            <div id="area-chart">
+              <div class="chart-container">
+                <canvas  id="MyChart3" >{{ lineChart }}</canvas>
+              </div>
             </div>
           </div>
-          <br><br>
+          <div class="charts-card">
+            <h2 class="chart-title">Title Chart 1</h2>
+            <div class="table-data">
+              <div class="order">
+                <div class="head">
+                  <h3>Recent Orders</h3>
+                  <i class='bx bx-search' ></i>
+                  <i class='bx bx-filter' ></i>
+                </div>
+                <table>
+                  <thead>
+                    <tr>
+                      <th>User</th>
+                      <th>Date Order</th>
+                      <th>Status</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>
+                        <p>John Doe</p>
+                      </td>
+                      <td>01-10-2021</td>
+                      <td><span class="status completed">Completed</span></td>
+                    </tr>
+                    <tr>
+                      <td>
+                        <p>John Doe</p>
+                      </td>
+                      <td>01-10-2021</td>
+                      <td><span class="status pending">Pending</span></td>
+                    </tr>
+                    <tr>
+                      <td>
+                        <p>John Doe</p>
+                      </td>
+                      <td>01-10-2021</td>
+                      <td><span class="status process">Process</span></td>
+                    </tr>
+                    <tr>
+                      <td>
+                        <p>John Doe</p>
+                      </td>
+                      <td>01-10-2021</td>
+                      <td><span class="status pending">Pending</span></td>
+                    </tr>
+                    <tr>
+                      <td>
+                        <p>John Doe</p>
+                      </td>
+                      <td>01-10-2021</td>
+                      <td><span class="status completed">Completed</span></td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
         </div>
-      </div>
-      </main>
       <!-- End Main -->
-    </div>
-  </div>
+    </main>

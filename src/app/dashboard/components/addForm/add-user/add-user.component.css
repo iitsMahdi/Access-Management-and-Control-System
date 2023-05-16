@@ -1,8 +1,4 @@
-.cont{
-  background-color: #C5C5F1;
-  background-size: cover;
-  background-repeat: no-repeat, repeat;
-}
+
 #msform {
   text-align: center;
   position: relative;
@@ -110,9 +106,10 @@
 }
 #progressbar li {
   list-style-type: none;
-  color: white;
+  color: #508df0;
+  font-weight: bold;
   text-transform: uppercase;
-  font-size: 9px;
+  font-size: 11px;
   width: 33.33%;
   float: left;
   position: relative;

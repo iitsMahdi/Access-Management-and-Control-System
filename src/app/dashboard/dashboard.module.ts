@@ -46,6 +46,8 @@ import { NgApexchartsModule } from 'ng-apexcharts';
 import { NgToastModule } from 'ng-angular-popup';
 import { AddWaveComponent } from './components/addForm/add-wave/add-wave.component';
 import { UpdateWaveComponent } from './components/updateForm/update-wave/update-wave.component';
+import { NgbModule, NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { HistoriqueComponent } from './components/historique/historique.component';
 
 
 @NgModule({
@@ -74,6 +76,8 @@ import { UpdateWaveComponent } from './components/updateForm/update-wave/update-
     UpdateReaderComponent,
     AddWaveComponent,
     UpdateWaveComponent,
+    HistoriqueComponent,
+
   ],
   imports: [
     CommonModule,
@@ -94,11 +98,12 @@ import { UpdateWaveComponent } from './components/updateForm/update-wave/update-
     NgChartsModule,
     NgxPaginationModule,
     NgApexchartsModule,
-    NgToastModule
-  ],
+    NgToastModule,
+    NgbModule
+    ],
   providers: [
     {provide:HTTP_INTERCEPTORS,useClass:AuthInterceptorService,multi:true},
-    AuthGuard,HasRoleGuard
+    AuthGuard,HasRoleGuard,NgbModal
   ]
 })
 export class DashboardModule { }

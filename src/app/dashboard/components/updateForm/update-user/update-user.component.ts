@@ -333,7 +333,8 @@ export class UpdateUserComponent implements OnInit {/*
   }
 
   saveEmployee(){
-    this.user.code=this.userCredForm.value.card;
+    this.user.codeUid=this.userCredForm.value.card;
+    this.user.codePin=this.userCredForm.value.pin;
     this.user.email=this.userCredForm.value.email;
     this.user.password=this.userCredForm.value.password
   }

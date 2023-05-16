@@ -1,44 +1,149 @@
-<div class="container">
   <button (click)="sendMessage()">Send</button>
-  <div class="demo-button-container">
-    <button mat-raised-button (click)="stopWebSocket()" class="demo-button">
-      <mat-icon>add</mat-icon>
-Stop    </button>
-    &nbsp;&nbsp;&nbsp;
-    <button mat-raised-button (click)="ngOnInit()" class="demo-button">
-      <mat-icon>add</mat-icon>
-Start    </button>
-<button mat-raised-button (click)="clear()" class="demo-button">
-  <mat-icon>add</mat-icon>
-Start    </button>Clear All
-    <input class="my-input" type="text" name="search" placeholder="Search" >
-    <img src="../../../assets/3pnt.png" alt="" [matMenuTriggerFor]="menu">
-  <mat-menu #menu="matMenu">
-    <button mat-menu-item routerLink="/allProfiles">Manage Profile</button>
-    <button mat-menu-item (click)="fileDownload()">Export CSV</button>
-  </mat-menu>
+  <br><br>
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"/>
+
+  <div class="container">
+    <section class="main">
+        <section class="attendance" width="10%" height="10%">
+          <div class="attendance-list">
+            <h3 style="text-align: center;font-weight: bold;">Real Time Alarm</h3><br>
+            <button mat-raised-button class="btnN" (click)="open(content)">
+              <i class='bx bxs-filter-alt' ></i>
+              Filter
+            </button>
+            <div class="btnCS">
+              <button mat-raised-button (click)="stopWebSocket()" class="btnN" >
+                <i class='bx bxs-stop'></i>
+              Stop
+              </button>
+              <button mat-raised-button (click)="ngOnInit()" class="btnN">
+                <mat-icon>add</mat-icon>
+                Start
+              </button>
+              <button mat-raised-button (click)="clear()" class="btnN">
+                <mat-icon>add</mat-icon>
+                Clear All
+              </button>
+
+            </div>
+        <div class="attendance-list">
+          <table class="table" >
+            <thead>
+              <tr >
+                <th> Event ID</th>
+                <th> Date </th>
+                <th>Time</th>
+                <th> Door </th>
+                <th> Department </th>
+                <th> Fvent </th>
+            </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let msg of socketMessages">
+                <td>{{ msg.data.idevent }} </td>
+                <td>{{ msg.data.dateevnt }} </td>
+                <td>{{ msg.data.timeevnt }} </td>
+                <td>{{ msg.data.prt }} </td>
+                <td>{{ msg.data.departement }} </td>
+                <td>{{ msg.data.etatevt }} </td>
+              </tr>
+          </tbody>
+            <tbody>
+                <tr *ngFor="let msg of messages">
+                  <td>{{ msg.data.idEvent }} </td>
+                  <td>{{ msg.data.dateEvent }} </td>
+                  <td>{{ msg.data.timeEvent }} </td>
+                  <td>{{ msg.data.waves[0].prt.nomPorte }} </td>
+                  <td>{{ msg.data.waves[0].prt.cntrl.dept.nomDep }} </td>
+                  <td>{{ msg.data.etEvent }} </td>
+                </tr>
+            </tbody>
+          </table>
+        </div>
+          </div>
+      </section>
+    </section>
   </div>
-  <br>
-  <table class = "table table-striped">
-      <thead>
-          <tr >
-              <th> Event ID</th>
-              <th> Date </th>
-              <th> Door </th>
-              <th> Department </th>
-              <th> User </th>
-              <th> Fvent </th>
-          </tr>
-      </thead>
-      <tbody>
-          <tr *ngFor="let msg of messages">
-            <td>{{ msg.data.idevent }} </td>
-            <td>{{ msg.data.dateevnt }} </td>
-            <td>{{ msg.data.idporte }} </td>
-            <td>Dep I </td>
-            <td> User i</td>
-            <td>{{ msg.data.etatevt }} </td>
-          </tr>
-      </tbody>
-  </table>
-  </div>
+
+
+
+
+  <ng-template #content let-modal>
+    <div class="modal-header">
+      <h4 class="modal-title" id="modal-basic-title">Event Filter</h4>
+      <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
+    </div>
+    <div class="modal-body">
+      <form method="post" [formGroup]="filterForm" (ngSubmit)="onSubmit()">
+        <div class="mb-3">
+          <h5>Date</h5>
+          <div class="input-group">
+            <label for="dateDeb">From :</label>&nbsp;
+            <input
+              id="dateDeb"
+              class="form-control"
+              placeholder="yyyy-mm-dd"
+              name="dateDeb"
+              ngbDatepicker
+              formControlName="dateDeb"
+              type="date"
+            />
+
+            &nbsp;&nbsp;
+            <label for="dateOfBirth">To :</label>&nbsp;&nbsp;
+            <input
+              id="dateOfBirth"
+              class="form-control"
+              placeholder="yyyy-mm-dd"
+              name="datefin"
+              ngbDatepicker
+              formControlName="dateFin"
+              type="date"
+            />
+          </div><br>
+          <h5>Time</h5>
+          <div class="input-group">
+            <label for="timeDeb">From :</label>&nbsp;
+            <input
+              id="timeDeb"
+              class="form-control"
+              placeholder="HH:MM:ss"
+              name="timeDeb"
+              ngbDatepicker
+              type="time"
+              formControlName="timeDeb"
+
+            />
+            &nbsp;&nbsp;
+            <label for="timeFin">To :</label>&nbsp;&nbsp;
+            <input
+              id="timeFin"
+              class="form-control"
+              placeholder="HH:MM:ss"
+              name="timeFin"
+              ngbDatepicker
+              type="time"
+              formControlName="timeFin"
+
+            />
+          </div><br>
+          <div class="input-group">
+            <label for="TypeEv">Event Type :</label>&nbsp;
+            <input
+              id="TypeEv"
+              class="form-control"
+              placeholder=""
+              name="TypeEv"
+              ngbDatepicker
+              type="text"
+              formControlName="typeEV"
+            />
+          </div>
+        </div>
+      </form>
+    </div>
+    <div class="modal-footer">
+      <button type="submit" class="btn btn-outline-dark" (click)="modal.close('Save click')">Save</button>
+    </div>
+  </ng-template>

@@ -14,4 +14,6 @@ export class User{
   lastname !:String;
   prof: Profile | null = null;
   depar: Departement | null = null;
+  codePin!:any
+  codeUid!:any
 }

@@ -159,7 +159,7 @@ export class AddDeviceComponent implements OnInit {
 
   }
   saveWave(){
-    //this.sevedWaveShare.nomWave=this.waveForm.value.name;
+    this.sevedWaveShare.nameDevice=this.waveForm.value.name;
     this.sevedWaveShare.adresse=this.waveForm.value.adresse;
     this.sevedWaveShare.status=this.waveForm.value.status;
     this.waveService.createWave(this.sevedWaveShare).subscribe( (data) =>{

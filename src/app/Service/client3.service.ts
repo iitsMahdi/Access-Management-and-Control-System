@@ -6,7 +6,7 @@ import { Message } from '../model/message';
 @Injectable({
   providedIn: 'root'
 })
-export class ClientAccService {
+export class Client3Service {
   private socket$!: WebSocketSubject<any>;
 
   private messagesSubject = new Subject<Message>();

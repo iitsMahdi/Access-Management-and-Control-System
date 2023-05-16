@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { FilterEV } from '../model/FilterEv';
 
 @Injectable({
   providedIn: 'root'
@@ -27,5 +28,13 @@ export class EventService {
       console.error(error);
       return 0; // or any other default value you want to use when an error occurs
     }
+  }
+
+  getFilterEV(fEV: FilterEV): Observable<Object>{
+    return this.httpClient.post(`${this.baseURL}/filterEV`, fEV);
+  }
+
+  getEventToday(): Observable<Event[]>{
+    return this.httpClient.get<Event[]>(`${this.baseURL}/countev`);
   }
 }

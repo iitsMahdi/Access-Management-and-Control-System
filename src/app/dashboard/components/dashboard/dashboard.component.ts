@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import Chart from 'chart.js/auto';
+import { Chart } from 'chart.js';
 import { Message } from 'src/app/model/message';
 import { NgToastService } from 'ng-angular-popup';
 import { WebSocketService } from 'src/app/Service/web-socket.service';

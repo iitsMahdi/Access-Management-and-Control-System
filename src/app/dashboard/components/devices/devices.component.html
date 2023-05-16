@@ -1,39 +1,44 @@
 
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"/>
+
 <div class="container">
-  <div class="demo-button-container">
-    <button mat-raised-button (click)="addData()" class="demo-button">
-      <mat-icon>add</mat-icon>
-        Add Device
-    </button>
-  <img src="../../../assets/3pnt.png" alt="" [matMenuTriggerFor]="menu">
-  <mat-menu #menu="matMenu">
-    <button mat-menu-item routerLink="/allProfiles">Manage Profile</button>
-    <button mat-menu-item (click)="fileDownload()">Export CSV</button>
-  </mat-menu>
-  </div>
-  <form method="post">
-    <select name="" id="" (change)="selectChange($event)">
-      <option value="Reader">Reader</option>
-      <option value="Controller">Controller</option>
-      <option value="Waveshare">Waveshare</option>
-    </select>
-  </form>
+  <section class="main">
+      <section class="attendance" width="10%" height="10%">
+        <div class="attendance-list">
+        <h3 style="text-align: center;font-weight: bold;">{{dev}} List</h3><br>
+        <div class="demo-button-container">
+          <button mat-raised-button (click)="addData()" class="demo-button">
+            <mat-icon>add</mat-icon>
+              Add Device
+          </button>
+        <img src="../../../assets/3pnt.png" alt="" [matMenuTriggerFor]="menu">
+        <mat-menu #menu="matMenu">
+          <button mat-menu-item (click)="fileDownload()">Export CSV</button>
+        </mat-menu>
+        </div>
+        <form method="post">
+          <select name="" id="" (change)="selectChange($event)">
+            <option value="Reader">Reader</option>
+            <option value="Controller">Controller</option>
+            <option value="Waveshare">Waveshare</option>
+          </select>
+        </form>
 
-  <div *ngIf="dev ==='Controller'">
+      <div *ngIf="dev ==='Controller'">
 
-  <br>
-  <table class = "table table-striped">
-      <thead>
-          <tr>
+        <br>
+        <table class="table" >
+          <thead>
+            <tr>
               <th> Controller ID</th>
               <th> Name </th>
               <th> Statut </th>
               <th>Departement</th>
               <th> Actions </th>
-          </tr>
-      </thead>
-      <tbody>
-          <tr *ngFor = "let cont of controllers" >
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor = "let cont of controllers" >
               <td> {{ cont.idCont }} </td>
               <td> {{ cont.nomCont }} </td>
               <td> {{ cont.status }} </td>
@@ -42,14 +47,16 @@
                 <button  class = "btn btn-info" (click) = "updateCont(cont.idCont )"><mat-icon>create</mat-icon>Update</button>
                 <button class = "btn btn-danger" style="margin-left: 10px" (click) = "deleteCont(cont.idCont )"><mat-icon >delete</mat-icon>Delete</button>
               </td>
-          </tr>
-      </tbody>
-  </table>
-</div>
-<div *ngIf="dev ==='Reader'">
-  <br>
-  <table class = "table table-striped">
-      <thead>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+
+    <div *ngIf="dev ==='Reader'">
+      <br>
+      <table class="table" >
+        <thead>
           <tr>
               <th> Reader ID</th>
               <th> IP Adresse </th>
@@ -66,14 +73,13 @@
               </td>
           </tr>
       </tbody>
-  </table>
-</div>
-<div *ngIf="dev ==='Waveshare'">
-  <br>
-  <table class = "table table-striped">
-      <thead>
+    </table>
+    </div>
+    <div *ngIf="dev ==='Waveshare'">
+      <br>
+      <table class = "table ">
+        <thead>
           <tr>
-              <th> Waveshare ID</th>
               <th> Waveshare name</th>
               <th> IP Adresse </th>
               <th> Status </th>
@@ -82,8 +88,7 @@
       </thead>
       <tbody>
           <tr *ngFor = "let w of waves" >
-              <td> {{ w.idWave }} </td>
-              <td> {{ w.nomWave }} </td>
+              <td> {{ w.nameDevice }} </td>
               <td> {{ w.adresse }} </td>
               <td> {{ w.status }} </td>
               <td>
@@ -92,5 +97,9 @@
               </td>
           </tr>
       </tbody>
-  </table>
+    </table>
+    </div>
+        </div>
+  </section>
+</section>
 </div>

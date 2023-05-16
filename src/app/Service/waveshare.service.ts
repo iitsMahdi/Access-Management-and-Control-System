@@ -22,7 +22,7 @@ export class WaveshareService {
   }
 
   getWaveById(id: number): Observable<Waveshare>{
-    return this.httpClient.get<Waveshare>(`${this.baseURL}/get/${id}`);
+    return this.httpClient.get<Waveshare>(`${this.baseURL}/get-one/${id}`);
   }
 
   updateWave(id: number, w: Waveshare): Observable<Object>{

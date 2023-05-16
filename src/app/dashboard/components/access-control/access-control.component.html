@@ -1,0 +1,29 @@
+<div class="container">
+  <img src="../../../assets/3pnt.png" alt="" [matMenuTriggerFor]="menu">
+  <mat-menu #menu="matMenu">
+    <button mat-menu-item (click)="fileDownload()">Export CSV</button>
+  </mat-menu>
+  <br>
+  <table class = "table table-striped">
+      <thead>
+          <tr>
+              <th> Event ID</th>
+              <th> Date </th>
+              <th> Door </th>
+              <th> Department </th>
+              <th> User </th>
+              <th> Fvent </th>
+          </tr>
+      </thead>
+      <tbody>
+          <tr *ngFor="let msg of messages">
+            <td>{{ msg.data.idevent }} </td>
+            <td>{{ msg.data.dateevnt }} </td>
+            <td>{{ msg.data.idporte }} </td>
+            <td>Dep I </td>
+            <td> User i</td>
+            <td>{{ msg.data.etatevt }} </td>
+          </tr>
+      </tbody>
+  </table>
+  </div>

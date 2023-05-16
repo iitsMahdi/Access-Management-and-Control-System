@@ -14,7 +14,7 @@ export class DoorService {
   constructor(private httpClient: HttpClient) { }
 
   getDoorsList(): Observable<Porte[]>{
-    return this.httpClient.get<Porte[]>(`${this.baseURL}/all`);
+    return this.httpClient.get<Porte[]>(`${this.baseURL}/get-all`);
   }
 
   createDoor(porte: Porte): Observable<Object>{

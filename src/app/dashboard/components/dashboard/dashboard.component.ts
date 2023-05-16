@@ -8,6 +8,7 @@ import { EventService } from 'src/app/Service/event.service';
 import { ClientService } from 'src/app/Service/client.service';
 import { Subject } from 'rxjs';
 import { HistoriqueService } from 'src/app/Service/historique.service';
+import { ClientAccService } from 'src/app/Service/client-acc.service';
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
@@ -40,7 +41,8 @@ export class DashboardComponent implements OnInit {
       private shared:SharedService,
       private toast:NgToastService,
       private enventService:EventService,
-      private histService:HistoriqueService
+      private histService:HistoriqueService,
+      private clientAcc : ClientAccService
       ) {
   }
   async ngOnInit() {
@@ -88,16 +90,16 @@ export class DashboardComponent implements OnInit {
         console.error('WebSocket error:', error);
       }
     );
-    
+
       //Init of Bar chart
       try{
         this.histService.getHistList().subscribe((data:any)=>{
           this.hist=data
           console.log(this.hist)
           for (let index = 0; index < data.length; index++) {
-              this.dates.push(data[index].date) 
-              this.accUsers.push(data[index].acc)            
-              this.denUsers.push(data[index].den)            
+              this.dates.push(data[index].date)
+              this.accUsers.push(data[index].acc)
+              this.denUsers.push(data[index].den)
           }
           this.reverseDates()
           this.reverseUsers()
@@ -108,14 +110,15 @@ export class DashboardComponent implements OnInit {
         console.error(error);
       }
       //uPdate Bar Chart from webSocket
-      /*this.clientServ.connect("websocket/").subscribe(
+      this.reverseUsers()
+      this.clientAcc.connect("websocket/client3").subscribe(
         (message: any) => {
           const msg = {type: 'msg', data: message};
           console.log('Received message:', msg);
-          if(msg.data=="Accepted"){
-            this.accUsers[0]++
+          if(msg.data=="true"){
+            this.accUsers[6]++
           }else{
-            this.denUsers[0]++
+            this.denUsers[6]++
           }
           this.updateChartData(this.chart, this.accUsers, 0);
           this.updateChartData(this.chart, this.denUsers, 1);
@@ -123,8 +126,7 @@ export class DashboardComponent implements OnInit {
         (error:any) => {
           console.error('WebSocket error:', error);
         }
-      );*/
-
+      );
 
       /* this.websocketService.connect().subscribe(
       (message: any) => {
@@ -261,5 +263,14 @@ export class DashboardComponent implements OnInit {
 
   getVariable() {
     return this.message$; // return the Subject instead of the myVariable array
+  }
+
+  updAcc(){
+    let data=[1,2,3,4,5,6,7]
+    this.updateChartData(this.chart, data, 0);
+  }
+  updDen(){
+    let data=[12,24,3,4,5,6,7]
+    this.updateChartData(this.chart, data, 1);
   }
 }

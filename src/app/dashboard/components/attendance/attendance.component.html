@@ -1,8 +1,23 @@
 <div class="container">
-  <img src="../../../assets/3pnt.png" alt="" [matMenuTriggerFor]="menu">
+  <button (click)="sendMessage()">Send</button>
+  <div class="demo-button-container">
+    <button mat-raised-button (click)="stopWebSocket()" class="demo-button">
+      <mat-icon>add</mat-icon>
+Stop    </button>
+    &nbsp;&nbsp;&nbsp;
+    <button mat-raised-button (click)="ngOnInit()" class="demo-button">
+      <mat-icon>add</mat-icon>
+Start    </button>
+<button mat-raised-button (click)="clear()" class="demo-button">
+  <mat-icon>add</mat-icon>
+Start    </button>Clear All
+    <input class="my-input" type="text" name="search" placeholder="Search" >
+    <img src="../../../assets/3pnt.png" alt="" [matMenuTriggerFor]="menu">
   <mat-menu #menu="matMenu">
+    <button mat-menu-item routerLink="/allProfiles">Manage Profile</button>
     <button mat-menu-item (click)="fileDownload()">Export CSV</button>
   </mat-menu>
+  </div>
   <br>
   <table class = "table table-striped">
       <thead>

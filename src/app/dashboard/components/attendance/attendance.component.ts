@@ -35,26 +35,21 @@ export class AttendanceComponent implements  OnInit{
         console.error('WebSocket error:', error);
       }
     );
-    //this.messages=this.shared.getVariable()
-    this.clientServ.connect("websocket/client1").subscribe(
-      (message: any) => {
-          const msg = {type: 'msg', data: message};
-          console.log('Received message:', msg);
-          this.toast.warning({detail:"New Event",summary:msg.data.etatevt,duration:1500})
-          this.messages.push(msg);
-          //this.shared.setVariable(msg);
-      },
-      (error:any) => {
-        console.error('WebSocket error:', error);
-      }
-    );
-
   }
 
   public sendMessage(): void {
     this.websocketService.sendMessage(this.msg);
   }
 
+  stopWebSocket(): void {
+    this.websocketService.close()
+  }
+  clear(){
+    for (let index = 0; index < this.messages.length; index++) {
+      delete this.messages[index]
+
+    }
+  }
   fileDownload(){}
 }
 

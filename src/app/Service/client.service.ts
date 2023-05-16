@@ -63,7 +63,7 @@ export class ClientService {
       },
       openObserver: {
         next: () => {
-          console.log('[WebSocketService]: connection ok');
+          console.log('[WebSocketService]: connection ok:'+param);
         }
       },
       closeObserver: {

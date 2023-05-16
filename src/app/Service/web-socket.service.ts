@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import {Observable, Subject, catchError, map, throwError} from 'rxjs';
-import {webSocket, WebSocketSubject} from 'rxjs/webSocket';
+import { Observable, Subject, catchError, map, throwError } from 'rxjs';
+import { webSocket, WebSocketSubject } from 'rxjs/webSocket';
 import { Message } from '../model/message';
 
 @Injectable({
@@ -16,34 +16,43 @@ export class WebSocketService {
    * Creates a new WebSocket subject and send it to the messages subject
    * @param cfg if true the observable will be retried.
    */
-  public connect(param:any): Observable<any> {
+  public connect(param: any): Observable<any> {
     if (!this.socket$ || this.socket$.closed) {
       this.socket$ = this.getNewWebSocket(param);
-      this.socket$.pipe(
-        map(msg => {
-          console.log('Received message of type: ' + typeof msg);
-          return msg;
-        }),
-        catchError(error => {
-          console.error('WebSocket error:', error);
-          return throwError(error);
-        })
-      ).subscribe(this.messagesSubject);
+      this.socket$
+        .pipe(
+          map((msg) => {
+            console.log('Received message of type: ' + typeof msg);
+            return msg;
+          }),
+          catchError((error) => {
+            console.error('WebSocket error:', error);
+            return throwError(error);
+          })
+        )
+        .subscribe(this.messagesSubject);
     }
     return this.messages$;
   }
 
-    sendMessage(msg: Message): void {
+  sendMessage(msg: Message): void {
     this.socket$.next(msg);
   }
 
+  /**
+   * Close WebSocket connection
+   */
+  close(): void {
+    this.socket$.complete();
+    this.socket$ = undefined!;
+  }
 
   /**
    * Return a custom WebSocket subject which reconnects after failure
    */
-  private getNewWebSocket(param:any): WebSocketSubject<any> {
+  private getNewWebSocket(param: any): WebSocketSubject<any> {
     return webSocket({
-      url: "ws://localhost:8080/"+param,
+      url: 'ws://localhost:8080/' + param,
       binaryType: 'arraybuffer',
       deserializer: ({ data }) => {
         let buffer = data;
@@ -63,17 +72,16 @@ export class WebSocketService {
       },
       openObserver: {
         next: () => {
-          console.log('[WebSocketService]: connection ok');
+          console.log('[WebSocketService]: connection ok:'+param);
         }
       },
       closeObserver: {
         next: () => {
           console.log(`[WebSocketService]: connection closed`);
-          this.socket$ = undefined! ;
-          this.connect(param);
+          this.socket$ = undefined!;
+          //this.connect(param);
         }
       }
     });
   }
 }
-

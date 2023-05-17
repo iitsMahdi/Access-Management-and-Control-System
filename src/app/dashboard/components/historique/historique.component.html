@@ -52,6 +52,18 @@
               <td>{{msg.data.cause}}</td>
             </tr>
           </tbody>
+          <tbody>
+            <tr *ngFor="let msg of messages">
+              <td>{{msg.data.idHis}}</td>
+              <td>{{msg.data.dateHistorique}}</td>
+              <td>{{msg.data.timeHistorique}}</td>
+              <td>{{msg.data.prt.nomPorte}}</td>
+              <td>{{msg.data.prt.cntrl.dept.nomDep}}</td>
+              <td>{{msg.data.idEvent}}</td>
+              <td>{{msg.data.etatHistorique}}</td>
+              <td>{{msg.data.cause}}</td>
+            </tr>
+          </tbody>
         </table>
       </div>
     </section>
@@ -117,7 +129,7 @@
           />
         </div><br>
         <div class="input-group">
-          <label for="TypeEv">Event Type :</label>&nbsp;
+          <label for="TypeEv">Etat :</label>&nbsp;
           <input
             id="TypeEv"
             class="form-control"
@@ -125,8 +137,13 @@
             name="TypeEv"
             ngbDatepicker
             type="text"
-            formControlName="typeEV"
+            formControlName="etat"
           />
+          &nbsp;&nbsp;
+          <label for="Dep">Departement :</label>&nbsp;&nbsp;
+          <select name="department" id="department" class="my-select" required formControlName="department" (change)="selectChangeDep($event)" formControlName="dep">
+            <option *ngFor="let dep of depts" value="{{dep.idDep}}">{{dep.nomDep}}</option>
+          </select>
         </div>
       </div>
     </form>

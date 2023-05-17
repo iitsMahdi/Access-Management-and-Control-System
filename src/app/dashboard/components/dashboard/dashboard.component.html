@@ -42,7 +42,7 @@
         </ul>
         <div class="charts">
           <div class="charts-card">
-            <h2 class="chart-title">Title Chart 2</h2>
+            <h2 class="chart-title">Daily Device Status</h2>
             <div id="area-chart">
               <div class="chart-container">
                 <canvas  id="MyChart3" >{{ lineChart }}</canvas>
@@ -62,10 +62,22 @@
         <!--Line chart-->
         <div class="charts">
           <div class="charts-card">
-            <h2 class="chart-title">Title Chart 1</h2>
+            <h2 class="chart-title"></h2>
             <div id="bar-chart">
               <div class="chart-container">
                 <canvas  id="MyChart">{{ chart }}</canvas>
+              </div>
+            </div>
+            <br>
+            <span style="text-align: center;" *ngFor="let d of depts" >
+              <Button onclick="changeChartByDep(d)">{{d}}</Button>&nbsp;&nbsp;
+            </span>
+          </div>
+          <div class="charts-card">
+            <h2 class="chart-title">Title Chart 1</h2>
+            <div id="bar-chart">
+              <div class="chart-container">
+                <canvas id="MyChart4">{{ chart2 }}</canvas>
               </div>
             </div>
             <br><br>

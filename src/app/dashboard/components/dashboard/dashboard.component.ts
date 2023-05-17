@@ -6,9 +6,11 @@ import { WebSocketService } from 'src/app/Service/web-socket.service';
 import { SharedService } from 'src/app/Service/shared.service';
 import { EventService } from 'src/app/Service/event.service';
 import { ClientService } from 'src/app/Service/client.service';
-import { Subject } from 'rxjs';
+import { Subject, forkJoin } from 'rxjs';
 import { HistoriqueService } from 'src/app/Service/historique.service';
 import { ClientAccService } from 'src/app/Service/client-acc.service';
+import { DepartementService } from 'src/app/Service/departement.service';
+import { Client3Service } from 'src/app/Service/client3.service';
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
@@ -21,6 +23,7 @@ export class DashboardComponent implements OnInit {
   public pieChart: any;
   pie:any
   lineChart: any;
+  chart2:any
   messages : Message[]=[]
   message$ = new Subject<Message[]>();
   yesterday:any = new Date();
@@ -35,6 +38,8 @@ export class DashboardComponent implements OnInit {
   accUsers:any[]=[]
   dates:any[]=[]
   denUsers:any[]=[]
+  depts:any[]=[]
+  denByDep:any[]=[]
   constructor(
       private websocketService: WebSocketService,
       private clientServ:ClientService,
@@ -42,11 +47,13 @@ export class DashboardComponent implements OnInit {
       private toast:NgToastService,
       private enventService:EventService,
       private histService:HistoriqueService,
-      private clientAcc : ClientAccService
+      private clientAcc : ClientAccService,
+      private depService:DepartementService,
+      private wsClient3 : Client3Service,
       ) {
   }
   async ngOnInit() {
-
+/*************************************************************************************************************************/
     //Init of Pie chart
     try {
       const counts = await Promise.all([
@@ -61,6 +68,8 @@ export class DashboardComponent implements OnInit {
     }
     this.createPieChart()
     this.updateChartData(this.pie, this.dataI, 0);
+
+
     //uPdate Pie Chart from webSocket
     this.clientServ.connect("websocket/client1").subscribe(
       (message: any) => {
@@ -90,7 +99,7 @@ export class DashboardComponent implements OnInit {
         console.error('WebSocket error:', error);
       }
     );
-
+/*************************************************************************************************************************/
       //Init of Bar chart
       try{
         this.histService.getHistList().subscribe((data:any)=>{
@@ -127,6 +136,35 @@ export class DashboardComponent implements OnInit {
           console.error('WebSocket error:', error);
         }
       );
+/*************************************************************************************************************************/
+        //Init of Bar2 chart
+        try {
+          this.depService.getDepList().subscribe((data: any[]) => {
+            this.depts = data.map((dep) => dep.nomDep);
+            const observables = this.depts.map((dep) => this.histService.getDenByDep(dep));
+            forkJoin(observables).subscribe((deniedData: any[]) => {
+              this.denByDep = deniedData;
+              this.createChart2();
+            });
+          });
+        } catch (error) {
+          console.error(error);
+        }
+      //uPdate Bar Chart from webSocket
+      this.wsClient3.connect("websocket/client3").subscribe(
+        (message: any) => {
+            const msg = {type: 'msg', data: message};
+            if (message.etat=="Accès Refusé"){
+              let dep=message.Departement
+              let IndexDep=this.depts.indexOf(dep)
+              this.denByDep[IndexDep]++
+            }
+            this.updateChartData(this.chart2, this.denByDep, 0);
+        },
+        (error:any) => {
+          console.error('WebSocket error:', error);
+        }
+      );
 
       /* this.websocketService.connect().subscribe(
       (message: any) => {
@@ -147,6 +185,8 @@ export class DashboardComponent implements OnInit {
     this.accUsers.reverse()
     this.denUsers.reverse()
   }
+
+  /*** Firs Bar chart (den per day+dep) ****/
   createChart(){
     this.chart = new Chart("MyChart", {
       type: 'bar', //this denotes tha type of chart
@@ -155,23 +195,44 @@ export class DashboardComponent implements OnInit {
         labels: this.dates,
 	       datasets: [
           {
-            label: "Accepted Users",
-            data: this.accUsers,
-            backgroundColor: 'blue'
-          },
-          {
             label: "Denied Users",
             data: this.denUsers,
-            backgroundColor: 'limegreen'
+            backgroundColor: 'limegreen',
+            barThickness: 40 // Set the desired bar width here
+
           }
         ]
       },
       options: {
-        aspectRatio:2.5
+        aspectRatio:1.5
       }
 
     });
   }
+  /*** Firs Bar chart (den per dep) ****/
+  createChart2(){
+    this.chart2 = new Chart("MyChart4", {
+      type: 'bar', //this denotes tha type of chart
+      data: {// values on X-Axis
+        labels: this.depts,
+	       datasets: [
+          {
+            label: "Denied Users",
+            data:this.denByDep,
+            backgroundColor: 'limegreen',
+            barThickness: 40 // Set the desired bar width here
+          }
+        ]
+      },
+      options: {
+        aspectRatio:1.5
+      }
+
+    });
+  }
+
+
+
   createPieChart(){
     this.pie = new Chart('MyChart2',{
     type: 'pie',
@@ -182,10 +243,12 @@ export class DashboardComponent implements OnInit {
         label: 'Event'
       }],
       labels: ['Intrusion_alarm','Stayed_On','Tailing_Alarm','Reverse_Alarm']
+    },
+    options: {
+      aspectRatio: 1.5,
     }
-  })
-  }
-
+  });
+}
 
   CreatelineChart() {
     this.lineChart = new Chart('MyChart3', {
@@ -227,8 +290,11 @@ export class DashboardComponent implements OnInit {
             data: [0, 59, 80, 0, 56, 55, 0, 10, 5, 50, 10, 15],
             spanGaps: false,
           },
-        ],
+        ]
       },
+      options: {
+        aspectRatio:1.5
+      }
     });
   }
 
@@ -250,7 +316,6 @@ export class DashboardComponent implements OnInit {
   }
 
   updateChartData(chart: any, data: any, dataSetIndex: any) {
-    console.log("hedhi data to update " + data)
     if (chart && chart.data) { // check if chart and chart.data are defined
       chart.data.datasets[dataSetIndex].data = data;
       chart.update();
@@ -273,4 +338,6 @@ export class DashboardComponent implements OnInit {
     let data=[12,24,3,4,5,6,7]
     this.updateChartData(this.chart, data, 1);
   }
+
+
 }

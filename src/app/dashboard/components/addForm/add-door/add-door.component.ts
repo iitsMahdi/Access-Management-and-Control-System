@@ -6,6 +6,7 @@ import { forkJoin } from 'rxjs';
 import { ControllerService } from 'src/app/Service/controller.service';
 import { DepartementService } from 'src/app/Service/departement.service';
 import { DoorService } from 'src/app/Service/door.service';
+import { WaveshareService } from 'src/app/Service/waveshare.service';
 import { Contoller } from 'src/app/model/Controller';
 import { Departement } from 'src/app/model/Departement';
 import { Porte } from 'src/app/model/Porte';
@@ -23,39 +24,55 @@ export class AddDoorComponent implements OnInit{
   cardNumber!: string;
 
   deptss:any
-
-  constructor(private contService : ControllerService,
+  contss:any
+  constructor(
+    private contService : ControllerService,
     private router: Router,
     private formBuilder: FormBuilder,
     private doorService : DoorService,
-    private deptsService : DepartementService
+    private wavesService : WaveshareService
     ) {}
 
   porte: Porte = new Porte();
 
   ngOnInit(): void {
-
     this.doorForm=this.formBuilder.group({
       name:['',Validators.required],
       type:['',Validators.required],
-      Departement:['',Validators.required]
+      Controller:['',Validators.required],
+      number:['',Validators.required],
+      Wave:['',Validators.required]
     });
-    this.getDepts()
+    //this.getDepts()
+    this.getConts()
+    this.getWaves()
   }
 
-  getDepts(){
-    this.deptsService.getDepList().subscribe((data)=>{
-      this.deptss=data;
+  getConts(){
+    this.contService.getContList().subscribe((data)=>{
+      this.contss=data;
+      console.log(data)
+    })
+  }
+  waves:any
+  getWaves(){
+    this.wavesService.getWaveList().subscribe((data)=>{
+      this.waves=data;
       console.log(data)
     })
   }
 
-  dep:string='';
+  cont:string='';
   selectChangeCont(event : any){
-    this.dep=event.target.value;
+    this.cont=event.target.value;
   }
-  type:string='';
 
+  wv:string='';
+  selectChangeWave(event : any){
+    this.wv=event.target.value;
+  }
+
+  type:string='';
   selectChangeType(event : any){
     this.type=event.target.value;
   }
@@ -63,14 +80,16 @@ export class AddDoorComponent implements OnInit{
   saveDoor():void{
     this.porte.nomPorte=this.doorForm.value.name;
     this.porte.type=this.type;
+    this.porte.numPorte=this.doorForm.value.number;
+    const contObs = this.contService.getContById(Number(this.cont))
+    const waveObs = this.wavesService.getWaveById(this.wv)
 
-    const deptObs = this.deptsService.getDepById(Number(this.dep))
-    forkJoin([deptObs]).subscribe(([depData]) => {
-      this.porte.dep=depData;
-      console.log(depData);
-
+    forkJoin([contObs,waveObs]).subscribe(([contData,waveData]) => {
+      this.porte.cntrl=contData;
+      this.porte.wsh=waveData
+      console.log(waveData)
+      if (!waveData.prt){
       this.doorService.createDoor(this.porte).subscribe( data =>{
-        console.log(this.porte)
         Swal.fire({
           position: 'center',
           icon: 'success',
@@ -81,6 +100,13 @@ export class AddDoorComponent implements OnInit{
         this.goToDoorList();
       },
       error => console.log(error));
+    }else{
+      Swal.fire({
+        icon: 'error',
+        title: 'Oops...',
+        text: 'Please Choose another Waveshare!'
+      })
+    }
     });
 
   }

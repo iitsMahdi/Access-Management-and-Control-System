@@ -32,10 +32,10 @@
             <tr>
               <th> Controller ID</th>
               <th> Name </th>
-              <th> Statut </th>
               <th>IP Adresse</th>
               <th>Serial Number</th>
               <th>Departement</th>
+              <th> Statut </th>
               <th> Actions </th>
             </tr>
           </thead>
@@ -43,10 +43,10 @@
             <tr *ngFor = "let cont of controllers" >
               <td> {{ cont.idCont }} </td>
               <td> {{ cont.nomCont }} </td>
-              <td> {{ cont.status }} </td>
               <td> {{ cont.ipAdresse }} </td>
               <td> {{ cont.serial_Number }} </td>
               <td>{{cont.dept.nomDep}}</td>
+              <td> {{ cont.status }} </td>
               <td>
                 <button  class = "btn btn-info" (click) = "updateCont(cont.idCont )"><mat-icon>create</mat-icon>Update</button>
                 <button class = "btn btn-danger" style="margin-left: 10px" (click) = "deleteCont(cont.idCont )"><mat-icon >delete</mat-icon>Delete</button>
@@ -64,6 +64,10 @@
           <tr>
               <th> Reader ID</th>
               <th> IP Adresse </th>
+              <th> Door</th>
+              <th> Departement</th>
+              <th> Status</th>
+
               <th> Actions </th>
           </tr>
       </thead>
@@ -71,6 +75,10 @@
           <tr *ngFor = "let re of readers" >
               <td> {{ re.idLecteur }} </td>
               <td> {{ re.ipAdresse }} </td>
+              <td> {{ re.prt.nomPorte }} </td>
+              <td> {{ re.prt.cntrl.dept.nomDep }} </td>
+              <td> {{ re.etatLecteur }} </td>
+
               <td>
                 <button  class = "btn btn-info" (click) = "updateRea(re.idLecteur)"><mat-icon>create</mat-icon>Update</button>
                 <button class = "btn btn-danger" style="margin-left: 10px" (click) = "deleteRea(re.idLecteur)"><mat-icon >delete</mat-icon>Delete</button>
@@ -86,6 +94,8 @@
           <tr>
               <th> Waveshare name</th>
               <th> IP Adresse </th>
+              <th> Departement</th>
+
               <th> Status </th>
               <th> Actions </th>
           </tr>
@@ -94,6 +104,8 @@
           <tr *ngFor = "let w of waves" >
               <td> {{ w.nameDevice }} </td>
               <td> {{ w.adresse }} </td>
+              <td> {{ w.prt.cntrl.dept.nomDep  }} </td>
+
               <td> {{ w.status }} </td>
               <td>
                 <button  class = "btn btn-info" (click) = "updateWave(w.adresse)"><mat-icon>create</mat-icon>Update</button>

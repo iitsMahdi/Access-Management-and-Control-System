@@ -21,7 +21,7 @@ export class DevicesComponent implements OnInit {
   controllers:any
   readers:any
   roless = this.userAuthService.getRoles()
-  waves:any
+  waves:any[]=[]
 
   constructor(
     private router: Router,
@@ -69,8 +69,14 @@ getController(){
 
 getWaveshares(){
   this.waveService.getWaveList().subscribe((data)=>{
-    this.waves=data
-    console.log(data)
+    let i=0
+    while (data.length !=0) {
+      if(data[i].prt){
+        this.waves.push(data[i])
+      }
+      i++
+    }
+    console.log(this.waves)
   })
 }
 

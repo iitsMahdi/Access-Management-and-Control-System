@@ -24,6 +24,7 @@ export class UpdateDoorComponent implements OnInit{
   deptss:any
 
   controllers:any
+  contss:any
 
   constructor(
     private contService:ControllerService,
@@ -39,9 +40,11 @@ export class UpdateDoorComponent implements OnInit{
     this.doorForm=this.formBuilder.group({
       name:['',Validators.required],
       type:['',Validators.required],
-      Departement:['',Validators.required]
+      Controller:['',Validators.required],
+      number:['',Validators.required]
+
     });
-    this.getDepts()
+    this.getControllers()
 
     this.id = this.route.snapshot.params['id'];
     this.doorService.getDoorById(this.id).subscribe(data => {
@@ -49,6 +52,8 @@ export class UpdateDoorComponent implements OnInit{
       console.log(data)
       this.doorForm.controls["name"].setValue(data.nomPorte)
       this.doorForm.controls["type"].setValue(data.type)
+      this.doorForm.controls["number"].setValue(data.numPorte)
+
     }, error => console.log(error));
 
 
@@ -56,14 +61,14 @@ export class UpdateDoorComponent implements OnInit{
   }
   getControllers(){
     this.contService.getContList().subscribe((data)=>{
-      this.controllers=data;
+      this.contss=data;
       console.log(data)
     })
   }
 
-  dep:string='';
+  cont:string='';
   selectChangeCont(event : any){
-    this.dep=event.target.value;
+    this.cont=event.target.value;
   }
   goToDoorList(){
     this.router.navigate(['/alldoors']);
@@ -73,21 +78,15 @@ export class UpdateDoorComponent implements OnInit{
   selectChangeType(event : any){
     this.type=event.target.value;
   }
-  getDepts(){
-    this.deptsService.getDepList().subscribe((data)=>{
-      this.deptss=data;
-      console.log(data)
-    })
-  }
+
   onSubmit(){
     this.porte.nomPorte=this.doorForm.value.name;
     this.porte.type=this.doorForm.value.type;
-
-
-    const deptObs = this.deptsService.getDepById(Number(this.dep))
-    forkJoin([deptObs]).subscribe(([depData]) => {
-      this.porte.dep=depData;
-      console.log(depData);
+    this.porte.numPorte=this.doorForm.value.number;
+    const contObs = this.contService.getContById(Number(this.cont))
+    forkJoin([contObs]).subscribe(([contData]) => {
+      this.porte.cntrl=contData;
+      console.log(contData);
 
       this.doorService.updateDoor(this.id, this.porte).subscribe(data =>{
         console.log(this.porte)

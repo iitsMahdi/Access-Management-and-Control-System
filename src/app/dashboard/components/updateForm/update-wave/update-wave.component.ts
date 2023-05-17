@@ -33,6 +33,7 @@ export class UpdateWaveComponent  implements OnInit {
     this.waveService.getWaveById(this.id).subscribe((data)=>{
         console.log("cont")
         console.log(data)
+        this.waveForm.controls["name"].setValue(data.nameDevice)
         this.waveForm.controls["status"].setValue(data.status)
         this.waveForm.controls["adresse"].setValue(data.adresse)
 
@@ -51,7 +52,7 @@ export class UpdateWaveComponent  implements OnInit {
     this.router.navigate(['/alldevices']);
   }
     saveWave(){
-    //this.sevedWaveShare.nomWave=this.waveForm.value.name;
+    this.sevedWaveShare.nameDevice=this.waveForm.value.name;
     this.sevedWaveShare.adresse=this.waveForm.value.adresse;
     this.sevedWaveShare.status=this.waveForm.value.status;
     this.waveService.updateWave(this.id,this.sevedWaveShare).subscribe( (data) =>{

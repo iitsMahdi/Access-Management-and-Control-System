@@ -104,7 +104,6 @@ export class AccessControlComponent implements OnInit {
 		}
 	}
   onSubmit(){
-
     if((this.filterForm.value.dateDeb && !this.filterForm.value.dateFin ) ||(!this.filterForm.value.dateDeb && this.filterForm.value.dateFin ) ){
       Swal.fire({
         icon: 'error',
@@ -119,24 +118,30 @@ export class AccessControlComponent implements OnInit {
       })
     }else{
       if(!this.filterForm.value.dateFin && !this.filterForm.value.dateFin){
-        this.savedFilter.dateDeb=""
-        this.savedFilter.dateFin=""
+        this.savedFilter.dateDeb=null
+        this.savedFilter.dateFin=null
       }else{
         let dd=this.filterForm.value.dateDeb.year+"-"+this.filterForm.value.dateDeb.month+"-"+this.filterForm.value.dateDeb.day
         let df=this.filterForm.value.dateFin.year+"-"+this.filterForm.value.dateFin.month+"-"+this.filterForm.value.dateFin.day
         this.savedFilter.dateDeb=dd
         this.savedFilter.dateFin=df
       }
-      if(this.filterForm.value.timeDeb && this.filterForm.value.timeFin){
+      if (!this.filterForm.value.timeDeb && !this.filterForm.value.timeFin){
+        this.savedFilter.timeDeb=null
+        this.savedFilter.timeFin=null
+      }else if(this.filterForm.value.timeDeb && this.filterForm.value.timeFin){
         this.savedFilter.timeDeb=this.filterForm.value.timeDeb+":00"
         this.savedFilter.timeFin=this.filterForm.value.timeFin+":00"
       }else{
         this.savedFilter.timeDeb=this.filterForm.value.timeDeb
         this.savedFilter.timeFin=this.filterForm.value.timeFin
       }
-      this.savedFilter.typeEv=this.filterForm.value.typeEV
+      if(!this.filterForm.value.typeEV){
+        this.savedFilter.typeEv=null
+      }else{
+        this.savedFilter.typeEv=this.filterForm.value.typeEV
+      }
       console.log(this.savedFilter);
-
       this.eventService.getFilterEV(this.savedFilter).subscribe((ev:any)=>{
         console.log(ev)
         this.clear();
@@ -149,7 +154,7 @@ export class AccessControlComponent implements OnInit {
   }
 
   getTodayEvent(){
-    this.eventService.getEventToday().subscribe((evt:any)=>{
+    this.eventService.getACCEventToday().subscribe((evt:any)=>{
       console.log(evt)
       for (let i = 0; i < evt.length; i++) {
         const msg = {type: 'msg', data: evt[i]};

@@ -34,7 +34,10 @@ export class EventService {
     return this.httpClient.post(`${this.baseURL}/filterEV`, fEV);
   }
 
-  getEventToday(): Observable<Event[]>{
-    return this.httpClient.get<Event[]>(`${this.baseURL}/countev`);
+  getAttEventToday(): Observable<Event[]>{
+    return this.httpClient.get<Event[]>(`${this.baseURL}/alarmEV`);
+  }
+  getACCEventToday(): Observable<Event[]>{
+    return this.httpClient.get<Event[]>(`${this.baseURL}/monitEV`);
   }
 }

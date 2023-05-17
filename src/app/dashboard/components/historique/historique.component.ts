@@ -4,10 +4,11 @@ import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
 import { NgToastService } from 'ng-angular-popup';
 import { ClientService } from 'src/app/Service/client.service';
 import { Client3Service } from 'src/app/Service/client3.service';
+import { DepartementService } from 'src/app/Service/departement.service';
 import { HistoriqueService } from 'src/app/Service/historique.service';
 import { SharedService } from 'src/app/Service/shared.service';
 import { WebSocketService } from 'src/app/Service/web-socket.service';
-import { FilterEV } from 'src/app/model/FilterEv';
+import { filterEV1 } from 'src/app/model/FilterEV1';
 import { Message } from 'src/app/model/message';
 import Swal from 'sweetalert2';
 
@@ -23,15 +24,16 @@ export class HistoriqueComponent implements OnInit{
   msg:any={ "idhis": "9", "date": "05/05/2023", "idevent": "1", "time": "17:10:57","Departement":"Informatique" ,"cause":"testC","etat":"testEtat","nomporte":"Door1"}
   closeResult!:string
   filterForm !:FormGroup;
-  savedFilter:FilterEV=new FilterEV()
-
+  savedFilter:filterEV1=new filterEV1()
+  depts:any
 
   constructor(
     private wsClient3 : Client3Service,
     private toast:NgToastService,
     private modalService: NgbModal,
     private formBuilder: FormBuilder,
-    private histService:HistoriqueService
+    private histService:HistoriqueService,
+    private DepService:DepartementService
     ) { }
 
 
@@ -41,10 +43,11 @@ export class HistoriqueComponent implements OnInit{
       dateFin:['',Validators.required],
       timeDeb:['',Validators.required],
       timeFin:['',Validators.required],
-      typeEV:['',Validators.required]
+      etat:['',Validators.required],
+      dep:['',Validators.required]
     });
-
-    //this.getTodayEvent()
+    this.getDepartement()
+    this.getTodayHist()
 
     this.wsClient3.connect("websocket/client3").subscribe(
       (message: any) => {
@@ -70,12 +73,25 @@ export class HistoriqueComponent implements OnInit{
     this.messages.splice(0, this.messages.length);
     this.socketMessages.splice(0, this.socketMessages.length);
   }
+
+  departement:string='';
+  selectChangeDep(event : any){
+    this.departement=event.target.value;
+  }
+
+
+  getDepartement(){
+    this.DepService.getDepList().subscribe((data)=>{
+      this.depts=data;
+      console.log(data)
+    })
+  }
   open(content:any) {
 		this.modalService.open(content, { ariaLabelledBy: 'modal-basic-title' }).result.then(
 			(result) => {
 				//this.closeResult = `Closed with: ${result}`;
-        console.log("form submitted")
-        //this.onSubmit()
+        //console.log("form submitted")
+        this.onSubmit()
 			},
 			(reason) => {
 				//this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
@@ -110,24 +126,37 @@ export class HistoriqueComponent implements OnInit{
       })
     }else{
       if(!this.filterForm.value.dateFin && !this.filterForm.value.dateFin){
-        this.savedFilter.dateDeb=""
-        this.savedFilter.dateFin=""
+        this.savedFilter.dateDeb=null
+        this.savedFilter.dateFin=null
       }else{
         let dd=this.filterForm.value.dateDeb.year+"-"+this.filterForm.value.dateDeb.month+"-"+this.filterForm.value.dateDeb.day
         let df=this.filterForm.value.dateFin.year+"-"+this.filterForm.value.dateFin.month+"-"+this.filterForm.value.dateFin.day
         this.savedFilter.dateDeb=dd
         this.savedFilter.dateFin=df
       }
-      if(this.filterForm.value.timeDeb && this.filterForm.value.timeFin){
+      if (!this.filterForm.value.timeDeb && !this.filterForm.value.timeFin){
+        this.savedFilter.timeDeb=null
+        this.savedFilter.timeFin=null
+      }else if(this.filterForm.value.timeDeb && this.filterForm.value.timeFin){
         this.savedFilter.timeDeb=this.filterForm.value.timeDeb+":00"
         this.savedFilter.timeFin=this.filterForm.value.timeFin+":00"
       }else{
         this.savedFilter.timeDeb=this.filterForm.value.timeDeb
         this.savedFilter.timeFin=this.filterForm.value.timeFin
       }
-      this.savedFilter.typeEv=this.filterForm.value.typeEV
+      if(!this.filterForm.value.typeEV){
+        this.savedFilter.etat=null
+      }else{
+        this.savedFilter.etat=this.filterForm.value.typeEV
+      }
+      if(!this.departement){
+        this.savedFilter.dep=null
+      }else{
+        this.savedFilter.dep=this.departement
+
+      }
       console.log(this.savedFilter);
-/*
+
       this.histService.getFilterHist(this.savedFilter).subscribe((ev:any)=>{
         console.log(ev)
         this.clear();
@@ -135,11 +164,11 @@ export class HistoriqueComponent implements OnInit{
           const msg = {type: 'msg', data: ev[i]};
           this.messages.push(msg)
         }
-      })*/
+      })
     }
   }
 
-  getTodayEvent(){
+  getTodayHist(){
     this.histService.getHistToday().subscribe((evt:any)=>{
       console.log(evt)
       for (let i = 0; i < evt.length; i++) {

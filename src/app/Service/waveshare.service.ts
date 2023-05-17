@@ -13,16 +13,16 @@ export class WaveshareService {
 
   constructor(private httpClient: HttpClient) { }
 
-  getWaveList(): Observable<Waveshare[]>{
-    return this.httpClient.get<Waveshare[]>(`${this.baseURL}/all`);
+  getWaveList(): Observable<any[]>{
+    return this.httpClient.get<any[]>(`${this.baseURL}/all`);
   }
 
   createWave(w: Waveshare): Observable<Object>{
     return this.httpClient.post<Waveshare>(`${this.baseURL}/add`,w );
   }
 
-  getWaveById(id: number): Observable<Waveshare>{
-    return this.httpClient.get<Waveshare>(`${this.baseURL}/get-one/${id}`);
+  getWaveById(id: any): Observable<any>{
+    return this.httpClient.get<any>(`${this.baseURL}/get-one/${id}`);
   }
 
   updateWave(id: number, w: Waveshare): Observable<Object>{

@@ -48,6 +48,8 @@ export class AddDeviceComponent implements OnInit {
     this.readerForm=this.formBuilder.group({
       ip:['',Validators.required],
       door:['',Validators.required],
+      status:['',Validators.required],
+
     });
     this.contForm=this.formBuilder.group({
       name:['',Validators.required],
@@ -58,9 +60,9 @@ export class AddDeviceComponent implements OnInit {
 
     });
     this.waveForm=this.formBuilder.group({
-      name:['',Validators.required],
+      nameWave:['',Validators.required],
       status:['',Validators.required],
-      adresse:['',Validators.required],
+      adr:['',Validators.required],
     });
 
     this.getDepartement()
@@ -141,7 +143,7 @@ export class AddDeviceComponent implements OnInit {
   }
   saveReader():void{
     this.savedReader.ipAdresse=this.readerForm.value.ip;
-    //getting the door (id selected option)
+    this.savedReader.etatLecteur=this.readerForm.value.status
     const doorObs = this.doorService.getDoorById(Number(this.doorS))
     forkJoin([doorObs]).subscribe(([doorData]) => {
       this.savedReader.prt=doorData;
@@ -164,8 +166,8 @@ export class AddDeviceComponent implements OnInit {
 
   }
   saveWave(){
-    this.sevedWaveShare.nameDevice=this.waveForm.value.name;
-    this.sevedWaveShare.adresse=this.waveForm.value.adresse;
+    this.sevedWaveShare.nameDevice=this.waveForm.value.nameWave;
+    this.sevedWaveShare.adresse=this.waveForm.value.adr;
     this.sevedWaveShare.status=this.waveForm.value.status;
     this.waveService.createWave(this.sevedWaveShare).subscribe( (data) =>{
       Swal.fire({
@@ -176,7 +178,7 @@ export class AddDeviceComponent implements OnInit {
         timer: 1500
       });
 
-      console.log(data);
+      console.log(this.sevedWaveShare);
       this.goToDeviceList();
     },
     error => console.log(error));

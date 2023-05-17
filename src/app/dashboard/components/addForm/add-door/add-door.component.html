@@ -8,20 +8,30 @@
 
       <div class="form-group">
         <label for="name">Name</label>
-        <input type="text" name="name" id="name" class="my-input" placeholder="Enter your name" required formControlName="name">
+        <input type="text" name="name" id="name" class="my-input form-control" placeholder="Enter your name" required formControlName="name">
+      </div>
+      <div class="form-group">
+        <label for="name">Number</label>
+        <input type="number" name="number" id="number" class="my-input form-control" placeholder="Enter your name" required formControlName="number">
       </div>
       <div class="form-group">
         <label for="email">Type</label>
-        <select name="Type" id="Type" class="my-select" required formControlName="type" (change)="selectChangeType($event)">
+        <select name="Type" id="Type" class="my-select form-control" required formControlName="type" (change)="selectChangeType($event)">
           <option value="">Select Type</option>
           <option value="Porte_Departement"> Porte Departement</option>
           <option value="Porte_Principal">Porte Principal</option>
         </select>
       </div>
       <div class="form-group">
-        <label for="Departement">Departement</label>
-        <select name="Departement" id="Departement" class="my-select" required formControlName="Departement" (change)="selectChangeCont($event)">
-          <option *ngFor="let d of deptss" value="{{d.idDep}}">{{d.nomDep}}</option>
+        <label for="Controller">Controller</label>
+        <select name="Controller" id="Controller" class="my-select form-control" required formControlName="Controller" (change)="selectChangeCont($event)">
+          <option *ngFor="let c of contss" value="{{c.idCont}}">{{c.nomCont}}</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="Wave">Waveshare</label>
+        <select name="Wave" id="Wave" class="my-select form-control" required formControlName="Wave" (change)="selectChangeWave($event)">
+          <option *ngFor="let wv of waves" value="{{wv.adresse}}">{{wv.nameDevice}}</option>
         </select>
       </div>
 

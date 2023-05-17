@@ -46,8 +46,12 @@
 <div *ngIf="dev ==='Reader'">
   <form method="post" [formGroup]="readerForm" (ngSubmit)="onSubmit()">
       <div class="form-group">
-        <label for="name">Reader</label>
-        <input type="text" name="ip" id="ip" class="my-input" placeholder="Enter your @IP" required formControlName="ip">
+        <label for="name">IP Adress</label>
+        <input type="text" name="ip" id="ip" class="my-input" placeholder="Enter The @IP" required formControlName="ip">
+      </div>
+      <div class="form-group">
+        <label for="status">Status</label>
+        <input type="text" name="status" id="status" class="my-input" placeholder="Enter The Status of the reader" required formControlName="status">
       </div>
       <div class="form-group">
         <label for="department">Door</label>
@@ -67,11 +71,11 @@
   <form method="post" [formGroup]="waveForm" (ngSubmit)="onSubmit()">
       <div class="form-group">
         <label for="name">Name</label>
-        <input type="text" name="ip" id="ip" class="my-input" placeholder="Enter the waveshare name" required formControlName="name">
+        <input type="text" name="name" id="name" class="my-input" placeholder="Enter the waveshare name" required formControlName="nameWave">
       </div>
       <div class="form-group">
-        <label for="name">Adresse IP</label>
-        <input type="text" name="ip" id="ip" class="my-input" placeholder="Enter the @IP" required formControlName="adresse">
+        <label for="name">Adresse</label>
+        <input type="text" name="adr" id="adr" class="my-input" placeholder="Enter the @IP" required formControlName="adr">
       </div>
       <div class="form-group">
         <label for="name">Statut</label>

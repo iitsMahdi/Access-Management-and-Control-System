@@ -16,10 +16,28 @@
   box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
 }*/
 
-.container {
-  max-width: 800px;
-  margin: 0 auto;
-  padding: 20px;
+/*  import google fonts */
+
+.container{
+}
+
+/* MAin Section */
+.main{
+  position: relative;
+  padding: 10px;
+  width: 100%;
+}
+/*Attendance List serction  */
+.attendance{
+  text-transform: capitalize;
+}
+.attendance-list{
+  width: 100%;
+  padding: 5px;
+  margin-top: 5px;
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: 0 20px 35px rgba(0, 0, 0, 0.1);
 }
 
 .form-group {

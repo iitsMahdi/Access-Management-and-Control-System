@@ -199,8 +199,8 @@ export class UpdateUserComponent implements OnInit {/*
 
     this.userService.getUserById(this.id).subscribe(
       (data:any) => {
-      this.user = data;
-      console.log(data)
+      //this.user = data;
+      //console.log(data)
       this.userInfForm.controls["firstname"].setValue(data.firstname)
       this.userInfForm.controls["lastname"].setValue(data.lastname)
       this.userInfForm.controls["adresse"].setValue(data.adresse)
@@ -339,9 +339,9 @@ export class UpdateUserComponent implements OnInit {/*
     this.user.password=this.userCredForm.value.password
   }
 
-  assignUser(id:any){
+  assignUser(){
     for (let i = 0; i < this.selectedDoors.length; i++) {
-      this.userService.assignPortes(this.selectedDoors[i],id).subscribe(()=>{
+      this.userService.assignPortes(this.selectedDoors[i],this.id).subscribe(()=>{
         console.log("zedetlek lbibeeen lel user")
       },
       error =>
@@ -363,7 +363,7 @@ export class UpdateUserComponent implements OnInit {/*
         timer: 1500
       });
       console.log(data);
-      this.assignUser(data);
+      this.assignUser();
       this.goToUserList();
       return data
     },

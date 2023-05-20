@@ -1,5 +1,6 @@
-<button (click)="sendMessage()">Send</button>
-<br><br>
+<!--<button (click)="sendMessage()">Send</button>
+  <br><br>
+-->
 
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"/>
 
@@ -14,17 +15,17 @@
           </button>
           <div class="btnCS">
             <button mat-raised-button (click)="stopWebSocket()" class="btnN" >
-              <mat-icon>add</mat-icon>
+              <mat-icon>stop</mat-icon>
               Stop
             </button>
             <button mat-raised-button (click)="ngOnInit()" class="btnN">
-              <mat-icon>add</mat-icon>
-              Start
+              <mat-icon>play_arrow</mat-icon>Start
             </button>
             <button mat-raised-button (click)="clear()" class="btnN">
-              <mat-icon>add</mat-icon>
+              <mat-icon> clear_all</mat-icon>
               Clear All
             </button>
+
           </div>
       <div class="attendance-list">
         <table class="table" >
@@ -41,8 +42,8 @@
           <tbody>
             <tr *ngFor="let msg of socketMessages">
               <td>{{ msg.data.idevent }} </td>
-              <td>{{ msg.data.dateevnt }} </td>
-              <td>{{ msg.data.timeevnt }} </td>
+              <td>{{ msg.data.dateevnt[0] }}-{{ msg.data.dateevnt[1] }}-{{ msg.data.dateevnt[2] }} </td>
+              <td>{{ msg.data.timeevnt[0]}}:{{ msg.data.timeevnt[1]}}:{{ msg.data.timeevnt[2]}} </td>
               <td>{{ msg.data.prt }} </td>
               <td>{{ msg.data.departement }} </td>
               <td>{{ msg.data.etatevt }} </td>
@@ -129,15 +130,9 @@
         </div><br>
         <div class="input-group">
           <label for="TypeEv">Event Type :</label>&nbsp;
-          <input
-            id="TypeEv"
-            class="form-control"
-            placeholder=""
-            name="TypeEv"
-            ngbDatepicker
-            type="text"
-            formControlName="typeEV"
-          />
+          <select name="event" id="event" class="my-select" required formControlName="typeEV" (change)="selectChangeEv($event)">
+            <option *ngFor="let ev of Evt" value="{{ev}}">{{ev}}</option>
+          </select>
         </div>
       </div>
     </form>

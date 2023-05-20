@@ -11,6 +11,7 @@ import { HistoriqueService } from 'src/app/Service/historique.service';
 import { ClientAccService } from 'src/app/Service/client-acc.service';
 import { DepartementService } from 'src/app/Service/departement.service';
 import { Client3Service } from 'src/app/Service/client3.service';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
@@ -40,6 +41,8 @@ export class DashboardComponent implements OnInit {
   denUsers:any[]=[]
   depts:any[]=[]
   denByDep:any[]=[]
+  chDM!: FormGroup;
+
   constructor(
       private websocketService: WebSocketService,
       private clientServ:ClientService,
@@ -50,9 +53,15 @@ export class DashboardComponent implements OnInit {
       private clientAcc : ClientAccService,
       private depService:DepartementService,
       private wsClient3 : Client3Service,
+      private formBuilder: FormBuilder
       ) {
   }
   async ngOnInit() {
+    this.chDM = this.formBuilder.group({
+      nom_dep: ['', Validators.required],
+      month:['', Validators.required]
+    });
+
 /*************************************************************************************************************************/
     //Init of Pie chart
     try {
@@ -101,6 +110,8 @@ export class DashboardComponent implements OnInit {
     );
 /*************************************************************************************************************************/
       //Init of Bar chart
+
+
       try{
         this.histService.getHistList().subscribe((data:any)=>{
           this.hist=data
@@ -119,7 +130,7 @@ export class DashboardComponent implements OnInit {
         console.error(error);
       }
       //uPdate Bar Chart from webSocket
-      this.reverseUsers()
+      /*this.reverseUsers()
       this.clientAcc.connect("websocket/client3").subscribe(
         (message: any) => {
           const msg = {type: 'msg', data: message};
@@ -135,7 +146,7 @@ export class DashboardComponent implements OnInit {
         (error:any) => {
           console.error('WebSocket error:', error);
         }
-      );
+      );*/
 /*************************************************************************************************************************/
         //Init of Bar2 chart
         try {
@@ -154,7 +165,7 @@ export class DashboardComponent implements OnInit {
       this.wsClient3.connect("websocket/client3").subscribe(
         (message: any) => {
             const msg = {type: 'msg', data: message};
-            if (message.etat=="Accès Refusé"){
+            if (message.etat=="accès refusé"){
               let dep=message.Departement
               let IndexDep=this.depts.indexOf(dep)
               this.denByDep[IndexDep]++
@@ -165,6 +176,25 @@ export class DashboardComponent implements OnInit {
           console.error('WebSocket error:', error);
         }
       );
+/*************************************************************************************************************************/
+      //Init of Bar chart
+      /*try{
+        let monthIndex: number = new Date().getMonth();
+        let deppp=this.depts[0]
+        this.histService.getByDepMonth(deppp,monthIndex).subscribe((data:any)=>{
+          for (let index = 0; index < data.length; index++) {
+              this.dates.push(data[index].date)
+              this.denUsers.push(data[index].den)
+          }
+          this.reverseDates()
+          this.reverseUsers()
+          console.log(this.dates)
+          this.createChart();
+        })
+      }catch (error) {
+        console.error(error);
+      }*/
+
 
       /* this.websocketService.connect().subscribe(
       (message: any) => {
@@ -321,6 +351,15 @@ export class DashboardComponent implements OnInit {
       chart.update();
     }
   }
+
+  updateChangedChartData(chart: any, data: any,dates:any, dataSetIndex: any) {
+    if (chart && chart.data) { // check if chart and chart.data are defined
+      chart.data.datasets[dataSetIndex].data = data;
+      chart.data.labels=dates
+      chart.update();
+    }
+  }
+
   setVariable(value: any) {
     this.messages.push(value);
     this.message$.next(this.messages); // emit the updated myVariable array
@@ -338,6 +377,41 @@ export class DashboardComponent implements OnInit {
     let data=[12,24,3,4,5,6,7]
     this.updateChartData(this.chart, data, 1);
   }
+  departement:any='';
+  selectChangeDep(event : any){
+    this.departement=event.target.value;
+  }
+  month:any='';
+  selectChangeMonth(event : any){
+    this.month=event.target.value;
+    console.warn(this.month)
+    console.warn(this.departement)
+/*
+    try{
+      let d:any[]=[]
+      let n:any[]=[]
 
+      this.histService.getByDepMonth(this.departement,Number(this.month)).subscribe((data:any)=>{
+        for (let index = 0; index < data.length; index++) {
+            d.push(data[index].date)
+            n.push(data[index].den)
+        }
+        d.reverse()
+        n.reverse()
+        console.log(this.dates)
+        //this.updateChartData(this.chart, this.denUsers, 0);
+        this.updateChangedChartData(this.chart, n,d, 0);
+      })
+    }catch (error) {
+      console.error(error);
+    }*/
+
+  }
+
+  affDepM(){
+    console.log(this.departement)
+    console.log(this.month)
+
+  }
 
 }

@@ -49,6 +49,23 @@ export class HistoriqueComponent implements OnInit{
     this.getDepartement()
     this.getTodayHist()
 
+    /*this.wsClient3.connect("websocket/client3").subscribe(
+      (message: any) => {
+          const msg = {type: 'msg', data: message};
+          console.log('Received message:', msg);
+          this.toast.warning({detail:"New Event",summary:msg.data.etatevt,duration:1500})
+          this.socketMessages.push(msg);
+          //this.shared.setVariable(msg);
+      },
+      (error:any) => {
+        console.error('WebSocket error:', error);
+      }
+    );*/
+    this.connectWS()
+  }
+
+  connectWS(){
+    //window.location.reload()
     this.wsClient3.connect("websocket/client3").subscribe(
       (message: any) => {
           const msg = {type: 'msg', data: message};
@@ -144,10 +161,10 @@ export class HistoriqueComponent implements OnInit{
         this.savedFilter.timeDeb=this.filterForm.value.timeDeb
         this.savedFilter.timeFin=this.filterForm.value.timeFin
       }
-      if(!this.filterForm.value.typeEV){
+      if(!this.filterForm.value.etat){
         this.savedFilter.etat=null
       }else{
-        this.savedFilter.etat=this.filterForm.value.typeEV
+        this.savedFilter.etat=this.filterForm.value.etat
       }
       if(!this.departement){
         this.savedFilter.dep=null

@@ -25,6 +25,7 @@ export class AttendanceComponent implements  OnInit{
   filterForm !:FormGroup;
   savedFilter:FilterEV=new FilterEV()
   i: number = 0;
+  Evt:any[]=["Intrusion_Alarm","Stayed_On","Tailing_Alarm","Reverse_Alarm"]
 
   constructor(
     private websocketService: WebSocketService,
@@ -64,6 +65,11 @@ export class AttendanceComponent implements  OnInit{
 
   public sendMessage(): void {
     this.websocketService.sendMessage(this.msg);
+  }
+
+  evFilter:string='';
+  selectChangeEv(event : any){
+    this.evFilter=event.target.value;
   }
 
   stopWebSocket(): void {
@@ -131,10 +137,10 @@ export class AttendanceComponent implements  OnInit{
         this.savedFilter.timeDeb=this.filterForm.value.timeDeb
         this.savedFilter.timeFin=this.filterForm.value.timeFin
       }
-      if(!this.filterForm.value.typeEV){
+      if(!this.evFilter){
         this.savedFilter.typeEv=null
       }else{
-        this.savedFilter.typeEv=this.filterForm.value.typeEV
+        this.savedFilter.typeEv=this.evFilter
       }
       console.log(this.savedFilter);
       this.eventService.getFilterEV(this.savedFilter).subscribe((ev:any)=>{
@@ -155,6 +161,7 @@ export class AttendanceComponent implements  OnInit{
         const msg = {type: 'msg', data: evt[i]};
         this.messages.push(msg)
       }
+      this.messages.reverse()
     })
 
   }

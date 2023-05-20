@@ -69,9 +69,30 @@
               </div>
             </div>
             <br>
-            <span style="text-align: center;" *ngFor="let d of depts" >
-              <Button onclick="changeChartByDep(d)">{{d}}</Button>&nbsp;&nbsp;
+            <form  >
+            <span style="text-align: center;" >
+              <select name="department" id="department" class="my-select" required  (change)="selectChangeDep($event)">
+                <option value=''>--Select Departement--</option>
+                <option *ngFor="let dep of depts" value="{{dep}}">{{dep}}</option>
+              </select>
+              <select name="month" id="month" class="my-select" required  (change)="selectChangeMonth($event)">
+                <option value=''>--Select Month--</option>
+                <option selected value='01'>Janaury</option>
+                <option value='2'>February</option>
+                <option value='3'>March</option>
+                <option value='4'>April</option>
+                <option value='5'>May</option>
+                <option value='6'>June</option>
+                <option value='7'>July</option>
+                <option value='8'>August</option>
+                <option value='9'>September</option>
+                <option value='10'>October</option>
+                <option value='11'>November</option>
+                <option value='12'>December</option>
+              </select>
+              <button type="submit" (click)="affDepM()"><i class="fa fa-search" aria-hidden="true"></i> Search</button>
             </span>
+          </form>
           </div>
           <div class="charts-card">
             <h2 class="chart-title">Title Chart 1</h2>

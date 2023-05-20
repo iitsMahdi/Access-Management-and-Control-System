@@ -31,7 +31,7 @@ export class AccessControlComponent implements OnInit {
   closeResult!:string
   filterForm !:FormGroup;
   savedFilter:FilterEV=new FilterEV()
-
+  Evt:any[]=["Entry_Open","Entry_Close","Exist_Open","Exist_Close"]
 
   constructor(
     private websocketService: WebSocketService,
@@ -68,6 +68,11 @@ export class AccessControlComponent implements OnInit {
     );
   }
 
+  evFilter:string='';
+  selectChangeEv(event : any){
+    this.evFilter=event.target.value;
+  }
+
   public sendMessage(): void {
     this.websocketService.sendMessage(this.msg);
   }
@@ -77,6 +82,7 @@ export class AccessControlComponent implements OnInit {
   }
   clear() {
     this.messages.splice(0, this.messages.length);
+    this.socketMessages.splice(0, this.socketMessages.length);
   }
   fileDownload(){}
 
@@ -136,13 +142,13 @@ export class AccessControlComponent implements OnInit {
         this.savedFilter.timeDeb=this.filterForm.value.timeDeb
         this.savedFilter.timeFin=this.filterForm.value.timeFin
       }
-      if(!this.filterForm.value.typeEV){
+      if(!this.evFilter){
         this.savedFilter.typeEv=null
       }else{
-        this.savedFilter.typeEv=this.filterForm.value.typeEV
+        this.savedFilter.typeEv=this.evFilter
       }
       console.log(this.savedFilter);
-      this.eventService.getFilterEV(this.savedFilter).subscribe((ev:any)=>{
+      this.eventService.getFilterEV1(this.savedFilter).subscribe((ev:any)=>{
         console.log(ev)
         this.clear();
         for (let i = 0; i < ev.length; i++) {

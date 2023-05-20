@@ -3,10 +3,9 @@
 <div class="container">
   <section class="main">
       <section class="attendance" width="10%" height="10%">
-
-          <button (click)="sendMessage()">Send</button>
-        <br><br>
-
+<!--<button (click)="sendMessage()">Send</button>
+  <br><br>
+-->
         <div class="attendance-list">
         <h3 style="text-align: center;font-weight: bold;">Real Time History</h3><br>
         <button mat-raised-button class="btnN" (click)="open(content)">
@@ -15,17 +14,17 @@
         </button>
         <div class="btnCS">
           <button mat-raised-button (click)="stopWebSocket()" class="btnN" >
-            <mat-icon>add</mat-icon>
+            <mat-icon>stop</mat-icon>
             Stop
           </button>
-          <button mat-raised-button (click)="ngOnInit()" class="btnN">
-            <mat-icon>add</mat-icon>
-            Start
+          <button mat-raised-button (click)="connectWS()" class="btnN">
+            <mat-icon>play_arrow</mat-icon>Start
           </button>
           <button mat-raised-button (click)="clear()" class="btnN">
-            <mat-icon>add</mat-icon>
+            <mat-icon> clear_all</mat-icon>
             Clear All
           </button>
+
         </div>
         <table class="table" >
           <thead>
@@ -43,8 +42,8 @@
           <tbody>
             <tr *ngFor="let msg of socketMessages">
               <td>{{msg.data.idhis}}</td>
-              <td>{{msg.data.date}}</td>
-              <td>{{msg.data.time}}</td>
+              <td>{{msg.data.date[0]}}-{{msg.data.date[1]}}-{{msg.data.date[2]}}</td>
+              <td>{{msg.data.time[0]}}:{{msg.data.time[1]}}:{{msg.data.time[2]}}</td>
               <td>{{msg.data.nomporte}}</td>
               <td>{{msg.data.Departement}}</td>
               <td>{{msg.data.idevent}}</td>

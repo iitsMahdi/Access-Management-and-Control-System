@@ -56,23 +56,29 @@ export class DepartementsComponent implements OnInit{
 
 
   deletedept(id: bigint){
+      Swal.fire({
+    title: 'Are you sure?',
+    text: "Would you like to delete it!",
+    icon: 'warning',
+    showCancelButton: true,
+    confirmButtonColor: '#3085d6',
+    cancelButtonColor: '#d33',
+    confirmButtonText: 'Yes, delete it!'
+  }).then((result:any) => {
+    if (result.isConfirmed) {
     this.deptService.deleteDep(id,this.role).subscribe((response:any)=>{
       console.log(response);
       this.router.navigate(['/alldepartements']);
       window.location.reload();
-      Swal.fire({
-        position: 'center',
-        icon: 'success',
-        title: 'Departement Deleted successfully',
-        showConfirmButton: false,
-        timer: 1500
-      });
     },
     (error) => {
       console.log(error);
-    }
-    )
-  }
+ }
+  )
+}
+
+})
+}
   fileDownload(){
 
 

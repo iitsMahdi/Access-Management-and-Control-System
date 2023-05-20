@@ -11,6 +11,7 @@ import { Contoller } from 'src/app/model/Controller';
 import { Departement } from 'src/app/model/Departement';
 import { Porte } from 'src/app/model/Porte';
 import Swal from 'sweetalert2';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-add-door',
@@ -30,7 +31,8 @@ export class AddDoorComponent implements OnInit{
     private router: Router,
     private formBuilder: FormBuilder,
     private doorService : DoorService,
-    private wavesService : WaveshareService
+    private wavesService : WaveshareService,
+
     ) {}
 
   porte: Porte = new Porte();
@@ -114,6 +116,9 @@ export class AddDoorComponent implements OnInit{
   goToDoorList(){
     this.router.navigate(['/alldoors']);
   }
+
+
+
 
   onSubmit(){
     console.log(this.porte);

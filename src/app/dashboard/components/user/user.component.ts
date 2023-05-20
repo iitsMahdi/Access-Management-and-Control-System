@@ -6,6 +6,7 @@ import { ngxCsv } from 'ngx-csv/ngx-csv';
 import { Departement } from 'src/app/model/Departement';
 import { Profile } from 'src/app/model/Profile';
 import { UserAuthService } from 'src/app/Service/user-auth.service';
+import Swal from 'sweetalert2';
 
 
 @Component({
@@ -61,11 +62,25 @@ export class UserComponent  implements OnInit{
     this.router.navigate(['updateUser', id]);
   }
   deleteUser(id: bigint){
+    Swal.fire({
+      title: 'Are you sure?',
+      text: "Would you like to delete it!",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, delete it!'
+    }).then((result:any) => {
+      if (result.isConfirmed) {
     this.userService.deleteUser(id,this.roless).subscribe( () => {
       console.log("deleted");
       this.getUsers();
       window.location.reload();
-    })
+    }
+    )
+  }
+
+  })
   }
 
   fileDownload(){

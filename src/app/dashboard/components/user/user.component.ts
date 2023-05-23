@@ -43,7 +43,13 @@ export class UserComponent  implements OnInit{
   }
 
   addData() {
-    this.router.navigate(['/addUser']);
+    let role=this.userAuthService.getRoles();
+    if (role.includes("admin")){
+      this.router.navigate(['/addUserByAdmin']);
+    }else{
+      this.router.navigate(['/addUserByUser']);
+
+    }
   }
   MenageProfile(){
     this.router.navigate(['/']);
@@ -59,9 +65,26 @@ export class UserComponent  implements OnInit{
 
 
   updateUser(id: bigint){
-    this.router.navigate(['updateUser', id]);
+    let role=this.userAuthService.getRoles();
+    if (role.includes("user")){
+      Swal.fire({
+        icon: 'error',
+        title: 'Oops...',
+        text: "You don't have access to do that"
+      })
+    }else{
+      this.router.navigate(['updateUser', id]);
+    }
   }
   deleteUser(id: bigint){
+    let role=this.userAuthService.getRoles();
+    if (role.includes("user")){
+      Swal.fire({
+        icon: 'error',
+        title: 'Oops...',
+        text: "You don't have access to do that"
+      })
+    }else{
     Swal.fire({
       title: 'Are you sure?',
       text: "Would you like to delete it!",
@@ -74,6 +97,11 @@ export class UserComponent  implements OnInit{
       if (result.isConfirmed) {
     this.userService.deleteUser(id,this.roless).subscribe( () => {
       console.log("deleted");
+      Swal.fire(
+        'Deleted!',
+        'User '+id+' has been deleted.',
+        'success'
+      )
       this.getUsers();
       window.location.reload();
     }
@@ -81,6 +109,7 @@ export class UserComponent  implements OnInit{
   }
 
   })
+}
   }
 
   fileDownload(){

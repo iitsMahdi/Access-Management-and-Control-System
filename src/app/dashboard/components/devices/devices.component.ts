@@ -13,7 +13,7 @@ import { UserAuthService } from 'src/app/Service/user-auth.service';
 import { WaveshareService } from 'src/app/Service/waveshare.service';
 import Swal from 'sweetalert2';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { AbstractControl, FormBuilder, FormGroup, ValidatorFn, Validators } from '@angular/forms';
 import { Porte } from 'src/app/model/Porte';
 import { Waveshare } from 'src/app/model/Waveshare';
 import { forkJoin } from 'rxjs';
@@ -56,7 +56,7 @@ export class DevicesComponent implements OnInit {
     ) { }
   ngOnInit(): void {
     this.readerForm=this.formBuilder.group({
-      ip:['',Validators.required],
+      ip:['',[Validators.required, this.ipAddressValidator()]],
       door:['',Validators.required],
       status:['',Validators.required],
 
@@ -65,7 +65,7 @@ export class DevicesComponent implements OnInit {
       name:['',Validators.required],
       status:['',Validators.required],
       dep:['',Validators.required],
-      Adresse:['',Validators.required],
+      Adresse:['',[Validators.required, this.ipAddressValidator()]],
       sn:['',Validators.required],
 
     });
@@ -82,10 +82,28 @@ export class DevicesComponent implements OnInit {
     this.getWaveshares()
   }
 
+  ipAddressValidator(): ValidatorFn {
+    return (control: AbstractControl): { [key: string]: any } | null => {
+      const ipAddressPattern = /^(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/;
+      const ipAddress = control.value;
+
+      if (!ipAddressPattern.test(ipAddress)) {
+        return { invalidIpAddress: true };
+      }
+
+      return null;
+    };
+  }
+
 
 dev:string='Reader';
 selectChange(event : any){
   this.dev=event.target.value;
+}
+
+stat:string='';
+selectChangeStat(event : any){
+  this.stat=event.target.value;
 }
 
 getDepartement(){
@@ -143,16 +161,52 @@ getWaveshares(){
 
 
 updateCont(id: bigint){
-  this.router.navigate(['updateCont', id]);
+  let role=this.userAuthService.getRoles();
+  if (role.includes("user")){
+    Swal.fire({
+      icon: 'error',
+      title: 'Oops...',
+      text: "You don't have access to do that"
+    })
+  }else{
+    this.router.navigate(['updateCont', id]);
+  }
 }
 updateRea(id: bigint){
-  this.router.navigate(['updateRea', id]);
+  let role=this.userAuthService.getRoles();
+  if (role.includes("user")){
+    Swal.fire({
+      icon: 'error',
+      title: 'Oops...',
+      text: "You don't have access to do that"
+    })
+  }else{
+    this.router.navigate(['updateRea', id]);
+  }
 }
 
 updateWave(id:bigint){
-  this.router.navigate(['updateWave', id]);
+  let role=this.userAuthService.getRoles();
+  if (role.includes("user")){
+    Swal.fire({
+      icon: 'error',
+      title: 'Oops...',
+      text: "You don't have access to do that"
+    })
+  }else{
+    this.router.navigate(['updateWave', id]);
+  }
 }
 deleteCont(id: bigint){
+  let role=this.userAuthService.getRoles();
+  if (role.includes("user")){
+    Swal.fire({
+      icon: 'error',
+      title: 'Oops...',
+      text: "You don't have access to do that"
+    })
+  }else{
+
   Swal.fire({
     title: 'Are you sure?',
     text: "Would you like to delete it!",
@@ -165,6 +219,11 @@ deleteCont(id: bigint){
     if (result.isConfirmed) {
   this.controllerService.deleteCont(id,this.roless).subscribe(()=>{
     console.log('deleted')
+    Swal.fire(
+      'Deleted!',
+      'Controller '+id+' has been deleted.',
+      'success'
+    )
     window.location.reload();
   },
   (error:any) => {
@@ -174,8 +233,18 @@ deleteCont(id: bigint){
 }
 
 })
+  }
 }
 deleteRea(id: bigint){
+  let role=this.userAuthService.getRoles();
+  if (role.includes("user")){
+    Swal.fire({
+      icon: 'error',
+      title: 'Oops...',
+      text: "You don't have access to do that"
+    })
+  }else{
+
   Swal.fire({
     title: 'Are you sure?',
     text: "Would you like to delete it!",
@@ -188,6 +257,11 @@ deleteRea(id: bigint){
     if (result.isConfirmed) {
   this.readerService.deleteReader(id,this.roless).subscribe(()=>{
     console.log('deleted')
+    Swal.fire(
+      'Deleted!',
+      'Reader '+id+' has been deleted.',
+      'success'
+    )
     window.location.reload();
   },
   (error:any) => {
@@ -197,35 +271,58 @@ deleteRea(id: bigint){
 }
 
 })
+  }
 }
 
 
 deleteWave(id: bigint){
-  Swal.fire({
-    title: 'Are you sure?',
-    text: "Would you like to delete it!",
-    icon: 'warning',
-    showCancelButton: true,
-    confirmButtonColor: '#3085d6',
-    cancelButtonColor: '#d33',
-    confirmButtonText: 'Yes, delete it!'
-  }).then((result:any) => {
-    if (result.isConfirmed) {
-      this.waveService.deleteWave(id,this.roless).subscribe(()=>{
-        Swal.fire(
-          'Deleted!',
-          'Your file has been deleted.',
-          'success'
+  let role=this.userAuthService.getRoles();
+  if (role.includes("user")){
+    Swal.fire({
+      icon: 'error',
+      title: 'Oops...',
+      text: "You don't have access to do that"
+    })
+  }else{
+    Swal.fire({
+      title: 'Are you sure?',
+      text: "Would you like to delete it!",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, delete it!'
+    }).then((result:any) => {
+      if (result.isConfirmed) {
+        this.waveService.deleteWave(id,this.roless).subscribe(()=>{
+          Swal.fire(
+            'Deleted!',
+            'Waveshare '+id+' has been deleted.',
+            'success'
+          )
+          window.location.reload();
+        },
+        (error:any) => {
+          console.error('WebSocket error:', error);
+        }
         )
-        window.location.reload();
-      },
-      (error:any) => {
-        console.error('WebSocket error:', error);
-      }
-      )
-  }
+    }
 
-  })
+    })
+  }
+}
+
+BefOpen(cont:any){
+  let role=this.userAuthService.getRoles();
+  if (role.includes("user")){
+    Swal.fire({
+      icon: 'error',
+      title: 'Oops...',
+      text: "You don't have access to do that"
+    })
+  }else{
+    this.open(cont)
+  }
 }
 
 open(content:any) {
@@ -258,7 +355,7 @@ goToDeviceList(){
 }
 saveController():void{
   this.savedCont.nomCont=this.contForm.value.name;
-  this.savedCont.status=this.contForm.value.status;
+  this.savedCont.status=this.stat;
   this.savedCont.ipAdresse=this.contForm.value.Adresse;
   this.savedCont.serial_Number=this.contForm.value.sn;
 
@@ -282,32 +379,41 @@ saveController():void{
 }
 saveReader():void{
   this.savedReader.ipAdresse=this.readerForm.value.ip;
-  this.savedReader.etatLecteur=this.readerForm.value.status
+  this.savedReader.etatLecteur=this.stat;
   const doorObs = this.doorService.getDoorById(Number(this.doorS))
   forkJoin([doorObs]).subscribe(([doorData]) => {
     this.savedReader.prt=doorData;
     console.log(doorData);
+    const objectCount = Object.keys(doorData.lecteur).length;
+    if(objectCount<2){
+      this.readerService.createReader(this.savedReader).subscribe( data =>{
+        Swal.fire({
+          position: 'center',
+          icon: 'success',
+          title: 'Reader added successfully',
+          showConfirmButton: false,
+          timer: 1500
+        });
 
-    this.readerService.createReader(this.savedReader).subscribe( data =>{
+        console.log(data);
+        this.goToDeviceList();
+        window.location.reload()
+      },
+      error => console.log(error));
+    }else{
       Swal.fire({
-        position: 'center',
-        icon: 'success',
-        title: 'Reader added successfully',
-        showConfirmButton: false,
-        timer: 1500
-      });
-
-      console.log(data);
-      this.goToDeviceList();
-    },
-    error => console.log(error));
-  });
+        icon: 'error',
+        title: 'Oops...',
+        text: "Door have already 2 Reader !!"
+      })
+    }
+    });
 
 }
 saveWave(){
   this.sevedWaveShare.nameDevice=this.waveForm.value.nameWave;
   this.sevedWaveShare.adresse=this.waveForm.value.adr;
-  this.sevedWaveShare.status=this.waveForm.value.status;
+  this.sevedWaveShare.status=this.stat;
   this.waveService.createWave(this.sevedWaveShare).subscribe( (data) =>{
     Swal.fire({
       position: 'center',

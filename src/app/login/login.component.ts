@@ -48,6 +48,7 @@ login(loginForm: FormGroup,rls:String) {
       this.role=this.role.substring(1,this.role.length-1)
       this.userAuthService.setRoles(this.role);
       this.userAuthService.setToken(response.token);
+      this.userAuthService.setEmail(this.loginForm.value.email);
       console.log("connected")
       console.log(this.role)
       if (this.role === 'admin') {

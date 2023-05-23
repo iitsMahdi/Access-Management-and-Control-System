@@ -5,9 +5,9 @@
   <section class="main">
       <section class="attendance" width="10%" height="10%">
         <div class="attendance-list">
-        <h3 style="text-align: center;font-weight: bold;">{{dev}} List</h3><br>
-        <div class="demo-button-container">
-          <button mat-raised-button (click)="open(content)" class="demo-button">
+          <h3 style=" text-align: center	;font-size: 36px;font-weight: 600;margin-bottom: 10px;color: #342E37 ;">{{dev}} List</h3><br>
+          <div class="demo-button-container">
+          <button mat-raised-button (click)="BefOpen(content)" class="demo-button">
             <mat-icon>add</mat-icon>
               Add Device
           </button>
@@ -145,6 +145,9 @@
       <div class="form-group">
         <label for="name">Ip Adresse</label>
         <input type="text" name="Adresse" id="Adresse" class="my-input" placeholder="Enter THE ip adress" required formControlName="Adresse">
+        <div style="color: red;font-weight: bold;" *ngIf="contForm.get('Adresse')!.hasError('invalidIpAddress') && contForm.get('Adresse')!.touched" class="error">
+          Invalid IP address format.
+        </div>
       </div>
       <div class="form-group">
         <label for="name">Serial Number</label>
@@ -152,7 +155,10 @@
       </div>
       <div class="form-group">
         <label for="status">Status</label>
-        <input type="text" name="status" id="status" class="my-input" placeholder="Enter your Status" required formControlName="status">
+        <select class="my-select" name="status" id="status" (change)="selectChangeStat($event)" formControlName="status">
+          <option value="Connected">Connected</option>
+          <option value="Disconnected">Disconnected</option>
+        </select>
       </div>
       <div class="form-group">
         <label for="department">Department</label>
@@ -168,14 +174,20 @@
         <div class="form-group">
           <label for="name">IP Adress</label>
           <input type="text" name="ip" id="ip" class="my-input" placeholder="Enter The @IP" required formControlName="ip">
+          <div style="color: red;font-weight: bold;" *ngIf="readerForm.get('ip')!.hasError('invalidIpAddress') && readerForm.get('ip')!.touched" class="error">
+            Invalid IP address format.
+          </div>
         </div>
         <div class="form-group">
           <label for="status">Status</label>
-          <input type="text" name="status" id="status" class="my-input" placeholder="Enter The Status of the reader" required formControlName="status">
+          <select class="my-select" name="status" id="status" (change)="selectChangeStat($event)" formControlName="status">
+            <option value="Connected">Connected</option>
+            <option value="Disconnected">Disconnected</option>
+          </select>
         </div>
         <div class="form-group">
           <label for="department">Door</label>
-          <select name="door" id="door" class="my-select" required formControlName="door" (change)="selectChangeDoor($event)"formControlName="door">
+          <select name="door" id="door" class="my-select" required formControlName="door" (change)="selectChangeDoor($event)">
             <option *ngFor="let dr of doors" value="{{dr.idPorte}}">{{dr.nomPorte}}</option>
           </select>
         </div>
@@ -194,12 +206,15 @@
         </div>
         <div class="form-group">
           <label for="name">Statut</label>
-          <input type="text" name="ip" id="ip" class="my-input" placeholder="Enter the @statut" required formControlName="status">
+          <select class="my-select" name="status" id="status" (change)="selectChangeStat($event)" formControlName="status">
+            <option value="Connected">Connected</option>
+            <option value="Disconnected">Disconnected</option>
+          </select>
         </div>
     </form>
   </div>
   <div class="modal-footer">
-    <button type="submit" class="btn btn-outline-dark" (click)="modal.close('Save click')">Save</button>
+    <button type="submit" class="btn btn-outline-dark" *ngIf="!(readerForm.get('ip')!.hasError('invalidIpAddress') && readerForm.get('ip')!.touched)"  (click)="modal.close('Save click')">Save</button>
   </div>
 
   </div>

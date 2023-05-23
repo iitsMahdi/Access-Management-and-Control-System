@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
 import { NgToastService } from 'ng-angular-popup';
+import { ngxCsv } from 'ngx-csv';
 import { ClientService } from 'src/app/Service/client.service';
 import { Client3Service } from 'src/app/Service/client3.service';
 import { DepartementService } from 'src/app/Service/departement.service';
@@ -49,6 +50,17 @@ export class HistoriqueComponent implements OnInit{
     this.getDepartement()
     this.getTodayHist()
 
+    const Toast = Swal.mixin({
+      toast: true,
+      position: 'top-right',
+      iconColor: '',
+      customClass: {
+        popup: 'colored-toast'
+      },
+      showConfirmButton: false,
+      timer: 1500,
+      timerProgressBar: true
+    })
     /*this.wsClient3.connect("websocket/client3").subscribe(
       (message: any) => {
           const msg = {type: 'msg', data: message};
@@ -65,12 +77,26 @@ export class HistoriqueComponent implements OnInit{
   }
 
   connectWS(){
+    const Toast = Swal.mixin({
+      toast: true,
+      position: 'top-right',
+      iconColor: '',
+      customClass: {
+        popup: 'colored-toast'
+      },
+      showConfirmButton: false,
+      timer: 1500,
+      timerProgressBar: true
+    })
     //window.location.reload()
     this.wsClient3.connect("websocket/client3").subscribe(
       (message: any) => {
           const msg = {type: 'msg', data: message};
+          Toast.fire({
+            icon: 'info',
+            title: 'New Event '+message.etat
+          })
           console.log('Received message:', msg);
-          this.toast.warning({detail:"New Event",summary:msg.data.etatevt,duration:1500})
           this.socketMessages.push(msg);
           //this.shared.setVariable(msg);
       },
@@ -195,6 +221,30 @@ export class HistoriqueComponent implements OnInit{
     })
 
   }
+  fileDownload(){
+    var options = {
+      fieldSeparator: ',',
+      quoteStrings: '"',
+      decimalseparator: '.',
+      showLabels: true,
+      showTitle: true,
+      title: 'History Data',
+      useBom: true,
+      headers: ["History'ID", "Date", "Time", "Door","Departement","Event'ID","Etat","Cause"]
+    };
 
+    let t1:any=[]
+    let t2:any=[]
+
+    for (let index = 0; index < this.socketMessages.length; index++) {
+      t1.push(this.socketMessages[index].data)
+    }
+    for (let index = 0; index < this.messages.length; index++) {
+      t2.push(this.messages[index].data)
+    }
+     let mergedTableData = [...t1, ...t2];
+
+    new ngxCsv(mergedTableData, "History", options);
+  }
 
 }

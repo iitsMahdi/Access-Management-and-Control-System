@@ -97,10 +97,29 @@ roless=this.userAuthService.getRoles()
   }
 
   updateDoor(id: bigint){
-    this.router.navigate(['updateDoor', id]);
+    let role=this.userAuthService.getRoles();
+    if (role.includes("user")){
+      Swal.fire({
+        icon: 'error',
+        title: 'Oops...',
+        text: "You don't have access to do that"
+      })
+    }else{
+      this.router.navigate(['updateDoor', id]);
+
+    }
   }
 
   deleteDoor(id: bigint){
+    let role=this.userAuthService.getRoles();
+    if (role.includes("user")){
+      Swal.fire({
+        icon: 'error',
+        title: 'Oops...',
+        text: "You don't have access to do that"
+      })
+    }else{
+
     Swal.fire({
       title: 'Are you sure?',
       text: "Would you like to delete it!",
@@ -112,7 +131,11 @@ roless=this.userAuthService.getRoles()
     }).then((result:any) => {
       if (result.isConfirmed) {
     this.doorService.deleteDoor(id,this.roless).subscribe((response:any)=>{
-      console.log(response);
+      Swal.fire(
+        'Deleted!',
+        'Door '+id+' has been deleted.',
+        'success'
+      )
       this.router.navigate(['/alldoors']);
       window.location.reload();
     },
@@ -122,10 +145,22 @@ roless=this.userAuthService.getRoles()
     )
   }
 
-  })
+  })}
   }
 
   fileDownload(){
+  }
+  BefOpen(cont:any){
+    let role=this.userAuthService.getRoles();
+    if (role.includes("user")){
+      Swal.fire({
+        icon: 'error',
+        title: 'Oops...',
+        text: "You don't have access to do that"
+      })
+    }else{
+      this.open(cont)
+    }
   }
 
 

@@ -1,5 +1,4 @@
-
-
+<!--
 <div class="container">
 
   <div class="demo-button-container">
@@ -29,3 +28,40 @@
       </tbody>
   </table>
   </div>
+-->
+<!------------------------------------------------------------------------------------------------------------>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"/>
+
+<div class="container">
+  <section class="main">
+      <section class="attendance" width="10%" height="10%">
+        <div class="attendance-list">
+          <h3 style=" text-align: center	;font-size: 36px;font-weight: 600;margin-bottom: 10px;color: #342E37 ;">Profile List</h3><br>
+          <div class="demo-button-container">
+          <button mat-raised-button (click)="openDialog()" class="demo-button">
+            <mat-icon>add</mat-icon>
+              Add Profile
+          </button>
+        </div>
+        <table class = "table table-striped">
+          <thead>
+              <tr>
+                  <th> Profile ID</th>
+                  <th> Name </th>
+                  <th> Users </th>
+
+              </tr>
+          </thead>
+          <tbody>
+              <tr *ngFor = "let prof of profiles" >
+                  <td> {{ prof.idProf }} </td>
+                  <td> {{ prof.nomProfile }} </td>
+                  <td> 15</td>
+
+              </tr>
+          </tbody>
+      </table>
+      </div>
+    </section>
+  </section>
+</div>

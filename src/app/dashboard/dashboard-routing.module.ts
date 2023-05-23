@@ -25,6 +25,7 @@ import { UpdateReaderComponent } from './components/updateForm/update-reader/upd
 import { UpdateWaveComponent } from './components/updateForm/update-wave/update-wave.component';
 import { InfoComponent } from './components/info/info.component';
 import { HistoriqueComponent } from './components/historique/historique.component';
+import { AdduserByUserComponent } from './components/addForm/adduser-by-user/adduser-by-user.component';
 
 const routes: Routes = [
   // Sidenavwrapper Component acts like a shell & the active child Component gets rendered into the <router-outlet>
@@ -97,11 +98,19 @@ const routes: Routes = [
         }
       },
       {
-        path:'addUser',
+        path:'addUserByAdmin',
         component:AddUserComponent,
         canActivate:[AuthGuard,HasRoleGuard],
         data:{
-          roles:['admin']
+          roles:['admin','user']
+        }
+      },
+      {
+        path:'addUserByUser',
+        component:AdduserByUserComponent,
+        canActivate:[AuthGuard,HasRoleGuard],
+        data:{
+          roles:['admin','user']
         }
       },
       {
@@ -150,6 +159,14 @@ const routes: Routes = [
         canActivate:[AuthGuard,HasRoleGuard],
         data:{
           roles:['admin','user']
+        }
+      },
+      {
+        path:'account/:id',
+        component:AccountComponent,
+        canActivate:[AuthGuard,HasRoleGuard],
+        data:{
+          roles:['admin']
         }
       },
       {

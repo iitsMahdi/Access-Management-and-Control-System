@@ -5831,10 +5831,10 @@ neo-async@^2.6.2:
   resolved "https://registry.yarnpkg.com/neo-async/-/neo-async-2.6.2.tgz#b4aafb93e3aeb2d8174ca53cf163ab7d7308305f"
   integrity sha512-Yd3UES5mWCSqR+qNT93S3UoYUkqAZ9lLg8a7g9rimsWmYGK8cVToA4/sF3RrshdyV3sAGMXVUmpMYOw+dLpOuw==
 
-ng-angular-popup@^0.2.0:
-  version "0.2.0"
-  resolved "https://registry.yarnpkg.com/ng-angular-popup/-/ng-angular-popup-0.2.0.tgz#86aeb37cc3988e55f9af403424a547d4bb95177b"
-  integrity sha512-PKbs0UkLhFNM/+takV3xXPjATsL1hsw/BFyHuq+yUvCoGJKqPssyRcH7lgWEfv++aya6dd+d4jmG5B9xCR+gjw==
+ng-angular-popup@^0.3.1:
+  version "0.3.1"
+  resolved "https://registry.yarnpkg.com/ng-angular-popup/-/ng-angular-popup-0.3.1.tgz#31b45b9260786f90394b027e85aaeccdd4a0ba7d"
+  integrity sha512-zxNTZI3ZMLLO3XVNWghNU5vkEU1FaVQy/mH38W785LpodqLviVUC5Lu0n8tG4sj8yT2+kVTwwBurQjApH7gPag==
   dependencies:
     tslib "^2.3.0"
 
@@ -5869,6 +5869,13 @@ ngx-pagination@^6.0.3:
   version "6.0.3"
   resolved "https://registry.yarnpkg.com/ngx-pagination/-/ngx-pagination-6.0.3.tgz#083f77a5c9c3ebf5800fb57a280da71aacc10a18"
   integrity sha512-lONjTQ7hFPh1SyhwDrRd5ZwM4NMGQ7bNR6vLrs6mrU0Z8Q1zCcWbf/pvyp4DOlGyd9uyZxRy2wUsSZLeIPjbAw==
+  dependencies:
+    tslib "^2.3.0"
+
+ngx-toastr@^17.0.2:
+  version "17.0.2"
+  resolved "https://registry.yarnpkg.com/ngx-toastr/-/ngx-toastr-17.0.2.tgz#fb7bb4fc22e5425bbacde0856165d30b7900adec"
+  integrity sha512-KehiPx6bkbiUyJbabf0ZA04+ASumS8r/y4wPsUOMI9OrBvBcfq27UQmWuQKoVR8E+9y4Pq7eZkSg2kvxNvpxTA==
   dependencies:
     tslib "^2.3.0"
 

@@ -45,6 +45,19 @@ export class AccessControlComponent implements OnInit {
 
 
   ngOnInit(): void {
+
+    const Toast = Swal.mixin({
+      toast: true,
+      position: 'top-right',
+      iconColor: '',
+      customClass: {
+        popup: 'colored-toast'
+      },
+      showConfirmButton: false,
+      timer: 1500,
+      timerProgressBar: true
+    })
+
     this.filterForm=this.formBuilder.group({
       dateDeb:['',Validators.required],
       dateFin:['',Validators.required],
@@ -58,7 +71,10 @@ export class AccessControlComponent implements OnInit {
       (message: any) => {
           const msg = {type: 'msg', data: message};
           console.log('Received message:', msg);
-          this.toast.warning({detail:"New Event",summary:msg.data.etatevt,duration:1500})
+          Toast.fire({
+            icon: 'info',
+            title: 'New Event '+message.etatevt
+          })
           this.socketMessages.unshift(msg);
           //this.shared.setVariable(msg);
       },

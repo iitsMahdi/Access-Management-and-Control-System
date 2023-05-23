@@ -36,26 +36,62 @@ export class DepartementsComponent implements OnInit{
   }
 
   openDialog(){
-    this.matDialog.open(AddDeptComponent,{
+    let role=this.userAuthService.getRoles();
+    if (role.includes("user")){
+      Swal.fire({
+        icon: 'error',
+        title: 'Oops...',
+        text: "You don't have access to do that"
+      })
+    }else{
+      this.matDialog.open(AddDeptComponent,{
       width:'350px',
     })
+    }
+
   }
   openDialogUp(id: bigint){
+    let role=this.userAuthService.getRoles();
+    if (role.includes("user")){
+      Swal.fire({
+        icon: 'error',
+        title: 'Oops...',
+        text: "You don't have access to do that"
+      })
+    }else{
+
     this.matDialog.open(UpdateDeptComponent,{
       width:'350px',
       data: { id: id }
-    })
+    })}
   }
   MenageProfile(){
   this.router.navigate(['/']);
 
 }
   updatedept(id: bigint){
-    this.router.navigate(['updateDep', id]);
+    let role=this.userAuthService.getRoles();
+    if (role.includes("user")){
+      Swal.fire({
+        icon: 'error',
+        title: 'Oops...',
+        text: "You don't have access to do that"
+      })
+    }else{
+      this.router.navigate(['updateDep', id]);
+    }
   }
 
 
   deletedept(id: bigint){
+    let role=this.userAuthService.getRoles();
+    if (role.includes("user")){
+      Swal.fire({
+        icon: 'error',
+        title: 'Oops...',
+        text: "You don't have access to do that"
+      })
+    }else{
       Swal.fire({
     title: 'Are you sure?',
     text: "Would you like to delete it!",
@@ -67,7 +103,11 @@ export class DepartementsComponent implements OnInit{
   }).then((result:any) => {
     if (result.isConfirmed) {
     this.deptService.deleteDep(id,this.role).subscribe((response:any)=>{
-      console.log(response);
+      Swal.fire(
+        'Deleted!',
+        'Departement '+id+' has been deleted.',
+        'success'
+      )
       this.router.navigate(['/alldepartements']);
       window.location.reload();
     },
@@ -78,6 +118,7 @@ export class DepartementsComponent implements OnInit{
 }
 
 })
+    }
 }
   fileDownload(){
 

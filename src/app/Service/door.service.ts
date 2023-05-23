@@ -21,8 +21,8 @@ export class DoorService {
     return this.httpClient.post(`${this.baseURL}/add`, porte);
   }
 
-  getDoorById(id: number): Observable<Porte>{
-    return this.httpClient.get<Porte>(`${this.baseURL}/get-one/${id}`);
+  getDoorById(id: number): Observable<any>{
+    return this.httpClient.get<any>(`${this.baseURL}/get-one/${id}`);
   }
 
   getDoorByDep(dep: any): Observable<Porte>{

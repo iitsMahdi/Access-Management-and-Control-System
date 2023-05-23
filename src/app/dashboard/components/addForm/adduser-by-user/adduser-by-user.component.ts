@@ -1,21 +1,22 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { ActivatedRoute, Router } from '@angular/router';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 import { forkJoin } from 'rxjs';
-import { User } from 'src/app/model/User';
 import { DepartementService } from 'src/app/Service/departement.service';
 import { DoorService } from 'src/app/Service/door.service';
 import { ProfileService } from 'src/app/Service/profile.service';
 import { UserService } from 'src/app/Service/user.service';
+import { User } from 'src/app/model/User';
 import Swal from 'sweetalert2';
 
 @Component({
-  selector: 'app-update-user',
-  templateUrl: './update-user.component.html',
-  styleUrls: ['./update-user.component.css']
+  selector: 'app-adduser-by-user',
+  templateUrl: './adduser-by-user.component.html',
+  styleUrls: ['./adduser-by-user.component.css']
 })
-export class UpdateUserComponent implements OnInit {
+export class AdduserByUserComponent implements OnInit{
+
   file!:File;
   userInfForm !:FormGroup;
   userPrevForm !:FormGroup;
@@ -33,8 +34,6 @@ export class UpdateUserComponent implements OnInit {
   education_step = false;
   idUser:any;
   user: User = new User();
-  id!: number;
-
   constructor(
     private deptService: DepartementService,
     private profService:ProfileService,
@@ -42,8 +41,7 @@ export class UpdateUserComponent implements OnInit {
     private formBuilder: FormBuilder ,
     private http:HttpClient,
     private userService: UserService,
-    private doorServices : DoorService,
-    private route: ActivatedRoute
+    private doorServices : DoorService
     ) {}
 
 
@@ -69,33 +67,6 @@ export class UpdateUserComponent implements OnInit {
       pin:['',Validators.required],
       card:['',Validators.required],
     });
-
-    this.id = this.route.snapshot.params['id'];
-
-    this.userService.getUserById(this.id).subscribe(
-      (data:any) => {
-      //this.user = data;
-      //console.log(data)
-      this.userInfForm.controls["firstname"].setValue(data.firstname)
-      this.userInfForm.controls["lastname"].setValue(data.lastname)
-      this.userInfForm.controls["adresse"].setValue(data.adresse)
-      this.userCredForm.controls["email"].setValue(data.email)
-      this.userInfForm.controls["phone"].setValue(data.phone)
-      this.userCredForm.controls["pin"].setValue(data.code)
-      this.userCredForm.controls["card"].setValue(data.depar)
-      this.userInfForm.controls["role"].setValue(data.role)
-      this.userInfForm.controls["image"].setValue(data.image)
-      this.userInfForm.controls["profile"].setValue(data.prof)
-
-
-
-    },
-      (error) => {
-        console.log(error)
-        console.log("failed")
-      }
-    );
-
 
     this.getDepatement();
     this.getProfiles()
@@ -218,11 +189,27 @@ export class UpdateUserComponent implements OnInit {
     this.user.codePin=this.userCredForm.value.pin;
     this.user.email=this.userCredForm.value.email;
     this.user.password=this.userCredForm.value.password
+
+
+
+    /*
+    this.userService.createUser(this.user,this.selectedDoors).subscribe(data => {
+      Swal.fire({
+          position: 'center',
+          icon: 'success',
+          title: 'User added successfully',
+          showConfirmButton: false,
+          timer: 1500
+        });
+        console.log(data);
+        this.goToUserList();
+      },
+      error => console.log(error));*/
   }
 
-  assignUser(){
+  assignUser(id:any){
     for (let i = 0; i < this.selectedDoors.length; i++) {
-      this.userService.assignPortes(this.selectedDoors[i],this.id).subscribe(()=>{
+      this.userService.assignPortes(this.selectedDoors[i],id).subscribe(()=>{
         console.log("zedetlek lbibeeen lel user")
       },
       error =>
@@ -235,16 +222,16 @@ export class UpdateUserComponent implements OnInit {
     this.saveEmployee()
     console.log(this.user)
     console.log(this.selectedDoors)
-    this.userService.updateUser(this.id,this.user).subscribe(data => {
+    this.http.post(`http://localhost:8080/User/add`,this.user).subscribe(data => {
       Swal.fire({
         position: 'center',
         icon: 'success',
-        title: 'User Updated successfully',
+        title: 'User added successfully',
         showConfirmButton: false,
         timer: 1500
       });
       console.log(data);
-      this.assignUser();
+      this.assignUser(data);
       this.goToUserList();
       return data
     },

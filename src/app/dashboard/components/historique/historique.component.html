@@ -24,7 +24,11 @@
             <mat-icon> clear_all</mat-icon>
             Clear All
           </button>
-
+          <br><br>
+          <img src="../../../assets/3pnt.png" alt="" [matMenuTriggerFor]="menu">
+          <mat-menu #menu="matMenu">
+            <button mat-menu-item (click)="fileDownload()">Export CSV</button>
+          </mat-menu>
         </div>
         <table class="table" >
           <thead>
@@ -34,7 +38,8 @@
               <th>Time</th>
               <th>Door</th>
               <th>Departement</th>
-              <th>Event'ID</th>
+              <th>Event ID</th>
+              <th>User ID</th>
               <th>Etat</th>
               <th>Cause</th>
             </tr>
@@ -47,6 +52,7 @@
               <td>{{msg.data.nomporte}}</td>
               <td>{{msg.data.Departement}}</td>
               <td>{{msg.data.idevent}}</td>
+              <td>{{msg.data.usr.id}}</td>
               <td>{{msg.data.etat}}</td>
               <td>{{msg.data.cause}}</td>
             </tr>
@@ -59,6 +65,7 @@
               <td>{{msg.data.prt.nomPorte}}</td>
               <td>{{msg.data.prt.cntrl.dept.nomDep}}</td>
               <td>{{msg.data.idEvent}}</td>
+              <td><a routerLink="/account/{{msg.data.usr.id}}">{{msg.data.usr.id}}</a></td>
               <td>{{msg.data.etatHistorique}}</td>
               <td>{{msg.data.cause}}</td>
             </tr>

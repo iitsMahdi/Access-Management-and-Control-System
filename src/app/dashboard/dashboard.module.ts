@@ -48,6 +48,7 @@ import { AddWaveComponent } from './components/addForm/add-wave/add-wave.compone
 import { UpdateWaveComponent } from './components/updateForm/update-wave/update-wave.component';
 import { NgbModule, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { HistoriqueComponent } from './components/historique/historique.component';
+import { AdduserByUserComponent } from './components/addForm/adduser-by-user/adduser-by-user.component';
 
 
 @NgModule({
@@ -77,6 +78,7 @@ import { HistoriqueComponent } from './components/historique/historique.componen
     AddWaveComponent,
     UpdateWaveComponent,
     HistoriqueComponent,
+    AdduserByUserComponent,
 
   ],
   imports: [

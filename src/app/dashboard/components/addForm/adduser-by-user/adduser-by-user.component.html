@@ -55,8 +55,6 @@
                     <div class="title"><b>Role</b></div>
                     <select name="role" id="role" class="my-select" required formControlName="role" (change)="selectChangeRole($event)">
                       <option value="" selected>Select a role</option>
-                      <option value="ADMIN">Admin</option>
-                      <option value="USER">User</option>
                       <option value="EMPLOYE">Employee</option>
                     </select>
                   </div>
@@ -100,10 +98,7 @@
                     <div class="title"><b>Email</b></div>
                     <input type="email" name="email" id="email" class="my-input" placeholder="Enter your email adress" required formControlName="email" >
                   </div>
-                  <div class="col">
-                    <div class="title"><b>Password</b></div>
-                    <input type="password" name="password" id="password" class="my-input" placeholder="Enter your password" required formControlName="password">
-                  </div>
+
                 </div>
                   <h2 class="fs-title">User credential</h2>
                   <br>

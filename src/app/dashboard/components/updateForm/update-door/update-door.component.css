@@ -72,7 +72,7 @@ color: #ddd8d8;
 }
 
 .my-buttonA {
-margin-left: 440px;
+margin-left: 360px;
 display: inline-block;
 width: 140px;
 padding: 10px 16px;
@@ -123,3 +123,21 @@ legend {
   padding: 3px 6px;
 }
 
+/* MAin Section */
+.main{
+  position: relative;
+  padding: 10px;
+  width: 100%;
+}
+/*Attendance List serction  */
+.attendance{
+  text-transform: capitalize;
+}
+.attendance-list{
+  width: 100%;
+  padding: 5px;
+  margin-top: 5px;
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: 0 20px 35px rgba(0, 0, 0, 0.1);
+}

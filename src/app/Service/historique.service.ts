@@ -15,8 +15,8 @@ export class HistoriqueService {
     return this.httpClient.get<Historique[]>(`${this.baseURL}/counthis` );
   }
 
-  getByDepMonth(dep:any,month:any): Observable<Historique[]>{
-    return this.httpClient.get<Historique[]>(`${this.baseURL}/counthis/${dep}/${month}`);
+  getByDepMonth(month:any,dep:any): Observable<Historique[]>{
+    return this.httpClient.get<Historique[]>(`${this.baseURL}/hac/${month}/${dep}`);
   }
 
 

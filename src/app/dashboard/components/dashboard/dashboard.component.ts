@@ -12,6 +12,7 @@ import { ClientAccService } from 'src/app/Service/client-acc.service';
 import { DepartementService } from 'src/app/Service/departement.service';
 import { Client3Service } from 'src/app/Service/client3.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import Swal from 'sweetalert2';
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
@@ -42,7 +43,7 @@ export class DashboardComponent implements OnInit {
   depts:any[]=[]
   denByDep:any[]=[]
   chDM!: FormGroup;
-
+  idDep:any[]=[]
   constructor(
       private websocketService: WebSocketService,
       private clientServ:ClientService,
@@ -61,6 +62,18 @@ export class DashboardComponent implements OnInit {
       nom_dep: ['', Validators.required],
       month:['', Validators.required]
     });
+
+    const Toast = Swal.mixin({
+      toast: true,
+      position: 'top-right',
+      iconColor: '',
+      customClass: {
+        popup: 'colored-toast'
+      },
+      showConfirmButton: false,
+      timer: 1500,
+      timerProgressBar: true
+    })
 
 /*************************************************************************************************************************/
     //Init of Pie chart
@@ -84,6 +97,10 @@ export class DashboardComponent implements OnInit {
       (message: any) => {
           const msg = {type: 'msg', data: message};
           console.log('Received message:', msg);
+          Toast.fire({
+            icon: 'info',
+            title: 'New Event '+message.etatevt
+          })
           if(message.etatevt=="Intrusion_Alarm"){
             if (typeof this.dataI[0] === 'number'){
               this.dataI[0]++;
@@ -112,7 +129,7 @@ export class DashboardComponent implements OnInit {
       //Init of Bar chart
 
 
-      try{
+      /*try{
         this.histService.getHistList().subscribe((data:any)=>{
           this.hist=data
           console.log(this.hist)
@@ -128,7 +145,7 @@ export class DashboardComponent implements OnInit {
         })
       }catch (error) {
         console.error(error);
-      }
+      }*/
       //uPdate Bar Chart from webSocket
       /*this.reverseUsers()
       this.clientAcc.connect("websocket/client3").subscribe(
@@ -152,6 +169,7 @@ export class DashboardComponent implements OnInit {
         try {
           this.depService.getDepList().subscribe((data: any[]) => {
             this.depts = data.map((dep) => dep.nomDep);
+            this.idDep = data.map((dep) => dep.idDep);
             const observables = this.depts.map((dep) => this.histService.getDenByDep(dep));
             forkJoin(observables).subscribe((deniedData: any[]) => {
               this.denByDep = deniedData;
@@ -178,22 +196,29 @@ export class DashboardComponent implements OnInit {
       );
 /*************************************************************************************************************************/
       //Init of Bar chart
-      /*try{
-        let monthIndex: number = new Date().getMonth();
-        let deppp=this.depts[0]
-        this.histService.getByDepMonth(deppp,monthIndex).subscribe((data:any)=>{
-          for (let index = 0; index < data.length; index++) {
-              this.dates.push(data[index].date)
-              this.denUsers.push(data[index].den)
-          }
-          this.reverseDates()
-          this.reverseUsers()
-          console.log(this.dates)
-          this.createChart();
+      try{
+
+        this.depService.getDepList().subscribe((dep:any)=>{
+          let dptss=dep
+          let monthIndex: number = new Date().getMonth()+1  ;
+          let deppp=dep[0].idDep
+          console.warn(monthIndex)
+          console.warn(deppp)
+          this.histService.getByDepMonth(monthIndex,deppp).subscribe(
+            (data:any)=>{
+              for (let index = 0; index < data.length; index++) {
+                  this.dates.push(data[index].date)
+                  this.denUsers.push(data[index].den)
+              }
+              console.log(this.dates)
+
+              this.createChart();
+            }
+          )
         })
       }catch (error) {
         console.error(error);
-      }*/
+      }
 
 
       /* this.websocketService.connect().subscribe(
@@ -212,7 +237,6 @@ export class DashboardComponent implements OnInit {
     return this.dates.reverse()
   }
   reverseUsers(){
-    this.accUsers.reverse()
     this.denUsers.reverse()
   }
 
@@ -227,8 +251,8 @@ export class DashboardComponent implements OnInit {
           {
             label: "Denied Users",
             data: this.denUsers,
-            backgroundColor: 'limegreen',
-            barThickness: 40 // Set the desired bar width here
+            backgroundColor: '#3fc3ee',
+            barThickness: 17 // Set the desired bar width here
 
           }
         ]
@@ -249,7 +273,7 @@ export class DashboardComponent implements OnInit {
           {
             label: "Denied Users",
             data:this.denByDep,
-            backgroundColor: 'limegreen',
+            backgroundColor: '#3fc3ee',
             barThickness: 40 // Set the desired bar width here
           }
         ]
@@ -386,7 +410,32 @@ export class DashboardComponent implements OnInit {
     this.month=event.target.value;
     console.warn(this.month)
     console.warn(this.departement)
-/*
+
+    this.depService.getDepList().subscribe((data:any)=>{
+      for (let i = 0; i < data.length; i++) {
+        if(data[i].nomDep==this.departement){
+          try{
+            let d:any[]=[]
+            let n:any[]=[]
+
+            this.histService.getByDepMonth(Number(this.month),data[i].idDep).subscribe((data:any)=>{
+              for (let index = 0; index < data.length; index++) {
+                  d.push(data[index].date)
+                  n.push(data[index].den)
+              }
+              console.warn(d)
+              //this.updateChartData(this.chart, this.denUsers, 0);
+              this.updateChangedChartData(this.chart, n,d, 0);
+            })
+          }catch (error) {
+            console.error(error);
+          }
+        }
+      }
+
+    })
+
+    /*
     try{
       let d:any[]=[]
       let n:any[]=[]

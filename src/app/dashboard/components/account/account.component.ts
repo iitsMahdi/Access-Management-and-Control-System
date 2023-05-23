@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { UserAuthService } from 'src/app/Service/user-auth.service';
 import { UserService } from 'src/app/Service/user.service';
 
 @Component({
@@ -8,14 +9,15 @@ import { UserService } from 'src/app/Service/user.service';
 })
 export class AccountComponent implements OnInit{
 
-constructor(private userService : UserService){}
+constructor(private userService : UserService ,
+  private userAuthService :UserAuthService){}
   ngOnInit(): void {
+    let email= this.userAuthService.getEmail()
+    console.warn(email)
   }
 
 
-getUser(){
-  this
-}
+
 
 
 

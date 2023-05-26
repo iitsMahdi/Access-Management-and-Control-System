@@ -1,105 +1,110 @@
-    <!-- Montserrat Font -->
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+<!-- Montserrat Font -->
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@100;200;300;400;500;600;700;800;900&display=swap"
+  rel="stylesheet">
 
-    <!-- Material Icons -->
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined" rel="stylesheet">
+<!-- Material Icons -->
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined" rel="stylesheet">
 <main>
-      <div class="head-title">
-				<div class="left">
-					<h1>Dashboard</h1>
-				</div>
-			</div>
-      <!-- Main -->
-        <ul class="box-info">
-          <li>
-            <i class='bx bxs-group' ></i>
-            <span class="text">
-              <h3>66</h3>
-              <p>User</p>
-            </span>
-          </li>
-          <li>
-            <i class='bx bxs-group' ></i>
-            <span class="text">
-              <h3>6</h3>
-              <p>Departement</p>
-            </span>
-          </li>
-          <li>
-            <i class='bx bxs-door-open' ></i>
-            <span class="text">
-              <h3>30</h3>
-              <p>Door</p>
-            </span>
-          </li>
-          <li>
-            <i class='bx bxs-bell' ></i>
-            <span class="text">
-              <h3>204</h3>
-              <p>Alert</p>
-            </span>
-          </li>
-        </ul>
-        <div class="charts">
-          <div class="charts-card">
-            <h2 class="chart-title">Daily Device Status</h2>
-            <div id="area-chart">
-              <div class="chart-container">
-                <canvas  id="MyChart3" >{{ lineChart }}</canvas>
-              </div>
-            </div>
-          </div>
-          <!--Pie chart-->
-          <div class="charts-card">
-            <h2 class="chart-title">Daily Alarm</h2>
-            <div id="area-chart">
-              <div class="chart-container">
-                <canvas  id="MyChart2" >{{ pie }}</canvas>
-              </div>
-            </div>
-          </div>
+  <div class="head-title">
+    <div class="left">
+      <h1>Dashboard</h1>
+    </div>
+  </div>
+  <!-- Main -->
+  <ul class="box-info">
+    <li>
+      <i class='bx bxs-group'></i>
+      <span class="text">
+        <h3>66</h3>
+        <p>User</p>
+      </span>
+    </li>
+    <li>
+      <i class='bx bxs-group'></i>
+      <span class="text">
+        <h3>6</h3>
+        <p>Departement</p>
+      </span>
+    </li>
+    <li>
+      <i class='bx bxs-door-open'></i>
+      <span class="text">
+        <h3>30</h3>
+        <p>Door</p>
+      </span>
+    </li>
+    <li>
+      <i class='bx bxs-bell'></i>
+      <span class="text">
+        <h3>204</h3>
+        <p>Alert</p>
+      </span>
+    </li>
+  </ul>
+  <div class="charts">
+    <div class="charts-card">
+      <h2 class="chart-title">Daily Device Status</h2>
+      <div class="circle">
+          Total <br>
+          &nbsp;&nbsp;
+           {{nbDis}}
+      </div><br>
+      <div id="area-chart">
+        <div class="chart-container">
+          <canvas id="MyChart3">{{ lineChart }}</canvas>
         </div>
-        <!--Line chart-->
-        <div class="charts">
-          <div class="charts-card">
-            <h2 class="chart-title">Blockages per department & month</h2>
-            <div id="select-container" style="text-align: right;">
-              <select name="department" id="department" class="my-select custom-select" required (change)="selectChangeDep($event)">
-                <option value=''>--Select Departement--</option>
-                <option *ngFor="let dep of depts" value="{{dep}}">{{dep}}</option>
-              </select>
-              <select name="month" id="month" class="my-select custom-select" required (change)="selectChangeMonth($event)">
-                <option value=''>--Select Month--</option>
-                <option selected value='01'>Janaury</option>
-                <option value='2'>February</option>
-                <option value='3'>March</option>
-                <option value='4'>April</option>
-                <option value='5'>May</option>
-                <option value='6'>June</option>
-                <option value='7'>July</option>
-                <option value='8'>August</option>
-                <option value='9'>September</option>
-                <option value='10'>October</option>
-                <option value='11'>November</option>
-                <option value='12'>December</option>
-              </select>
-            </div>
-            <br>
-            <div id="bar-chart">
-              <div class="chart-container">
-                <canvas id="MyChart">{{ chart }}</canvas>
-              </div>
-            </div>
-          </div>
-          <div class="charts-card">
-            <h2 class="chart-title">Daily blockages per department</h2>
-            <div id="bar-chart">
-              <div class="chart-container">
-                <canvas id="MyChart4">{{ chart2 }}</canvas>
-              </div>
-            </div>
-          </div>
-
+      </div>
+    </div>
+    <!--Pie chart-->
+    <div class="charts-card">
+      <h2 class="chart-title">Daily Alarm</h2>
+      <div id="area-chart">
+        <div class="chart-container">
+          <canvas id="MyChart2">{{ pie }}</canvas>
         </div>
-      <!-- End Main -->
-    </main>
+      </div>
+    </div>
+  </div>
+  <!--Line chart-->
+  <div class="charts">
+    <div class="charts-card">
+      <h2 class="chart-title">Blockages per department & month</h2>
+      <div id="select-container" style="text-align: right;">
+        <select name="department" id="department" class="my-select custom-select" required
+          (change)="selectChangeDep($event)">
+          <option value=''>--Select Departement--</option>
+          <option *ngFor="let dep of depts" value="{{dep}}">{{dep}}</option>
+        </select>
+        <select name="month" id="month" class="my-select custom-select" required (change)="selectChangeMonth($event)">
+          <option value=''>--Select Month--</option>
+          <option selected value='01'>Janaury</option>
+          <option value='2'>February</option>
+          <option value='3'>March</option>
+          <option value='4'>April</option>
+          <option value='5'>May</option>
+          <option value='6'>June</option>
+          <option value='7'>July</option>
+          <option value='8'>August</option>
+          <option value='9'>September</option>
+          <option value='10'>October</option>
+          <option value='11'>November</option>
+          <option value='12'>December</option>
+        </select>
+      </div>
+      <br>
+      <div id="bar-chart">
+        <div class="chart-container">
+          <canvas id="MyChart">{{ chart }}</canvas>
+        </div>
+      </div>
+    </div>
+    <div class="charts-card">
+      <h2 class="chart-title">Daily blockages per department</h2>
+      <div id="bar-chart">
+        <div class="chart-container">
+          <canvas id="MyChart4">{{ chart2 }}</canvas>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>

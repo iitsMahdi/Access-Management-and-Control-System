@@ -39,11 +39,8 @@ export class DoorsComponent implements OnInit{
 roless=this.userAuthService.getRoles()
     ngOnInit(): void {
       this.doorForm=this.formBuilder.group({
-        name:['',Validators.required],
-        type:['',Validators.required],
-        Controller:['',Validators.required],
-        number:['',Validators.required],
-        Wave:['',Validators.required]
+        email:['',Validators.required],
+        Password:['',Validators.required],
       });
 
       this.getDoors()
@@ -173,7 +170,6 @@ roless=this.userAuthService.getRoles()
 			(reason) => {
 				//this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
         console.log("form failed")
-
 			},
 		);
 	}
@@ -200,6 +196,7 @@ roless=this.userAuthService.getRoles()
           timer: 1500
         });
         this.goToDoorList();
+        window.location.reload()
       },
       error => console.log(error));
     }else{
@@ -221,4 +218,70 @@ roless=this.userAuthService.getRoles()
     console.log(this.porte);
     this.saveDoor();
   }
+  upData:any
+  openUpdate(content: any, id: any) {
+    this.modalService.open(content, { ariaLabelledBy: 'modal-basic-title' }).result.then(
+      (result) => {
+        this.update(id)
+      },
+      (reason) => {
+        console.log("form failed");
+        this.doorForm.reset();
+
+      }
+    );
+
+    this.doorService.getDoorById(id).subscribe(
+      (data) => {
+        this.doorForm.patchValue({
+          name: data.nomPorte,
+          type: data.type,
+          number: data.numPorte,
+          Controller:data.cntrl.idCont,
+          Wave:data.wsh.adresse
+        });
+        this.upData=data
+      },
+      (error) => {
+        console.log(error);
+      }
+    );
+  }
+  update(id:any){
+    this.porte.nomPorte=this.doorForm.value.name;
+    this.porte.type=this.doorForm.value.type;
+    this.porte.numPorte=this.doorForm.value.number;
+
+    this.doorService.getDoorById(id).subscribe(
+      (data) => {
+        const contObs = this.contService.getContById(data.cntrl.idCont)
+        const waveObs = this.wavesService.getWaveById(data.wsh.adresse)
+
+        forkJoin([contObs,waveObs]).subscribe(([contData,waveData]) => {
+          this.porte.cntrl=contData;
+          this.porte.wsh=waveData
+          console.warn(this.porte)
+          this.doorService.updateDoor(id, this.porte).subscribe(data =>{
+            Swal.fire({
+              position: 'center',
+              icon: 'success',
+              title: 'Door added successfully',
+              showConfirmButton: false,
+              timer: 1500
+            });
+            this.goToDoorList();
+            window.location.reload()
+          },
+          error => console.log(error));
+
+        });
+      },
+      (error) => {
+        console.log(error);
+      }
+    );
+
+
+  }
+
 }

@@ -102,10 +102,12 @@ export class AttendanceComponent implements  OnInit{
 			(result) => {
 				//this.closeResult = `Closed with: ${result}`;
         this.onSubmit()
+        this.filterForm.reset()
 			},
 			(reason) => {
 				//this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
         console.log("form failed")
+        this.filterForm.reset()
 
 			},
 		);
@@ -120,54 +122,68 @@ export class AttendanceComponent implements  OnInit{
 			return `with: ${reason}`;
 		}
 	}
-  onSubmit(){
-    if((this.filterForm.value.dateDeb && !this.filterForm.value.dateFin ) ||(!this.filterForm.value.dateDeb && this.filterForm.value.dateFin ) ){
+  onSubmit() {
+    let monthDeb: any;
+    let monthFin: any;
+    let dayDeb: any;
+    let dayFin: any;
+
+    if ((!this.filterForm.value.dateDeb && this.filterForm.value.dateFin) || (this.filterForm.value.dateDeb && !this.filterForm.value.dateFin)) {
       Swal.fire({
         icon: 'error',
         title: 'Oops...',
-        text: 'You Should select the two Dates!'
-      })
-    }else if((this.filterForm.value.timeDeb && !this.filterForm.value.timeFin ) ||(!this.filterForm.value.timeDeb && this.filterForm.value.timeFin ) ){
+        text: 'You should select both dates!'
+      });
+    } else if ((!this.filterForm.value.timeDeb && this.filterForm.value.timeFin) || (this.filterForm.value.timeDeb && !this.filterForm.value.timeFin)) {
       Swal.fire({
         icon: 'error',
         title: 'Oops...',
-        text: 'You Should select the two Times!'
-      })
-    }else{
-      if(!this.filterForm.value.dateFin && !this.filterForm.value.dateFin){
-        this.savedFilter.dateDeb=null
-        this.savedFilter.dateFin=null
-      }else{
-        let dd=this.filterForm.value.dateDeb.year+"-"+this.filterForm.value.dateDeb.month+"-"+this.filterForm.value.dateDeb.day
-        let df=this.filterForm.value.dateFin.year+"-"+this.filterForm.value.dateFin.month+"-"+this.filterForm.value.dateFin.day
-        this.savedFilter.dateDeb=dd
-        this.savedFilter.dateFin=df
+        text: 'You should select both times!'
+      });
+    } else {
+      if (!this.filterForm.value.dateDeb && !this.filterForm.value.dateFin) {
+        this.savedFilter.dateDeb = null;
+        this.savedFilter.dateFin = null;
+      } else {
+        monthDeb = this.filterForm.value.dateDeb?.month.toString().padStart(2, '0');
+        monthFin = this.filterForm.value.dateFin?.month.toString().padStart(2, '0');
+        dayDeb = this.filterForm.value.dateDeb?.day.toString().padStart(2, '0');
+        dayFin = this.filterForm.value.dateFin?.day.toString().padStart(2, '0');
+
+        const dd = this.filterForm.value.dateDeb?.year + '-' + monthDeb + '-' + dayDeb;
+        const df = this.filterForm.value.dateFin?.year + '-' + monthFin + '-' + dayFin;
+
+        this.savedFilter.dateDeb = dd;
+        this.savedFilter.dateFin = df;
       }
-      if (!this.filterForm.value.timeDeb && !this.filterForm.value.timeFin){
-        this.savedFilter.timeDeb=null
-        this.savedFilter.timeFin=null
-      }else if(this.filterForm.value.timeDeb && this.filterForm.value.timeFin){
-        this.savedFilter.timeDeb=this.filterForm.value.timeDeb+":00"
-        this.savedFilter.timeFin=this.filterForm.value.timeFin+":00"
-      }else{
-        this.savedFilter.timeDeb=this.filterForm.value.timeDeb
-        this.savedFilter.timeFin=this.filterForm.value.timeFin
-      }
-      if(!this.evFilter){
-        this.savedFilter.typeEv=null
-      }else{
-        this.savedFilter.typeEv=this.evFilter
-      }
-      console.log(this.savedFilter);
-      this.eventService.getFilterEV(this.savedFilter).subscribe((ev:any)=>{
-        console.log(ev)
-        this.clear();
-        for (let i = 0; i < ev.length; i++) {
-          const msg = {type: 'msg', data: ev[i]};
-          this.messages.push(msg)
-        }
-      })
     }
+
+    if (!this.filterForm.value.timeDeb && !this.filterForm.value.timeFin) {
+      this.savedFilter.timeDeb = null;
+      this.savedFilter.timeFin = null;
+    } else if (this.filterForm.value.timeDeb && this.filterForm.value.timeFin) {
+      this.savedFilter.timeDeb = this.filterForm.value.timeDeb + ':00';
+      this.savedFilter.timeFin = this.filterForm.value.timeFin + ':00';
+    } else {
+      this.savedFilter.timeDeb = this.filterForm.value.timeDeb;
+      this.savedFilter.timeFin = this.filterForm.value.timeFin;
+    }
+
+    if (!this.evFilter) {
+      this.savedFilter.typeEv = null;
+    } else {
+      this.savedFilter.typeEv = this.evFilter;
+    }
+
+    console.log(this.savedFilter);
+    this.eventService.getFilterEV(this.savedFilter).subscribe((ev: any) => {
+      console.log(ev);
+      this.clear();
+      for (let i = 0; i < ev.length; i++) {
+        const msg = { type: 'msg', data: ev[i] };
+        this.messages.push(msg);
+      }
+    });
   }
 
   getTodayEvent(){

@@ -74,21 +74,17 @@ export class UpdateUserComponent implements OnInit {
 
     this.userService.getUserById(this.id).subscribe(
       (data:any) => {
-      //this.user = data;
-      //console.log(data)
+      console.log(data)
       this.userInfForm.controls["firstname"].setValue(data.firstname)
       this.userInfForm.controls["lastname"].setValue(data.lastname)
       this.userInfForm.controls["adresse"].setValue(data.adresse)
       this.userCredForm.controls["email"].setValue(data.email)
       this.userInfForm.controls["phone"].setValue(data.phone)
-      this.userCredForm.controls["pin"].setValue(data.code)
-      this.userCredForm.controls["card"].setValue(data.depar)
+      this.userCredForm.controls["pin"].setValue(data.codePin)
+      this.userCredForm.controls["card"].setValue(data.codeUid)
       this.userInfForm.controls["role"].setValue(data.role)
-      this.userInfForm.controls["image"].setValue(data.image)
-      this.userInfForm.controls["profile"].setValue(data.prof)
-
-
-
+      //this.userInfForm.controls["image"].setValue(data.image)
+      this.userInfForm.controls["profile"].setValue(data.prof.idProf)
     },
       (error) => {
         console.log(error)
@@ -134,12 +130,12 @@ export class UpdateUserComponent implements OnInit {
   getDepatement(){
     this.deptService.getDepList().subscribe((data)=>{
       this.departements=data;
-      console.log(data);
+      //console.log(data);
     })}
     getProfiles(){
       this.profService.getProfilesList().subscribe((data)=>{
         this.profiles=data
-        console.log(this.profiles)
+        //console.log(this.profiles)
       })
     }
     getPortes(dep:any){
@@ -207,7 +203,7 @@ export class UpdateUserComponent implements OnInit {
     this.user.image=this.file.name;
     this.user.phone=this.userInfForm.value.phone;
     this.user.role=this.role;
-    const profObs = this.profService.getProfById(Number(this.profile));
+    const profObs = this.profService.getProfById(Number(this.userInfForm.value.profile));
     forkJoin([profObs]).subscribe(([profData]) => {
       this.user.prof = profData;
     });

@@ -5,6 +5,7 @@ import { User } from '../model/User';
 import Swal from 'sweetalert2';
 import {UserService} from '../Service/user.service'
 import { UserAuthService }from '../Service/user-auth.service'
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-login',
@@ -15,10 +16,17 @@ export class LoginComponent implements OnInit{
 
   file!:File;
   loginForm !:FormGroup;
+  FPW !:FormGroup;
   user: User = new User();
   role!:any
   rls!:any
-  constructor(private router: Router,private formBuilder: FormBuilder,private userService :UserService , private userAuthService:UserAuthService) { }
+  constructor(
+    private router: Router,
+    private formBuilder: FormBuilder,
+    private userService :UserService ,
+    private userAuthService:UserAuthService,
+    private modalService: NgbModal,
+    ) { }
 
   ngOnInit(): void {
     this.userAuthService.clear();
@@ -27,7 +35,10 @@ export class LoginComponent implements OnInit{
     this.loginForm=this.formBuilder.group({
       email:['',[Validators.required, Validators.email]],
       password:['',Validators.required],
-  });
+    });
+    this.FPW=this.formBuilder.group({
+      email:['',[Validators.required, Validators.email]],
+    });
 }
 
 login(loginForm: FormGroup,rls:String) {
@@ -85,6 +96,36 @@ getUserRole(loginForm:FormGroup):string{
 onSubmit(loginForm: FormGroup){
   //this.role=this.getUserRole(loginForm)
   this.login(loginForm,this.role)
+}
+
+open(content:any) {
+  this.modalService.open(content, { ariaLabelledBy: 'modal-basic-title' }).result.then(
+    (result) => {
+      //this.closeResult = `Closed with: ${result}`;
+      //this.onSubmit()
+    },
+    (reason) => {
+      //this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
+      console.log("form failed")
+    },
+  );
+}
+
+forgetPwd(){
+  let email=this.FPW.value.email
+
+  this.userService.getUserByEmail(email).subscribe((data:any)=>{
+    if(data){
+
+    }else{
+      Swal.fire({
+        icon: 'error',
+        title: 'Oops...',
+        text: 'Email Invalid!'
+    })
+    }
+  })
+
 }
 
 }

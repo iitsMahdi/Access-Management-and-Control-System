@@ -29,13 +29,16 @@ export class UserService {
   }
 
   getUserByEmail( email: String): Observable<User>{
-    return this.httpClient.get<User>(`${this.baseURL}`+this.EndPoint+"/getByEmail/"+email);
+    return this.httpClient.get<User>(`${this.baseURL}`+this.EndPoint+"/findbyem/"+email);
   }
 
   updateUser(id: number, user: User): Observable<Object>{
     return this.httpClient.put(`${this.baseURL}`+this.EndPoint+"/update/"+id, user);
   }
 
+  updatePassword(id: number, user: User): Observable<Object>{
+    return this.httpClient.put(`${this.baseURL}`+this.EndPoint+"/updatePwd/"+id, user);
+  }
   deleteUser(id: bigint,role:any): Observable<Object|null>{
     if(role==="admin"){
       console.log(id)

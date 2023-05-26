@@ -13,7 +13,9 @@ constructor(private userService : UserService ,
   private userAuthService :UserAuthService){}
   ngOnInit(): void {
     let email= this.userAuthService.getEmail()
-    console.warn(email)
+    this.userService.getUserByEmail(email).subscribe((data:any)=>{
+      console.warn(data.firstname)
+    })
   }
 
 

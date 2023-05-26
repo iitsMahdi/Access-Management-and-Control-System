@@ -7,6 +7,8 @@ import { Departement } from 'src/app/model/Departement';
 import { Profile } from 'src/app/model/Profile';
 import { UserAuthService } from 'src/app/Service/user-auth.service';
 import Swal from 'sweetalert2';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 
 
 @Component({
@@ -14,48 +16,73 @@ import Swal from 'sweetalert2';
   templateUrl: './user.component.html',
   styleUrls: ['./user.component.css']
 })
-export class UserComponent  implements OnInit{
-
-  users :User[] = [];
-  search:any;
-  p:number=1;
+export class UserComponent implements OnInit {
+  userForm !:FormGroup;
+  users: User[] = [];
+  search: any;
+  p: number = 1;
   roless = this.userAuthService.getRoles()
+  updateUserMessage: string = '';
+  createUserMessage: string = '';
+  deleteUserMessage: string = '';
+  user: User = new User();
 
-  constructor(private userService: UserService,
-    private router: Router,private userAuthService:UserAuthService) { }
+  constructor(
+    private userService: UserService,
+    private router: Router,
+    private formBuilder: FormBuilder,
+    private userAuthService: UserAuthService,
+    private modalService: NgbModal,
+    ) { }
 
   ngOnInit(): void {
+
+    this.userForm=this.formBuilder.group({
+      email:['',Validators.required],
+      Password:['',Validators.required],
+    });
+
     this.getUsers();
   }
 
-  Search(){
-    if(this.search == ""){
+  onupdate(){
+    this.updateUserMessage = 'Update User';
+  }
+  ondel(){
+    this.updateUserMessage = 'Delete User';
+  }
+  onpwde(){
+    this.updateUserMessage = 'Change PWD';
+  }
+
+  Search() {
+    if (this.search == "") {
       this.ngOnInit()
-    }else{
-      this.users = this.users.filter( res => {
+    } else {
+      this.users = this.users.filter(res => {
         return (res.firstname.toLowerCase().match(this.search.toLowerCase()) ||
-                res.lastname.toLowerCase().match(this.search.toLowerCase()) ||
-                res.email.toLowerCase().match(this.search.toLowerCase())||
-                res.id.toString().toLowerCase().match(this.search.toLowerCase())
+          res.lastname.toLowerCase().match(this.search.toLowerCase()) ||
+          res.email.toLowerCase().match(this.search.toLowerCase()) ||
+          res.id.toString().toLowerCase().match(this.search.toLowerCase())
         );
       })
     }
   }
 
   addData() {
-    let role=this.userAuthService.getRoles();
-    if (role.includes("admin")){
+    let role = this.userAuthService.getRoles();
+    if (role.includes("admin")) {
       this.router.navigate(['/addUserByAdmin']);
-    }else{
+    } else {
       this.router.navigate(['/addUserByUser']);
 
     }
   }
-  MenageProfile(){
+  MenageProfile() {
     this.router.navigate(['/']);
   }
 
-  private getUsers(){
+  private getUsers() {
     this.userService.getUsersList().subscribe(data => {
       this.users = data;
       console.log(this.users)
@@ -64,55 +91,55 @@ export class UserComponent  implements OnInit{
 
 
 
-  updateUser(id: bigint){
-    let role=this.userAuthService.getRoles();
-    if (role.includes("user")){
+  updateUser(id: bigint) {
+    let role = this.userAuthService.getRoles();
+    if (role.includes("user")) {
       Swal.fire({
         icon: 'error',
         title: 'Oops...',
         text: "You don't have access to do that"
       })
-    }else{
+    } else {
       this.router.navigate(['updateUser', id]);
     }
   }
-  deleteUser(id: bigint){
-    let role=this.userAuthService.getRoles();
-    if (role.includes("user")){
+  deleteUser(id: bigint) {
+    let role = this.userAuthService.getRoles();
+    if (role.includes("user")) {
       Swal.fire({
         icon: 'error',
         title: 'Oops...',
         text: "You don't have access to do that"
       })
-    }else{
-    Swal.fire({
-      title: 'Are you sure?',
-      text: "Would you like to delete it!",
-      icon: 'warning',
-      showCancelButton: true,
-      confirmButtonColor: '#3085d6',
-      cancelButtonColor: '#d33',
-      confirmButtonText: 'Yes, delete it!'
-    }).then((result:any) => {
-      if (result.isConfirmed) {
-    this.userService.deleteUser(id,this.roless).subscribe( () => {
-      console.log("deleted");
-      Swal.fire(
-        'Deleted!',
-        'User '+id+' has been deleted.',
-        'success'
-      )
-      this.getUsers();
-      window.location.reload();
+    } else {
+      Swal.fire({
+        title: 'Are you sure?',
+        text: "Would you like to delete it!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes, delete it!'
+      }).then((result: any) => {
+        if (result.isConfirmed) {
+          this.userService.deleteUser(id, this.roless).subscribe(() => {
+            console.log("deleted");
+            Swal.fire(
+              'Deleted!',
+              'User ' + id + ' has been deleted.',
+              'success'
+            )
+            this.getUsers();
+            window.location.reload();
+          }
+          )
+        }
+
+      })
     }
-    )
   }
 
-  })
-}
-  }
-
-  fileDownload(){
+  fileDownload() {
     var options = {
       fieldSeparator: ',',
       quoteStrings: '"',
@@ -121,13 +148,60 @@ export class UserComponent  implements OnInit{
       showTitle: true,
       title: 'User Data',
       useBom: true,
-      headers: ['id','firstname','lastname','email','password','','', '', '','','email','phone','image','code']
+      headers: ['id', 'firstname', 'lastname', 'email', 'password', '', '', '', '', '', 'email', 'phone', 'image', 'code']
     };
 
     new ngxCsv(this.users, "Users", options);
 
   }
 
+  open(content:any,id:any) {
+    this.modalService.open(content, { ariaLabelledBy: 'modal-basic-title' }).result.then(
+      (result) => {
+        //this.closeResult = `Closed with: ${result}`;
+        //this.onSubmit()
+        this.update(id)
+      },
+      (reason) => {
+        //this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
+        console.log("form failed")
+        this.userForm.reset()
+      },
+    );
+    this.userService.getUserById(id).subscribe(
+      (data) => {
+        console.warn(data)
+        this.userForm.patchValue({
+          email: data.email,
+        });
+      },
+      (error) => {
+        console.log(error);
+      }
+    );
+  }
+
+  update(id:any){
+    this.user.email=this.userForm.value.email;
+    this.user.password=this.userForm.value.Password
+    this.userService.updatePassword(id,this.user).subscribe(()=>{
+      Swal.fire({
+        position: 'center',
+        icon: 'success',
+        title: 'Password changed successfully',
+        showConfirmButton: false,
+        timer: 1500
+      });
+    },
+    (error:any) => {
+      console.log(error);
+      Swal.fire({
+        icon: 'error',
+        title: 'Oops...',
+        text: "There is something wrong !!"
+      })
+    })
+  }
 
 
 }

@@ -1,5 +1,5 @@
-import {AfterViewInit, Component, ViewChild} from '@angular/core';
-import {MatTable} from '@angular/material/table';
+import { AfterViewInit, Component, ViewChild } from '@angular/core';
+import { MatTable } from '@angular/material/table';
 import { UserService } from 'src/app/Service/user.service';
 
 /**

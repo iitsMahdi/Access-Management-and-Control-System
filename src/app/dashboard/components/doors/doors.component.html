@@ -35,7 +35,7 @@
               <td> {{ door.type }} </td>
               <td> {{ door.cntrl.dept.nomDep }} </td>
               <td>
-                <button  class = "btn btn-info" (click) = "updateDoor(door.idPorte)"><mat-icon>create</mat-icon>Update</button>
+                <button  class = "btn btn-info" (click) = "openUpdate(update,door.idPorte)"><mat-icon>create</mat-icon>Update</button>
                 <button class = "btn btn-danger" style="margin-left: 10px" (click) = "deleteDoor(door.idPorte)"><mat-icon >delete</mat-icon>Delete</button>
               </td>
           </tr>
@@ -48,6 +48,50 @@
 <ng-template #content let-modal>
   <div class="modal-header">
     <h4 class="modal-title" id="modal-basic-title">Add Door</h4>
+    <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
+  </div>
+  <div class="modal-body">
+    <form method="post" [formGroup]="doorForm" (ngSubmit)="onSubmit()">
+      <div class="form-group">
+        <label for="name">Name:</label>
+        <input type="text" name="name" id="name" class="my-input form-control" placeholder="Enter your name" required formControlName="name">
+      </div>
+      <div class="form-group">
+        <label for="number">Number:</label>
+        <input type="number" name="number" id="number" class="my-input form-control" placeholder="Enter your number" required formControlName="number">
+      </div>
+      <div class="form-group">
+        <label for="Type">Type:</label>
+        <select name="Type" id="Type" class="my-select form-control" required formControlName="type" (change)="selectChangeType($event)">
+          <option value="">Select Type</option>
+          <option value="Porte_Departement">Porte Departement</option>
+          <option value="Porte_Principal">Porte Principal</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="Controller">Controller:</label>
+        <select name="Controller" id="Controller" class="my-select form-control" required formControlName="Controller" (change)="selectChangeCont($event)">
+          <option value="">Select a Controller</option>
+          <option *ngFor="let c of contss" [value]="c.idCont">{{c.nomCont}}</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="Wave">Waveshare:</label>
+        <select name="Wave" id="Wave" class="my-select form-control" required formControlName="Wave" (change)="selectChangeWave($event)">
+          <option value="">Select a Waveshare</option>
+          <option *ngFor="let wv of waves" [value]="wv.adresse">{{wv.nameDevice}}</option>
+        </select>
+      </div>
+    </form>
+  </div>
+  <div class="modal-footer">
+    <button type="submit" class="btn btn-outline-dark" (click)="modal.close('Save click')">Save</button>
+  </div>
+</ng-template>
+
+<ng-template #update let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">Update Door</h4>
     <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
   </div>
   <div class="modal-body">

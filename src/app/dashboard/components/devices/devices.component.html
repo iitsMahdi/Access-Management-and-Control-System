@@ -48,7 +48,7 @@
               <td>{{cont.dept.nomDep}}</td>
               <td> {{ cont.status }} </td>
               <td>
-                <button  class = "btn btn-info" (click) = "updateCont(cont.idCont )"><mat-icon>create</mat-icon>Update</button>
+                <button  class = "btn btn-info" (click) = "befUpC(controller,cont.idCont )"><mat-icon>create</mat-icon>Update</button>
                 <button class = "btn btn-danger" style="margin-left: 10px" (click) = "deleteCont(cont.idCont )"><mat-icon >delete</mat-icon>Delete</button>
               </td>
             </tr>
@@ -80,7 +80,7 @@
               <td> {{ re.etatLecteur }} </td>
 
               <td>
-                <button  class = "btn btn-info" (click) = "updateRea(re.idLecteur)"><mat-icon>create</mat-icon>Update</button>
+                <button  class = "btn btn-info" (click) = "befUpR(reader,re.idLecteur)"><mat-icon>create</mat-icon>Update</button>
                 <button class = "btn btn-danger" style="margin-left: 10px" (click) = "deleteRea(re.idLecteur)"><mat-icon >delete</mat-icon>Delete</button>
               </td>
           </tr>
@@ -107,7 +107,7 @@
               <td> {{ w.prt.cntrl.dept.nomDep  }} </td>
               <td> {{ w.status }} </td>
               <td>
-                <button  class = "btn btn-info" (click) = "updateWave(w.adresse)"><mat-icon>create</mat-icon>Update</button>
+                <button  class = "btn btn-info" (click) = "befUpW(Wave,w.adresse)"><mat-icon>create</mat-icon>Update</button>
                 <button class = "btn btn-danger" style="margin-left: 10px" (click) = "deleteWave(w.adresse)"><mat-icon >delete</mat-icon>Delete</button>
               </td>
           </tr>
@@ -219,3 +219,112 @@
 
   </div>
 </ng-template>
+<!-------------Update Reader---------------->
+<ng-template #reader let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">Update Reader</h4>
+    <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
+  </div>
+  <div class="modal-body">
+
+    <form method="post" [formGroup]="readerForm" (ngSubmit)="onSubmit()">
+        <div class="form-group">
+          <label for="name">IP Adress</label>
+          <input type="text" name="ip" id="ip" class="my-input" placeholder="Enter The @IP" required formControlName="ip">
+          <div style="color: red;font-weight: bold;" *ngIf="readerForm.get('ip')!.hasError('invalidIpAddress') && readerForm.get('ip')!.touched" class="error">
+            Invalid IP address format.
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="status">Status</label>
+          <select class="my-select" name="status" id="status" (change)="selectChangeStat($event)" formControlName="status">
+            <option value="Connected">Connected</option>
+            <option value="Disconnected">Disconnected</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="department">Door</label>
+          <select name="door" id="door" class="my-select" required formControlName="door" (change)="selectChangeDoor($event)">
+            <option *ngFor="let dr of doors" value="{{dr.idPorte}}">{{dr.nomPorte}}</option>
+          </select>
+        </div>
+    </form>
+  <div class="modal-footer">
+    <button type="submit" class="btn btn-outline-dark" *ngIf="!(readerForm.get('ip')!.hasError('invalidIpAddress') && readerForm.get('ip')!.touched)"  (click)="modal.close('Save click')">Save</button>
+  </div>
+</div>
+</ng-template>
+<!-------------End Update Reader---------------->
+<!-------------Update Controller---------------->
+
+<ng-template #controller let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">Update controller</h4>
+    <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
+  </div>
+  <div class="modal-body">
+
+  <form method="post" [formGroup]="contForm" (ngSubmit)="onSubmit()">
+      <div class="form-group">
+        <label for="name">Controller</label>
+        <input type="text" name="name" id="name" class="my-input" placeholder="Enter your controller" required formControlName="name">
+      </div>
+      <div class="form-group">
+        <label for="name">Ip Adresse</label>
+        <input type="text" name="Adresse" id="Adresse" class="my-input" placeholder="Enter THE ip adress" required formControlName="Adresse">
+        <div style="color: red;font-weight: bold;" *ngIf="contForm.get('Adresse')!.hasError('invalidIpAddress') && contForm.get('Adresse')!.touched" class="error">
+          Invalid IP address format.
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="name">Serial Number</label>
+        <input type="text" name="sn" id="sn" class="my-input" placeholder="Enter THE Serial Number" required formControlName="sn">
+      </div>
+      <div class="form-group">
+        <label for="status">Status</label>
+        <select class="my-select" name="status" id="status" (change)="selectChangeStat($event)" formControlName="status">
+          <option value="Connected">Connected</option>
+          <option value="Disconnected">Disconnected</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="department">Department</label>
+        <select name="department" id="department" class="my-select" required formControlName="department" (change)="selectChangeDep($event)" formControlName="dep">
+          <option *ngFor="let dep of depts" value="{{dep.idDep}}">{{dep.nomDep}}</option>
+        </select>
+      </div>
+  </form>
+  <div class="modal-footer">
+    <button type="submit" class="btn btn-outline-dark" *ngIf="!(readerForm.get('ip')!.hasError('invalidIpAddress') && readerForm.get('ip')!.touched)"  (click)="modal.close('Save click')">Save</button>
+  </div>
+
+  </div>
+</ng-template>
+<!-------------End Update Controller---------------->
+<!-------------Update Wave---------------->
+<ng-template #Wave let-modal>
+  <div class="modal-body">
+    <form method="post" [formGroup]="waveForm" (ngSubmit)="onSubmit()">
+        <div class="form-group">
+          <label for="name">Name</label>
+          <input type="text" name="name" id="name" class="my-input" placeholder="Enter the waveshare name" required formControlName="nameWave">
+        </div>
+        <div class="form-group">
+          <label for="name">Adresse</label>
+          <input type="text" name="adr" id="adr" class="my-input" placeholder="Enter the @IP" required formControlName="adr">
+        </div>
+        <div class="form-group">
+          <label for="name">Statut</label>
+          <select class="my-select" name="status" id="status" (change)="selectChangeStat($event)" formControlName="status">
+            <option value="Connected">Connected</option>
+            <option value="Disconnected">Disconnected</option>
+          </select>
+        </div>
+    </form>
+  <div class="modal-footer">
+    <button type="submit" class="btn btn-outline-dark" *ngIf="!(readerForm.get('ip')!.hasError('invalidIpAddress') && readerForm.get('ip')!.touched)"  (click)="modal.close('Save click')">Save</button>
+  </div>
+
+  </div>
+</ng-template>
+<!-------------End Update Wave---------------->

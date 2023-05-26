@@ -14,28 +14,28 @@ import Swal from 'sweetalert2';
 })
 export class UpdateReaderComponent implements OnInit {
 
-  readerForm !:FormGroup;
-  doors:any
-  id!:number;
+  readerForm !: FormGroup;
+  doors: any
+  id!: number;
   savedReader: Reader = new Reader();
 
   constructor(
     private router: Router,
-    private readerService : ReaderService,
+    private readerService: ReaderService,
     private formBuilder: FormBuilder,
     private route: ActivatedRoute,
-    private doorService : DoorService,
+    private doorService: DoorService,
 
-  ){}
+  ) { }
 
   ngOnInit(): void {
-    this.readerForm=this.formBuilder.group({
-      ip:['',Validators.required],
-      door:['',Validators.required],
+    this.readerForm = this.formBuilder.group({
+      ip: ['', Validators.required],
+      door: ['', Validators.required],
     });
     this.getDoors()
     this.id = this.route.snapshot.params['id'];
-    this.readerService.getReaderById(this.id).subscribe((data:Reader)=>{
+    this.readerService.getReaderById(this.id).subscribe((data: Reader) => {
       console.log(data)
       this.readerForm.controls["ip"].setValue(data.ipAdresse)
 
@@ -43,29 +43,29 @@ export class UpdateReaderComponent implements OnInit {
   }
 
 
-  getDoors(){
-    this.doorService.getDoorsList().subscribe((data)=>{
-      this.doors=data;
+  getDoors() {
+    this.doorService.getDoorsList().subscribe((data) => {
+      this.doors = data;
       console.log(data)
 
     })
   }
-  doorS:string='';
-  selectChangeDoor(event : any){
-    this.doorS=event.target.value;
+  doorS: string = '';
+  selectChangeDoor(event: any) {
+    this.doorS = event.target.value;
   }
-  goToDeviceList(){
+  goToDeviceList() {
     this.router.navigate(['/alldevices']);
   }
-  updateReader():void{
-    this.savedReader.ipAdresse=this.readerForm.value.ip;
+  updateReader(): void {
+    this.savedReader.ipAdresse = this.readerForm.value.ip;
     //getting the door (id selected option)
     const doorObs = this.doorService.getDoorById(Number(this.doorS))
     forkJoin([doorObs]).subscribe(([doorData]) => {
-      this.savedReader.prt=doorData;
+      this.savedReader.prt = doorData;
       console.log(doorData);
 
-      this.readerService.updateReader(this.id,this.savedReader).subscribe( data =>{
+      this.readerService.updateReader(this.id, this.savedReader).subscribe(data => {
         Swal.fire({
           position: 'center',
           icon: 'success',
@@ -76,12 +76,12 @@ export class UpdateReaderComponent implements OnInit {
         console.log(data);
         this.goToDeviceList();
       },
-      error => console.log(error));
+        error => console.log(error));
     });
     this.goToDeviceList()
   }
 
-  onSubmit(){
+  onSubmit() {
     this.updateReader();
   }
 

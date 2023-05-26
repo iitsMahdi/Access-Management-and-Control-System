@@ -404,10 +404,7 @@ main .box-info li .text p {
 .colored-toast .swal2-html-container {
   color: white;
 }
-#select-container {
-  display: flex;
-  justify-content: flex-end;
-}
+
 .custom-select {
   appearance: none;
   padding: 8px 16px;
@@ -432,4 +429,25 @@ main .box-info li .text p {
   right: 10px;
   transform: translateY(-50%);
   color: #aaa;
+}
+
+.circle {
+  position: relative;
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  background-color: #3C91E6;
+  color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: bold;
+  font-size: 20px;
+  margin-left: 80%;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2); /* Adds a subtle box shadow */
+  transition: background-color 0.3s ease-in-out; /* Adds a smooth transition effect on hover */
+}
+
+.circle:hover {
+  background-color: #29608F; /* Changes the background color on hover */
 }

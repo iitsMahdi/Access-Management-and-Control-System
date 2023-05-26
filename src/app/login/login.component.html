@@ -30,13 +30,30 @@
            		    	<input type="password" class="input" placeholder="password" formControlName="password" >
             	   </div>
             	</div>
-            	<a href="#">Forgot Password?</a>
+            	<a href="#" (click)="open(content)">Forgot Password?</a>
             	<button class="btn" type="submit" (click)="onSubmit(loginForm)">Login</button>
-              <a routerLink="/register">Register?</a>
-
+              <!--
+                <a routerLink="/register">Register?</a>
+              -->
             </form>
         </div>
     </div>
 
-
+    <ng-template #content let-modal>
+      <div class="modal-header">
+        <h4 class="modal-title" id="modal-basic-title">Forget your password?</h4>
+        <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
+      </div>
+      <div class="modal-body">
+        <form method="post" [formGroup]="FPW" (ngSubmit)="forgetPwd()">
+          <div class="form-group">
+            <label for="Email">Please enter your email:</label>
+            <input type="text" name="Email" id="Email" class="my-input form-control" placeholder="abcdef@ghij.klm" required formControlName="email">
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="submit" class="btn-outline-dark" (click)="modal.close('Save click')">Save</button>
+      </div>
+    </ng-template>
 <script type="text/javascript" src="../../assets/main.js"></script>

@@ -56,7 +56,7 @@ export class DevicesComponent implements OnInit {
   ) { }
   ngOnInit(): void {
     this.readerForm = this.formBuilder.group({
-      ip: ['', [Validators.required, this.ipAddressValidator()]],
+      NumL: ['', Validators.required],
       door: ['', Validators.required],
       status: ['', Validators.required],
 
@@ -67,12 +67,13 @@ export class DevicesComponent implements OnInit {
       dep: ['', Validators.required],
       Adresse: ['', [Validators.required, this.ipAddressValidator()]],
       sn: ['', Validators.required],
+      number:['', Validators.required],
 
     });
     this.waveForm = this.formBuilder.group({
       nameWave: ['', Validators.required],
       status: ['', Validators.required],
-      adr: ['', Validators.required],
+      adr: ['', [Validators.required, this.ipAddressValidator()]],
     });
 
     this.getDepartement()
@@ -134,7 +135,7 @@ export class DevicesComponent implements OnInit {
   getReaders() {
     this.readerService.getReaderList().subscribe((data) => {
       this.readers = data;
-      //console.log(data)
+      console.log(data)
     })
   }
 
@@ -319,11 +320,21 @@ export class DevicesComponent implements OnInit {
     this.savedCont.status = this.stat;
     this.savedCont.ipAdresse = this.contForm.value.Adresse;
     this.savedCont.serial_Number = this.contForm.value.sn;
+    this.savedCont.nbrPorte=this.contForm.value.number;
+    const today = new Date();
+    const year = today.getFullYear();
+    const month = today.getMonth() + 1; // Months are zero-based, so add 1
+    const day = today.getDate();
 
+    let m = month.toString().padStart(2, '0');
+    let d = day.toString().padStart(2, '0');
+
+
+    this.savedCont.dateStatus=`${year}-${m}-${d}`;
     const deptObs = this.DepService.getDepById(Number(this.departement))
     forkJoin([deptObs]).subscribe(([deptData]) => {
       this.savedCont.dept = deptData;
-      console.log(deptData);
+      console.log(this.savedCont)
       this.contService.createCont(this.savedCont).subscribe(data => {
         Swal.fire({
           position: 'center',
@@ -332,15 +343,24 @@ export class DevicesComponent implements OnInit {
           showConfirmButton: false,
           timer: 1500
         });
-        console.log(data);
         this.goToDeviceList();
       },
         error => console.log(error));
     });
   }
   saveReader(): void {
-    this.savedReader.ipAdresse = this.readerForm.value.ip;
+    this.savedReader.numLecteur= this.readerForm.value.NumL;
     this.savedReader.etatLecteur = this.stat;
+    const today = new Date();
+    const year = today.getFullYear();
+    const month = today.getMonth() + 1; // Months are zero-based, so add 1
+    const day = today.getDate();
+
+    let m = month.toString().padStart(2, '0');
+    let d = day.toString().padStart(2, '0');
+
+
+    this.savedReader.dateStatus=`${year}-${m}-${d}`;
     const doorObs = this.doorService.getDoorById(Number(this.doorS))
     forkJoin([doorObs]).subscribe(([doorData]) => {
       this.savedReader.prt = doorData;
@@ -375,6 +395,13 @@ export class DevicesComponent implements OnInit {
     this.sevedWaveShare.nameDevice = this.waveForm.value.nameWave;
     this.sevedWaveShare.adresse = this.waveForm.value.adr;
     this.sevedWaveShare.status = this.stat;
+    const today = new Date();
+    const year = today.getFullYear();
+    const month = today.getMonth() + 1; // Months are zero-based, so add 1
+    const day = today.getDate();
+    let m = month.toString().padStart(2, '0');
+    let d = day.toString().padStart(2, '0');
+    this.sevedWaveShare.dateStatus =`${year}-${m}-${d}`;
     this.waveService.createWave(this.sevedWaveShare).subscribe((data) => {
       Swal.fire({
         position: 'center',
@@ -425,7 +452,7 @@ export class DevicesComponent implements OnInit {
     this.readerService.getReaderById(id).subscribe(
       (data) => {
         this.readerForm.patchValue({
-          ip: data.ipAdresse,
+          NumL: data.numLecteur,
           door: data.prt.idPorte,
           status: data.etatLecteur
         });
@@ -517,7 +544,8 @@ export class DevicesComponent implements OnInit {
           status: data.status,
           dep: data.dept.idDep,
           Adresse: data.ipAdresse,
-          sn: data.serial_Number
+          sn: data.serial_Number,
+          number:data.nbrPorte
         });
       },
       (error) => {
@@ -531,6 +559,17 @@ export class DevicesComponent implements OnInit {
     this.savedCont.status = this.contForm.value.status;
     this.savedCont.ipAdresse = this.contForm.value.Adresse;
     this.savedCont.serial_Number = this.contForm.value.sn;
+    this.savedCont.nbrPorte=this.contForm.value.number;
+    const today = new Date();
+    const year = today.getFullYear();
+    const month = today.getMonth() + 1; // Months are zero-based, so add 1
+    const day = today.getDate();
+
+    let m = month.toString().padStart(2, '0');
+    let d = day.toString().padStart(2, '0');
+
+
+    this.savedCont.dateStatus=`${year}-${m}-${d}`;
     this.contService.getContById(id).subscribe((cont) => {
       let dep: any
       if (this.departement) {
@@ -559,8 +598,15 @@ export class DevicesComponent implements OnInit {
 
   }
   updateRea(id: any) {
-    this.savedReader.ipAdresse = this.readerForm.value.ip;
+    this.savedReader.numLecteur= this.readerForm.value.NumL;
     this.savedReader.etatLecteur = this.readerForm.value.status;
+    const today = new Date();
+    const year = today.getFullYear();
+    const month = today.getMonth() + 1; // Months are zero-based, so add 1
+    const day = today.getDate();
+    let m = month.toString().padStart(2, '0');
+    let d = day.toString().padStart(2, '0');
+    this.savedReader.dateStatus =`${year}-${m}-${d}`;
     this.readerService.getReaderById(id).subscribe((re) => {
       let ii = 0
       if (this.doorS) {
@@ -616,6 +662,13 @@ export class DevicesComponent implements OnInit {
       this.sevedWaveShare.nameDevice = this.waveForm.value.nameWave;
       this.sevedWaveShare.adresse = this.waveForm.value.adr;
       this.sevedWaveShare.status = this.waveForm.value.status;
+      const today = new Date();
+      const year = today.getFullYear();
+      const month = today.getMonth() + 1; // Months are zero-based, so add 1
+      const day = today.getDate();
+      let m = month.toString().padStart(2, '0');
+      let d = day.toString().padStart(2, '0');
+      this.sevedWaveShare.dateStatus =`${year}-${m}-${d}`;
       this.waveService.updateWave(id, this.sevedWaveShare).subscribe((data) => {
         Swal.fire({
           position: 'center',

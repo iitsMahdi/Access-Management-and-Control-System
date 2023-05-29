@@ -27,6 +27,10 @@ export class ControllerService {
     return this.httpClient.get<Contoller>(`${this.baseURL}/get-one/${id}`);
   }
 
+  verifCont(idC: any,np:any): Observable<any>{
+    return this.httpClient.get<any>(`${this.baseURL}/verifcntrl/${idC}/${np}`);
+  }
+
   updateCont(id: number, cont: Contoller): Observable<Object>{
 
     return this.httpClient.put(`${this.baseURL}/update/${id}`, cont);

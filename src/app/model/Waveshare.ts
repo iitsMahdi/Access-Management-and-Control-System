@@ -3,4 +3,5 @@ export class Waveshare{
   nameDevice!:String;
   adresse!:String
   status !:String;
+  dateStatus!:any
 }

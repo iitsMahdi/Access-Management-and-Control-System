@@ -187,6 +187,7 @@ this.CreatelineChart()
         const observables = this.depts.map((dep) => this.histService.getDenByDep(dep));
         forkJoin(observables).subscribe((deniedData: any[]) => {
           this.denByDep = deniedData;
+          console.warn(this.denByDep)
           this.createChart2();
         });
       });
@@ -216,16 +217,12 @@ this.CreatelineChart()
         let dptss = dep
         let monthIndex: number = new Date().getMonth() + 1;
         let deppp = dep[0].idDep
-        console.warn(monthIndex)
-        console.warn(deppp)
         this.histService.getByDepMonth(monthIndex, deppp).subscribe(
           (data: any) => {
             for (let index = 0; index < data.length; index++) {
               this.dates.push(data[index].date)
               this.denUsers.push(data[index].den)
             }
-            console.log(this.dates)
-
             this.createChart();
           }
         )

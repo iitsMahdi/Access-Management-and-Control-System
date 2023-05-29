@@ -3,9 +3,9 @@
 <div class="container">
   <section class="main">
       <section class="attendance" width="10%" height="10%">
-<!--<button (click)="sendMessage()">Send</button>
+<button (click)="sendMessage()">Send</button>
   <br><br>
--->
+
         <div class="attendance-list">
         <h3 style="text-align: center;font-weight: bold;">Real Time History</h3><br>
         <button mat-raised-button class="btnN" (click)="open(content)">
@@ -65,7 +65,7 @@
               <td>{{msg.data.prt.nomPorte}}</td>
               <td>{{msg.data.prt.cntrl.dept.nomDep}}</td>
               <td>{{msg.data.idEvent}}</td>
-              <td><a routerLink="/account/{{msg.data.usr.id}}">{{msg.data.usr.id}}</a></td>
+              <td><button (click)="account(msg.data.usr.id)">{{msg.data.usr.id}}</button></td>
               <td>{{msg.data.etatHistorique}}</td>
               <td>{{msg.data.cause}}</td>
             </tr>

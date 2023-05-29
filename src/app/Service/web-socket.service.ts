@@ -36,7 +36,12 @@ export class WebSocketService {
   }
 
   sendMessage(msg: Message): void {
-    this.socket$.next(msg);
+    if (this.socket$ && !this.socket$.closed) {
+      this.socket$.next(msg);
+    } else {
+      // WebSocket connection is closed, handle the error here
+      console.error('WebSocket connection is closed. Message could not be sent.');
+    }
   }
 
   /**

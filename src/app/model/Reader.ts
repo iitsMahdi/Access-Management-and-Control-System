@@ -1,8 +1,9 @@
 import { Porte } from "./Porte";
 
 export class Reader{
-  idLecteur !:bigint;
+  numLecteur !:bigint;
   ipAdresse !: String;
   etatLecteur!:any
   prt!:Porte;
+  dateStatus!:any
 }

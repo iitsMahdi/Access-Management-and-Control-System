@@ -97,6 +97,9 @@
                   <div class="col">
                     <div class="title"><b>Email</b></div>
                     <input type="email" name="email" id="email" class="my-input" placeholder="Enter your email adress" required formControlName="email" >
+                    <div style="color: red;font-weight: bold;" *ngIf="userCredForm.get('email')!.hasError('email') && userCredForm.get('email')!.touched" class="error">
+                      L'adresse e-mail n'est pas valide.
+                    </div>
                   </div>
 
                 </div>

@@ -154,19 +154,11 @@ const routes: Routes = [
         }
       },
       {
-        path:'account',
-        component:AccountComponent,
-        canActivate:[AuthGuard,HasRoleGuard],
-        data:{
-          roles:['admin','user']
-        }
-      },
-      {
         path:'account/:id',
         component:AccountComponent,
         canActivate:[AuthGuard,HasRoleGuard],
         data:{
-          roles:['admin']
+          roles:['admin','user']
         }
       },
       {

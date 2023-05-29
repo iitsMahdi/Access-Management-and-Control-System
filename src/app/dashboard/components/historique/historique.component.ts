@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
 import { NgToastService } from 'ng-angular-popup';
 import { ngxCsv } from 'ngx-csv';
@@ -35,6 +36,8 @@ export class HistoriqueComponent implements OnInit{
     private formBuilder: FormBuilder,
     private histService:HistoriqueService,
     private DepService:DepartementService
+    ,    private router: Router,
+
     ) { }
 
 
@@ -258,4 +261,10 @@ export class HistoriqueComponent implements OnInit{
     new ngxCsv(mergedTableData, "History", options);
   }
 
+  account(id:any){
+    console.warn(id)
+    this.router.navigate(['/account', id]);
+  }
+
 }
+

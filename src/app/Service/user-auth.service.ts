@@ -25,6 +25,13 @@ export class UserAuthService {
   public getToken(): string {
     return localStorage.getItem('jwtToken') ?? '';
   }
+  public setRefToken(refToken: string) {
+    localStorage.setItem('refToken', refToken);
+  }
+
+  public getRefToken(): string {
+    return localStorage.getItem('refToken') ?? '';
+  }
 
   public setEmail(Email: string) {
     localStorage.setItem('Email', Email);

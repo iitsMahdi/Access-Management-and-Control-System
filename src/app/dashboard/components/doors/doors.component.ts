@@ -23,7 +23,7 @@ export class DoorsComponent implements OnInit{
   doorForm !:FormGroup;
   cardNumber!: string;
   porte: Porte = new Porte();
-
+nbb:any
   deptss:any
   contss:any
   constructor(
@@ -39,8 +39,11 @@ export class DoorsComponent implements OnInit{
 roless=this.userAuthService.getRoles()
     ngOnInit(): void {
       this.doorForm=this.formBuilder.group({
-        email:['',Validators.required],
-        Password:['',Validators.required],
+        name:['',Validators.required],
+        number:['',Validators.required],
+        type:['',Validators.required],
+        Controller:['',Validators.required],
+        Wave:['',Validators.required]
       });
 
       this.getDoors()
@@ -178,34 +181,49 @@ roless=this.userAuthService.getRoles()
   saveDoor():void{
     this.porte.nomPorte=this.doorForm.value.name;
     this.porte.type=this.type;
+    if(this.type=="Porte_Principal"){
+      this.nbb=1
+    }else{
+      this.nbb=2
+    }
     this.porte.numPorte=this.doorForm.value.number;
     const contObs = this.contService.getContById(Number(this.cont))
     const waveObs = this.wavesService.getWaveById(this.wv)
-
     forkJoin([contObs,waveObs]).subscribe(([contData,waveData]) => {
-      this.porte.cntrl=contData;
-      this.porte.wsh=waveData
-      console.log(waveData)
-      if (!waveData.prt){
-      this.doorService.createDoor(this.porte).subscribe( data =>{
-        Swal.fire({
-          position: 'center',
-          icon: 'success',
-          title: 'Door added successfully',
-          showConfirmButton: false,
-          timer: 1500
-        });
-        this.goToDoorList();
-        window.location.reload()
+      this.contService.verifCont(contData.idCont,this.nbb).subscribe((check:any)=>{
+        if (check){
+          this.porte.cntrl=contData;
+          this.porte.wsh=waveData
+          console.log(waveData)
+          if (!waveData.prt){
+          this.doorService.createDoor(this.porte).subscribe( data =>{
+            Swal.fire({
+              position: 'center',
+              icon: 'success',
+              title: 'Door added successfully',
+              showConfirmButton: false,
+              timer: 1500
+            });
+            this.goToDoorList();
+            window.location.reload()
+          },
+          error => console.log(error));
+        }else{
+          Swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: 'Please Choose another Waveshare!'
+          })
+        }
+        }else{
+          Swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: 'Choose another Controller(Max)'+contData.nbrPorte+" door !"
+          })
+        }
       },
       error => console.log(error));
-    }else{
-      Swal.fire({
-        icon: 'error',
-        title: 'Oops...',
-        text: 'Please Choose another Waveshare!'
-      })
-    }
     });
 
   }

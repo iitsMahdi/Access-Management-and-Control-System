@@ -62,7 +62,7 @@ export class AdduserByUserComponent implements OnInit{
     });
 
     this.userCredForm=this.formBuilder.group({
-      email:['',Validators.required],
+      email:['',Validators.required, Validators.email],
       password:['',Validators.required],
       pin:['',Validators.required],
       card:['',Validators.required],

@@ -11,6 +11,7 @@ import { Router } from '@angular/router';
 export class UserService {
   private baseURL = "http://localhost:8080";
   private AuthURL = "http://localhost:8080/api/v1/auth/authenticate"
+  private RefTokenURL = "http://localhost:8080/api/v1/auth/"
   private EndPoint ="/User"
 
   constructor(private router: Router,private httpClient: HttpClient,private userAuthService : UserAuthService) { }
@@ -36,8 +37,8 @@ export class UserService {
     return this.httpClient.put(`${this.baseURL}`+this.EndPoint+"/update/"+id, user);
   }
 
-  updatePassword(id: number, user: User): Observable<Object>{
-    return this.httpClient.put(`${this.baseURL}`+this.EndPoint+"/updatePwd/"+id, user);
+  updatePassword(id: number, ps: any): Observable<Object>{
+    return this.httpClient.put(`${this.baseURL}`+this.EndPoint+"/updateps/"+id,ps);
   }
   deleteUser(id: bigint,role:any): Observable<Object|null>{
     if(role==="admin"){
@@ -50,6 +51,14 @@ export class UserService {
   login(loginForm:FormGroup){
     console.log(loginForm.value)
     return this.httpClient.post<any>(`${this.AuthURL}`,loginForm.value);
+  }
+
+  refreshToken(): Observable<any> {
+    return this.httpClient.get<any>(`${this.RefTokenURL}refresh-token`);
+  }
+
+  getRefreshToken(email: string): Observable<string> {
+    return this.httpClient.get(`${this.baseURL}${this.EndPoint}/getref/${email}`, { responseType: 'text' });
   }
 
   logoutUser(){
@@ -77,5 +86,15 @@ export class UserService {
     return this.httpClient.get<User>(`${this.baseURL}`+this.EndPoint+"/addd/"+i+"/"+u);
   }
 
+  MailingUserAccountCreated(email: any): Observable<any>{
+    return this.httpClient.get<any>(`${this.baseURL}`+this.EndPoint+"/send-emaill/"+email);
+  }
 
+  MailingUserPwdChanged(email: any): Observable<any>{
+    return this.httpClient.get<any>(`${this.baseURL}`+this.EndPoint+"/send-email/"+email);
+  }
+
+  MailingAdminForgetPwd(email: any): Observable<string> {
+    return this.httpClient.get(`${this.baseURL}${this.EndPoint}/send-email-ps/${email}`, { responseType: 'text' });
+  }
 }

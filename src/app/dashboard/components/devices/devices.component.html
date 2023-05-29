@@ -34,6 +34,7 @@
               <th> Name </th>
               <th>IP Adresse</th>
               <th>Serial Number</th>
+              <th>Door Number</th>
               <th>Departement</th>
               <th> Statut </th>
               <th> Actions </th>
@@ -45,6 +46,7 @@
               <td> {{ cont.nomCont }} </td>
               <td> {{ cont.ipAdresse }} </td>
               <td> {{ cont.serial_Number }} </td>
+              <td>{{cont.nbrPorte}}</td>
               <td>{{cont.dept.nomDep}}</td>
               <td> {{ cont.status }} </td>
               <td>
@@ -63,7 +65,7 @@
         <thead>
           <tr>
               <th> Reader ID</th>
-              <th> IP Adresse </th>
+              <th> Reader Number </th>
               <th> Door</th>
               <th> Departement</th>
               <th> Status</th>
@@ -74,7 +76,7 @@
       <tbody>
           <tr *ngFor = "let re of readers" >
               <td> {{ re.idLecteur }} </td>
-              <td> {{ re.ipAdresse }} </td>
+              <td> {{ re.numLecteur }} </td>
               <td> {{ re.prt.nomPorte }} </td>
               <td> {{ re.prt.cntrl.dept.nomDep }} </td>
               <td> {{ re.etatLecteur }} </td>
@@ -92,23 +94,25 @@
       <table class = "table ">
         <thead>
           <tr>
+              <th> Waveshare ID</th>
               <th> Waveshare name</th>
               <th> IP Adresse </th>
               <th> Departement</th>
-
               <th> Status </th>
               <th> Actions </th>
           </tr>
       </thead>
       <tbody>
           <tr *ngFor = "let w of waves" >
+            <td> {{ w.idwave }} </td>
+
               <td> {{ w.nameDevice }} </td>
               <td> {{ w.adresse }} </td>
               <td> {{ w.prt.cntrl.dept.nomDep  }} </td>
               <td> {{ w.status }} </td>
               <td>
-                <button  class = "btn btn-info" (click) = "befUpW(Wave,w.adresse)"><mat-icon>create</mat-icon>Update</button>
-                <button class = "btn btn-danger" style="margin-left: 10px" (click) = "deleteWave(w.adresse)"><mat-icon >delete</mat-icon>Delete</button>
+                <button  class = "btn btn-info" (click) = "befUpW(Wave,w.idwave)"><mat-icon>create</mat-icon>Update</button>
+                <button class = "btn btn-danger" style="margin-left: 10px" (click) = "deleteWave(w.idwave)"><mat-icon >delete</mat-icon>Delete</button>
               </td>
           </tr>
       </tbody>
@@ -154,6 +158,10 @@
         <input type="text" name="sn" id="sn" class="my-input" placeholder="Enter THE Serial Number" required formControlName="sn">
       </div>
       <div class="form-group">
+        <label for="number">Door Number</label>
+        <input type="number" name="number" id="number" class="my-input" placeholder="Enter THE door Number" required formControlName="number">
+      </div>
+      <div class="form-group">
         <label for="status">Status</label>
         <select class="my-select" name="status" id="status" (change)="selectChangeStat($event)" formControlName="status">
           <option value="Connected">Connected</option>
@@ -172,11 +180,8 @@
   <div *ngIf="dev ==='Reader'">
     <form method="post" [formGroup]="readerForm" (ngSubmit)="onSubmit()">
         <div class="form-group">
-          <label for="name">IP Adress</label>
-          <input type="text" name="ip" id="ip" class="my-input" placeholder="Enter The @IP" required formControlName="ip">
-          <div style="color: red;font-weight: bold;" *ngIf="readerForm.get('ip')!.hasError('invalidIpAddress') && readerForm.get('ip')!.touched" class="error">
-            Invalid IP address format.
-          </div>
+          <label for="name">Reader Number</label>
+          <input type="number" name="ip" id="ip" class="my-input" placeholder="Enter Reader Number" required formControlName="NumL">
         </div>
         <div class="form-group">
           <label for="status">Status</label>
@@ -203,6 +208,9 @@
         <div class="form-group">
           <label for="name">Adresse</label>
           <input type="text" name="adr" id="adr" class="my-input" placeholder="Enter the @IP" required formControlName="adr">
+          <div style="color: red;font-weight: bold;" *ngIf="waveForm.get('adr')!.hasError('invalidIpAddress') && waveForm.get('adr')!.touched" class="error">
+            Invalid IP address format.
+          </div>
         </div>
         <div class="form-group">
           <label for="name">Statut</label>
@@ -214,7 +222,7 @@
     </form>
   </div>
   <div class="modal-footer">
-    <button type="submit" class="btn btn-outline-dark" *ngIf="!(readerForm.get('ip')!.hasError('invalidIpAddress') && readerForm.get('ip')!.touched)"  (click)="modal.close('Save click')">Save</button>
+    <button type="submit" class="btn btn-outline-dark"  (click)="modal.close('Save click')">Save</button>
   </div>
 
   </div>
@@ -228,13 +236,10 @@
   <div class="modal-body">
 
     <form method="post" [formGroup]="readerForm" (ngSubmit)="onSubmit()">
-        <div class="form-group">
-          <label for="name">IP Adress</label>
-          <input type="text" name="ip" id="ip" class="my-input" placeholder="Enter The @IP" required formControlName="ip">
-          <div style="color: red;font-weight: bold;" *ngIf="readerForm.get('ip')!.hasError('invalidIpAddress') && readerForm.get('ip')!.touched" class="error">
-            Invalid IP address format.
-          </div>
-        </div>
+      <div class="form-group">
+        <label for="name">Reader Number</label>
+        <input type="number" name="ip" id="ip" class="my-input" placeholder="Enter Reader Number" required formControlName="NumL">
+      </div>
         <div class="form-group">
           <label for="status">Status</label>
           <select class="my-select" name="status" id="status" (change)="selectChangeStat($event)" formControlName="status">
@@ -250,7 +255,7 @@
         </div>
     </form>
   <div class="modal-footer">
-    <button type="submit" class="btn btn-outline-dark" *ngIf="!(readerForm.get('ip')!.hasError('invalidIpAddress') && readerForm.get('ip')!.touched)"  (click)="modal.close('Save click')">Save</button>
+    <button type="submit" class="btn btn-outline-dark" (click)="modal.close('Save click')">Save</button>
   </div>
 </div>
 </ng-template>
@@ -281,6 +286,10 @@
         <input type="text" name="sn" id="sn" class="my-input" placeholder="Enter THE Serial Number" required formControlName="sn">
       </div>
       <div class="form-group">
+        <label for="number">Door Number</label>
+        <input type="number" name="number" id="number" class="my-input" placeholder="Enter THE door Number" required formControlName="number">
+      </div>
+      <div class="form-group">
         <label for="status">Status</label>
         <select class="my-select" name="status" id="status" (change)="selectChangeStat($event)" formControlName="status">
           <option value="Connected">Connected</option>
@@ -295,7 +304,7 @@
       </div>
   </form>
   <div class="modal-footer">
-    <button type="submit" class="btn btn-outline-dark" *ngIf="!(readerForm.get('ip')!.hasError('invalidIpAddress') && readerForm.get('ip')!.touched)"  (click)="modal.close('Save click')">Save</button>
+    <button type="submit" class="btn btn-outline-dark" (click)="modal.close('Save click')">Save</button>
   </div>
 
   </div>
@@ -322,7 +331,7 @@
         </div>
     </form>
   <div class="modal-footer">
-    <button type="submit" class="btn btn-outline-dark" *ngIf="!(readerForm.get('ip')!.hasError('invalidIpAddress') && readerForm.get('ip')!.touched)"  (click)="modal.close('Save click')">Save</button>
+    <button type="submit" class="btn btn-outline-dark" (click)="modal.close('Save click')">Save</button>
   </div>
 
   </div>

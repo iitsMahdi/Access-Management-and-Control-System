@@ -12,22 +12,28 @@ import Swal from 'sweetalert2';
 export class SidenavwrapperComponent implements AfterViewInit,OnInit {
   isExpanded: boolean = true;
   target!:string;
-  constructor(private userService : UserService,    private router: Router,private userAuthServ : UserAuthService
+  constructor(
+    private userService : UserService,
+    private router: Router,
+    private userAuthServ : UserAuthService
     ) {}
 
 
   ngOnInit(): void {
     let token=this.userAuthServ.getToken();
     let x=this.tokenExpired(token)
-    console.warn("token valide")
     if (x){
-      this.router.navigate(['/login']);
-      Swal.fire({
-        icon: 'error',
-        title: 'Oops...',
-        text: 'Token Expired!'
+      console.warn(this.userAuthServ.getRefToken())
+      this.userService.refreshToken().subscribe((data:any)=>{
+        console.warn("Token Refreshed")
+        window.location.reload()
+        this.userAuthServ.setToken(data.token)
       })
     }
+  }
+  private tokenExpired(token: string) {
+    const expiry = (JSON.parse(atob(token.split('.')[1]))).exp;
+    return (Math.floor((new Date).getTime() / 1000)) >= expiry;
   }
 
   ngAfterViewInit(): void {const allSideMenu = document.querySelectorAll('#sidebar .side-menu.top li a');
@@ -94,13 +100,10 @@ export class SidenavwrapperComponent implements AfterViewInit,OnInit {
     this.target=ch
   }
   prof(){
-    this.router.navigate(['/account']);
+    let id=999
+    this.router.navigate(['/account',id]);
+  }
 
-  }
-  private tokenExpired(token: string) {
-    const expiry = (JSON.parse(atob(token.split('.')[1]))).exp;
-    return (Math.floor((new Date).getTime() / 1000)) >= expiry;
-  }
 }
 
 

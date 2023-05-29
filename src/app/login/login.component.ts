@@ -42,8 +42,8 @@ export class LoginComponent implements OnInit{
 }
 
 login(loginForm: FormGroup,rls:String) {
-
   console.log("role : "+this.userAuthService.getRoles())
+
   this.userService.login(loginForm).subscribe(
     (response: any) => {
       Swal.fire({
@@ -60,13 +60,11 @@ login(loginForm: FormGroup,rls:String) {
       this.userAuthService.setRoles(this.role);
       this.userAuthService.setToken(response.token);
       this.userAuthService.setEmail(this.loginForm.value.email);
+      this.getRT(this.loginForm.value.email)
       console.log("connected")
       console.log(this.role)
-      if (this.role === 'admin') {
-        this.router.navigate(['/dashboard']);
-      } else {
-        this.router.navigate(['/alluser']);
-      }
+      this.router.navigate(['/dashboard']);
+
 
     },
     (error) => {
@@ -95,14 +93,29 @@ getUserRole(loginForm:FormGroup):string{
 
 onSubmit(loginForm: FormGroup){
   //this.role=this.getUserRole(loginForm)
+
   this.login(loginForm,this.role)
+
 }
+
+getRT(email:any){
+  this.userService.getRefreshToken(email).subscribe(
+    (data: string) => {
+      console.warn(data);
+      this.userAuthService.setRefToken(data);
+    },
+    (error: any) => {
+      console.error(error);
+    }
+  );
+}
+
 
 open(content:any) {
   this.modalService.open(content, { ariaLabelledBy: 'modal-basic-title' }).result.then(
     (result) => {
       //this.closeResult = `Closed with: ${result}`;
-      //this.onSubmit()
+      this.forgetPwd()
     },
     (reason) => {
       //this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
@@ -113,10 +126,18 @@ open(content:any) {
 
 forgetPwd(){
   let email=this.FPW.value.email
-
   this.userService.getUserByEmail(email).subscribe((data:any)=>{
     if(data){
-
+      this.userService.MailingAdminForgetPwd(email).subscribe((response:string)=>{
+        console.warn(response)
+        Swal.fire({
+          position: 'center',
+          icon: 'success',
+          title: 'Check your Email , A new password will be sent in few second by the admin !!',
+          showConfirmButton: false,
+          timer: 1500
+        })
+      })
     }else{
       Swal.fire({
         icon: 'error',

@@ -19,9 +19,7 @@ export class DepartementService {
 
 
   getDepList(): Observable<Departement[]>{
-
     return this.httpClient.get<Departement[]>(`${this.baseURL}`+this.EndPoint+"/all");
-
   }
 
   createDep(dep: Departement): Observable<Object>{

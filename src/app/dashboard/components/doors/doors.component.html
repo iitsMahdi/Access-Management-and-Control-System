@@ -54,11 +54,11 @@
     <form method="post" [formGroup]="doorForm" (ngSubmit)="onSubmit()">
       <div class="form-group">
         <label for="name">Name:</label>
-        <input type="text" name="name" id="name" class="my-input form-control" placeholder="Enter your name" required formControlName="name">
+        <input type="text" name="name" id="name" class="my-input form-control" placeholder="Enter the door name" required formControlName="name">
       </div>
       <div class="form-group">
         <label for="number">Number:</label>
-        <input type="number" name="number" id="number" class="my-input form-control" placeholder="Enter your number" required formControlName="number">
+        <input type="number" name="number" id="number" class="my-input form-control" placeholder="Enter the door number" required formControlName="number">
       </div>
       <div class="form-group">
         <label for="Type">Type:</label>
@@ -79,7 +79,7 @@
         <label for="Wave">Waveshare:</label>
         <select name="Wave" id="Wave" class="my-select form-control" required formControlName="Wave" (change)="selectChangeWave($event)">
           <option value="">Select a Waveshare</option>
-          <option *ngFor="let wv of waves" [value]="wv.adresse">{{wv.nameDevice}}</option>
+          <option *ngFor="let wv of waves" [value]="wv.idwave">{{wv.nameDevice}}</option>
         </select>
       </div>
     </form>

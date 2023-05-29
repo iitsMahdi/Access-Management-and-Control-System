@@ -9,6 +9,7 @@ import { UserAuthService } from 'src/app/Service/user-auth.service';
 import Swal from 'sweetalert2';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import e from 'cors';
 
 
 @Component({
@@ -182,9 +183,13 @@ export class UserComponent implements OnInit {
   }
 
   update(id:any){
-    this.user.email=this.userForm.value.email;
-    this.user.password=this.userForm.value.Password
-    this.userService.updatePassword(id,this.user).subscribe(()=>{
+    let email=this.userForm.value.email;
+    let ps =this.userForm.value.Password
+
+    this.userService.updatePassword(id,ps).subscribe(()=>{
+      this.userService.MailingUserPwdChanged(email).subscribe((data:any)=>{
+        //console.warn(data)
+      })
       Swal.fire({
         position: 'center',
         icon: 'success',

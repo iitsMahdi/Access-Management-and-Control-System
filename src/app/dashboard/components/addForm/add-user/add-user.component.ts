@@ -63,7 +63,7 @@ export class AddUserComponent implements OnInit{
     });
 
     this.userCredForm=this.formBuilder.group({
-      email:['',Validators.required],
+      email:['',Validators.required, Validators.email],
       password:['',Validators.required],
       pin:['',Validators.required],
       card:['',Validators.required],
@@ -223,20 +223,35 @@ export class AddUserComponent implements OnInit{
     this.saveEmployee()
     console.log(this.user)
     console.log(this.selectedDoors)
-    this.http.post(`http://localhost:8080/User/add`,this.user).subscribe(data => {
-      Swal.fire({
-        position: 'center',
-        icon: 'success',
-        title: 'User added successfully',
-        showConfirmButton: false,
-        timer: 1500
-      });
-      console.log(data);
-      this.assignUser(data);
-      this.goToUserList();
-      return data
-    },
-    error => console.log(error));
+
+    this.userService.getUserByEmail(this.user.email).subscribe((dd:any)=>{
+      if(!dd){
+        this.http.post(`http://localhost:8080/User/add`,this.user).subscribe(data => {
+          this.userService.MailingUserAccountCreated(this.user.email).subscribe((data)=>{
+            console.error(data)
+          },
+          error => console.log(error))
+          Swal.fire({
+            position: 'center',
+            icon: 'success',
+            title: 'User added successfully',
+            showConfirmButton: false,
+            timer: 1500
+          });
+          console.log(data);
+          this.assignUser(data);
+          this.goToUserList();
+          return data
+        },
+        error => console.log(error));
+      }else{
+        Swal.fire({
+          icon: 'error',
+          title: 'Oops...',
+          text: "User Exist , try to change you email !!"
+        })
+      }
+    })
   }
 
   goToUserList(){
@@ -246,5 +261,54 @@ export class AddUserComponent implements OnInit{
   onSubmit(){
     this.postUser();
   }
+
+  handleFileInput(event: any) {
+    const file = event.target.files[0];
+
+    if (file) {
+      const reader = new FileReader();
+
+      reader.onload = (e: any) => {
+        const fileContent = e.target.result;
+        const fileName = file.name;
+
+        // Save the file in the assets directory
+        this.saveFileInAssets(fileContent, fileName);
+      };
+
+      reader.onerror = (e: any) => {
+        console.error('Error reading file:', e.target.error);
+      };
+
+      // Read the file as data URL
+      reader.readAsDataURL(file);
+    }
+  }
+
+  saveFileInAssets(fileContent: string, fileName: string) {
+    const fileBlob = this.dataURLtoBlob(fileContent);
+    const fileUrl = URL.createObjectURL(fileBlob);
+    const anchorElement = document.createElement('a');
+    anchorElement.href = fileUrl;
+    anchorElement.download = fileName;
+    anchorElement.click();
+  }
+
+  dataURLtoBlob(dataURL: string) {
+    const byteString = atob(dataURL.split(',')[1]);
+    const arrayBuffer = new ArrayBuffer(byteString.length);
+    const uint8Array = new Uint8Array(arrayBuffer);
+
+    for (let i = 0; i < byteString.length; i++) {
+      uint8Array[i] = byteString.charCodeAt(i);
+    }
+
+    return new Blob([arrayBuffer]);
+  }
+
+
+
+
+
 
 }

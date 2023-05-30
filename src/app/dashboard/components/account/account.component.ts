@@ -37,7 +37,7 @@ constructor(
     });
     this.id = this.route.snapshot.params['id'];
 
-    if(this.id!=999){
+    if(this.id != 999){
       this.userService.getUserById(this.id).subscribe((data:any)=>{
         console.warn(data)
         this.user=data;

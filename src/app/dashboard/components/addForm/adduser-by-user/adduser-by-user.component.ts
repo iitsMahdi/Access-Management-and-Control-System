@@ -188,23 +188,8 @@ export class AdduserByUserComponent implements OnInit{
     this.user.codeUid=this.userCredForm.value.card;
     this.user.codePin=this.userCredForm.value.pin;
     this.user.email=this.userCredForm.value.email;
-    this.user.password=this.userCredForm.value.password
+    this.user.password=null
 
-
-
-    /*
-    this.userService.createUser(this.user,this.selectedDoors).subscribe(data => {
-      Swal.fire({
-          position: 'center',
-          icon: 'success',
-          title: 'User added successfully',
-          showConfirmButton: false,
-          timer: 1500
-        });
-        console.log(data);
-        this.goToUserList();
-      },
-      error => console.log(error));*/
   }
 
   assignUser(id:any){

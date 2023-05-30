@@ -18,7 +18,6 @@ import { DoorService } from 'src/app/Service/door.service';
 })
 export class AddUserComponent implements OnInit{
 
-  file!:File;
   userInfForm !:FormGroup;
   userPrevForm !:FormGroup;
   userCredForm !:FormGroup;
@@ -121,8 +120,26 @@ export class AddUserComponent implements OnInit{
         console.log(data)
       })
     }
+
+  file!:File;
   onChangeimg(event:any){
-    this.file=event.target.files[0];
+    this.file=event.target.files[0] as File;
+  }
+
+  uploadImage() {
+    if (this.file) {
+      const formData: FormData = new FormData();
+      formData.append('file', this.file, this.file.name);
+
+      this.http.post('http://your-backend-api/upload', formData).subscribe(
+        (response) => {
+          console.log('Image uploaded successfully.');
+        },
+        (error) => {
+          console.error('Error occurred while uploading the image.');
+        }
+      );
+    }
   }
 
   profile:string='';
@@ -260,29 +277,6 @@ export class AddUserComponent implements OnInit{
 
   onSubmit(){
     this.postUser();
-  }
-
-  handleFileInput(event: any) {
-    const file = event.target.files[0];
-
-    if (file) {
-      const reader = new FileReader();
-
-      reader.onload = (e: any) => {
-        const fileContent = e.target.result;
-        const fileName = file.name;
-
-        // Save the file in the assets directory
-        this.saveFileInAssets(fileContent, fileName);
-      };
-
-      reader.onerror = (e: any) => {
-        console.error('Error reading file:', e.target.error);
-      };
-
-      // Read the file as data URL
-      reader.readAsDataURL(file);
-    }
   }
 
   saveFileInAssets(fileContent: string, fileName: string) {

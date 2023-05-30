@@ -40,7 +40,7 @@
               <td> {{ user.email }} </td>
               <td> {{ user.role }} </td>
               <td>
-                <button (mouseenter)="onpwde()"  class = "btn btn-warning"  (click) = "open(content,user.id)"><mat-icon>lock_open</mat-icon></button>
+                <button (mouseenter)="onpwde()"  class = "btn btn-warning"  (click) = "befUp(content,user.id)"><mat-icon>lock_open</mat-icon></button>
                 <button (mouseenter)="onupdate()" class = "btn btn-info" (click) = "updateUser(user.id)"><mat-icon>create</mat-icon></button>
                 <button (mouseenter)="ondel()" class = "btn btn-danger"  (click) = "deleteUser(user.id)"><mat-icon >delete</mat-icon></button>
                 <div *ngIf="updateUserMessage">{{ updateUserMessage }} {{user.id}}</div>

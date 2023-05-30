@@ -1,13 +1,12 @@
 import { Departement } from "./Departement";
 import { Profile } from "./Profile";
 
-export class User{
+export class Visiteur{
   id!:bigint;
   adresse!:String;
   code!:String;
   email !:String;
   image!:String;
-  password !:String|null;
   phone !:String;
   role !:String;
   firstname !:String;

@@ -64,7 +64,8 @@ export class UserComponent implements OnInit {
         return (res.firstname.toLowerCase().match(this.search.toLowerCase()) ||
           res.lastname.toLowerCase().match(this.search.toLowerCase()) ||
           res.email.toLowerCase().match(this.search.toLowerCase()) ||
-          res.id.toString().toLowerCase().match(this.search.toLowerCase())
+          res.id.toString().toLowerCase().match(this.search.toLowerCase())||
+          res.role.toString().toLowerCase().match(this.search.toLowerCase())
         );
       })
     }
@@ -86,7 +87,14 @@ export class UserComponent implements OnInit {
   private getUsers() {
     this.userService.getUsersList().subscribe(data => {
       this.users = data;
-      console.log(this.users)
+
+      this.userService.getVisList().subscribe(vis => {
+        console.warn(vis)
+        for (let index = 0; index < vis.length; index++) {
+          this.users.push(vis[index])
+        }
+        console.warn(this.users)
+      });
     });
   }
 
@@ -180,6 +188,19 @@ export class UserComponent implements OnInit {
         console.log(error);
       }
     );
+  }
+
+  befUp(content:any,id:any){
+    let role = this.userAuthService.getRoles();
+    if (role.includes("user")) {
+      Swal.fire({
+        icon: 'error',
+        title: 'Oops...',
+        text: "You don't have access to do that"
+      })
+    }else{
+      this.open(content,id)
+    }
   }
 
   update(id:any){

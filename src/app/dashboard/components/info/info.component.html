@@ -1,36 +1,4 @@
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"/>
-
-<div class="container">
-  <section class="main">
-      <section class="attendance" width="10%" height="10%">
-      <div class="attendance-list">
-        <h1>liste des réclamations</h1>
-        <table class="table" >
-          <thead>
-            <tr>
-              <th>Email</th>
-              <th>Type</th>
-              <th>Date</th>
-              <th>Adresse</th>
-              <th>Heure</th>
-              <th>Actions</th>
-              <th></th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>Syrinhamdouni@gmail.com</td>
-              <td>plastique</td>
-              <td>05-15-23</td>
-              <td>sidibouzid</td>
-              <td>3:00PM</td>
-              <td>
-                <button>modifier</button>
-                <button>supprimer</button></td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-    </section>
-  </section>
-</div>
+<form (ngSubmit)="uploadFile()" enctype="multipart/form-data">
+  <input type="file" (change)="onFileSelected($event)" accept="image/*" />
+  <button type="submit">Upload</button>
+</form>

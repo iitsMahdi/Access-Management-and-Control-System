@@ -17,12 +17,14 @@ export class UserService {
   constructor(private router: Router,private httpClient: HttpClient,private userAuthService : UserAuthService) { }
 
   getUsersList(): Observable<User[]>{
-    return this.httpClient.get<User[]>(`${this.baseURL}`+this.EndPoint+"/all" );
+    return this.httpClient.get<User[]>(`${this.baseURL}`+this.EndPoint+"/alluser" );
   }
-
+  getVisList(): Observable<User[]>{
+    return this.httpClient.get<User[]>(`${this.baseURL}`+this.EndPoint+"/allvisit" );
+  }
   createUser(user: User,arr:any): Observable<Object>{
     console.log(user);
-    return this.httpClient.post<User>(`${this.baseURL}`+this.EndPoint+"/add/"+arr,user);
+    return this.httpClient.post<User>(`${this.baseURL}`+this.AuthURL+"/register/"+arr,user);
   }
 
   getUserById( id: number): Observable<User>{

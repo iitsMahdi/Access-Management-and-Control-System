@@ -21,6 +21,9 @@ export class DepartementService {
   getDepList(): Observable<Departement[]>{
     return this.httpClient.get<Departement[]>(`${this.baseURL}`+this.EndPoint+"/all");
   }
+  count(): Observable<number>{
+    return this.httpClient.get<number>(`${this.baseURL}`+this.EndPoint+"/countall");
+  }
 
   createDep(dep: Departement): Observable<Object>{
     console.log(dep);

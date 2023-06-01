@@ -11,11 +11,7 @@
             <mat-icon>add</mat-icon>
               Add Device
           </button>
-        <img src="../../../assets/3pnt.png" alt="" [matMenuTriggerFor]="menu">
-        <mat-menu #menu="matMenu">
-          <button mat-menu-item (click)="fileDownload()">Export CSV</button>
-        </mat-menu>
-        </div>
+        </div><br>
         <form method="post">
           <select class="my-select2" name="" id="" (change)="selectChange($event)">
             <option value="Reader">Reader</option>

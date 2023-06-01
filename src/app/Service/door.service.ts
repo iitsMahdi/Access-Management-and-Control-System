@@ -16,6 +16,9 @@ export class DoorService {
   getDoorsList(): Observable<Porte[]>{
     return this.httpClient.get<Porte[]>(`${this.baseURL}/get-all`);
   }
+  count(): Observable<number>{
+    return this.httpClient.get<number>(`${this.baseURL}/countall`);
+  }
 
   createDoor(porte: Porte): Observable<Object>{
     return this.httpClient.post(`${this.baseURL}/add`, porte);

@@ -244,7 +244,7 @@ export class AddUserComponent implements OnInit{
     this.userService.getUserByEmail(this.user.email).subscribe((dd:any)=>{
       if(!dd){
         this.http.post(`http://localhost:8080/User/add`,this.user).subscribe(data => {
-          this.userService.MailingUserAccountCreated(this.user.email).subscribe((data)=>{
+          this.userService.MailingUserAccountCreated(this.user.email,this.user.password).subscribe((data)=>{
             console.error(data)
           },
           error => console.log(error))
@@ -278,31 +278,4 @@ export class AddUserComponent implements OnInit{
   onSubmit(){
     this.postUser();
   }
-
-  saveFileInAssets(fileContent: string, fileName: string) {
-    const fileBlob = this.dataURLtoBlob(fileContent);
-    const fileUrl = URL.createObjectURL(fileBlob);
-    const anchorElement = document.createElement('a');
-    anchorElement.href = fileUrl;
-    anchorElement.download = fileName;
-    anchorElement.click();
-  }
-
-  dataURLtoBlob(dataURL: string) {
-    const byteString = atob(dataURL.split(',')[1]);
-    const arrayBuffer = new ArrayBuffer(byteString.length);
-    const uint8Array = new Uint8Array(arrayBuffer);
-
-    for (let i = 0; i < byteString.length; i++) {
-      uint8Array[i] = byteString.charCodeAt(i);
-    }
-
-    return new Blob([arrayBuffer]);
-  }
-
-
-
-
-
-
 }

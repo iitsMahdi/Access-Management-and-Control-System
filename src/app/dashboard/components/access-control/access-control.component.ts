@@ -199,4 +199,7 @@ export class AccessControlComponent implements OnInit {
     })
 
   }
+  startWs(){
+    window.location.reload()
+  }
 }

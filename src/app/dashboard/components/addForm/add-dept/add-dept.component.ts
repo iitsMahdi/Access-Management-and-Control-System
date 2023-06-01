@@ -36,6 +36,7 @@ export class AddDeptComponent implements OnInit {
       console.log('created');
       console.log(data);
       this.goToProfileList();
+
       Swal.fire({
       position: 'center',
       icon: 'success',
@@ -43,6 +44,7 @@ export class AddDeptComponent implements OnInit {
       showConfirmButton: false,
       timer: 1500
     });
+    window.location.reload()
     });
   }
 

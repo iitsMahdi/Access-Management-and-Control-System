@@ -181,6 +181,9 @@ export class AttendanceComponent implements  OnInit{
     })
 
   }
+  startWs(){
+    window.location.reload()
+  }
 }
 
 

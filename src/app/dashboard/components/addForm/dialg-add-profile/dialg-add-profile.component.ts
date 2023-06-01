@@ -38,6 +38,8 @@ saveProfile(){
       timer: 1500
     });
     this.goToProfileList();
+    window.location.reload()
+
   })
 
 }

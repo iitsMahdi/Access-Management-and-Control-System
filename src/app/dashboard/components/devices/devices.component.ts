@@ -149,16 +149,18 @@ export class DevicesComponent implements OnInit {
 
   getWaveshares() {
     this.waveService.getWaveList().subscribe((data) => {
-      let i = 0
-      while (data.length != 0) {
-        if (data[i].prt) {
-          this.waves.push(data[i])
+      let i = 0;
+      while (i < data.length) {
+        if (data[i].prt !== undefined) {
+          this.waves.push(data[i]);
         }
-        i++
+        i++;
       }
-      console.log(this.waves)
-    })
+      console.log(this.waves);
+    });
   }
+
+
 
   deleteCont(id: bigint) {
     let role = this.userAuthService.getRoles();

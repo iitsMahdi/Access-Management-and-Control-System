@@ -3,8 +3,8 @@
 <div class="container">
   <section class="main">
       <section class="attendance" width="10%" height="10%">
-<button (click)="sendMessage()">Send</button>
-  <br><br>
+<!--<button (click)="sendMessage()">Send</button>
+  <br><br>-->
 
         <div class="attendance-list">
         <h3 style="text-align: center;font-weight: bold;">Real Time History</h3><br>
@@ -17,7 +17,7 @@
             <mat-icon>stop</mat-icon>
             Stop
           </button>
-          <button mat-raised-button (click)="connectWS()" class="btnN">
+          <button mat-raised-button (click)="startWs()" class="btnN">
             <mat-icon>play_arrow</mat-icon>Start
           </button>
           <button mat-raised-button (click)="clear()" class="btnN">

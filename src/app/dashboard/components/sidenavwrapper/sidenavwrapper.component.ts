@@ -26,8 +26,8 @@ export class SidenavwrapperComponent implements AfterViewInit,OnInit {
       console.warn(this.userAuthServ.getRefToken())
       this.userService.refreshToken().subscribe((data:any)=>{
         console.warn("Token Refreshed")
-        window.location.reload()
         this.userAuthServ.setToken(data.token)
+        window.location.reload()
       })
     }
   }

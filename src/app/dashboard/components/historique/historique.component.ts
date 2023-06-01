@@ -265,6 +265,8 @@ export class HistoriqueComponent implements OnInit{
     console.warn(id)
     this.router.navigate(['/account', id]);
   }
-
+  startWs(){
+    window.location.reload()
+  }
 }
 

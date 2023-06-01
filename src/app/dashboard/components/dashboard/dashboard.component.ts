@@ -15,6 +15,8 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import Swal from 'sweetalert2';
 import { DeviceService } from 'src/app/Service/device.service';
 import { Client2Service } from 'src/app/Service/client2.service';
+import { UserService } from 'src/app/Service/user.service';
+import { DoorService } from 'src/app/Service/door.service';
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
@@ -30,13 +32,11 @@ export class DashboardComponent implements OnInit {
   chart2: any
   messages: Message[] = []
   message$ = new Subject<Message[]>();
-  yesterday: any = new Date();
-  y: any
-  y1: any
-  y2: any
-  y3: any
-  y4: any
-  y5: any
+  nUser:any
+  nDoor:any
+  nDep:any
+  nEv:any
+
   alarmes: any
   hist: any
   accUsers: any[] = []
@@ -63,7 +63,8 @@ export class DashboardComponent implements OnInit {
     private formBuilder: FormBuilder,
     private deviceService : DeviceService,
     private wsClient2: Client2Service,
-
+    private userService:UserService,
+    private doorService : DoorService
   ) {
   }
   async ngOnInit() {
@@ -83,6 +84,20 @@ export class DashboardComponent implements OnInit {
       timer: 1500,
       timerProgressBar: true
     })
+
+    this.userService.count().subscribe((data:number)=>{
+      this.nUser=data
+    })
+    this.doorService.count().subscribe((data:number)=>{
+      this.nDoor=data
+    })
+    this.depService.count().subscribe((data:number)=>{
+      this.nDep=data
+    })
+    this.enventService.countE().subscribe((data:number)=>{
+      this.nEv=data
+    })
+
 
     /*************************************************************************************************************************/
     //Init of Pie chart

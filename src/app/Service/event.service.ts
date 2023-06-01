@@ -33,6 +33,9 @@ export class EventService {
   getFilterEV(fEV: FilterEV): Observable<Object>{
     return this.httpClient.post(`${this.baseURL}/filterEV`, fEV);
   }
+  countE(): Observable<number>{
+    return this.httpClient.get<number>(`${this.baseURL}/countall`);
+  }
 
   getFilterEV1(fEV: FilterEV): Observable<Object>{
     return this.httpClient.post(`${this.baseURL}/filterEV1`, fEV);

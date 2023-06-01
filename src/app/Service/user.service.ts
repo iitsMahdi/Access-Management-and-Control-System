@@ -19,6 +19,9 @@ export class UserService {
   getUsersList(): Observable<User[]>{
     return this.httpClient.get<User[]>(`${this.baseURL}`+this.EndPoint+"/alluser" );
   }
+  count(): Observable<number>{
+    return this.httpClient.get<number>(`${this.baseURL}`+this.EndPoint+"/countall" );
+  }
   getVisList(): Observable<User[]>{
     return this.httpClient.get<User[]>(`${this.baseURL}`+this.EndPoint+"/allvisit" );
   }
@@ -88,12 +91,12 @@ export class UserService {
     return this.httpClient.get<User>(`${this.baseURL}`+this.EndPoint+"/addd/"+i+"/"+u);
   }
 
-  MailingUserAccountCreated(email: any): Observable<any>{
-    return this.httpClient.get<any>(`${this.baseURL}`+this.EndPoint+"/send-emaill/"+email);
+  MailingUserAccountCreated(email: any,psw:any): Observable<any>{
+    return this.httpClient.get<any>(`${this.baseURL}`+this.EndPoint+"/send-emaill/"+email+"/"+psw);
   }
 
-  MailingUserPwdChanged(email: any): Observable<any>{
-    return this.httpClient.get<any>(`${this.baseURL}`+this.EndPoint+"/send-email/"+email);
+  MailingUserPwdChanged(email: any,psw:any): Observable<any>{
+    return this.httpClient.get<any>(`${this.baseURL}`+this.EndPoint+"/send-email/"+email+"/"+psw);
   }
 
   MailingAdminForgetPwd(email: any): Observable<string> {

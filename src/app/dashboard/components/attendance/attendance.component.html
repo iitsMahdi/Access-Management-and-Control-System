@@ -1,5 +1,5 @@
-<button (click)="sendMessage()">Send</button>
-  <br><br>
+<!--<button (click)="sendMessage()">Send</button>
+  <br><br>-->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"/>
 
   <div class="container">
@@ -16,7 +16,7 @@
                 <mat-icon>stop</mat-icon>
                 Stop
               </button>
-              <button mat-raised-button (click)="ngOnInit()" class="btnN">
+              <button mat-raised-button (click)="startWs()" class="btnN">
                 <mat-icon>play_arrow</mat-icon>Start
               </button>
               <button mat-raised-button (click)="clear()" class="btnN">

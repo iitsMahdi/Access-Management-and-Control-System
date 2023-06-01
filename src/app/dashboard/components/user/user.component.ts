@@ -208,7 +208,7 @@ export class UserComponent implements OnInit {
     let ps =this.userForm.value.Password
 
     this.userService.updatePassword(id,ps).subscribe(()=>{
-      this.userService.MailingUserPwdChanged(email).subscribe((data:any)=>{
+      this.userService.MailingUserPwdChanged(email,ps).subscribe((data:any)=>{
         //console.warn(data)
       })
       Swal.fire({

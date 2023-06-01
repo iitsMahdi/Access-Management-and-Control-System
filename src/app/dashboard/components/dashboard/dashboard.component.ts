@@ -49,6 +49,7 @@ export class DashboardComponent implements OnInit {
   nb: any[] = []
   dd: any[] = []
   m:any
+  j:any
   nbDis:number=0
   constructor(
     private websocketService: WebSocketService,
@@ -110,7 +111,7 @@ export class DashboardComponent implements OnInit {
       ]);
       this.dataI = counts.map(count => count ?? 0);
     } catch (error) {
-      console.error(error);
+      //console.error(error);
     }
     this.createPieChart()
     this.updateChartData(this.pie, this.dataI, 0);
@@ -154,7 +155,7 @@ export class DashboardComponent implements OnInit {
 this.CreatelineChart()
   this.deviceService.getHistList().subscribe((data)=>{
 
-      console.error(data)
+     // console.error(data)
       for (let i = 0; i < data.length; i++) {
         this.dd.push(data[i].date)
         this.nb.push(data[i].diconnected)
@@ -170,23 +171,26 @@ this.CreatelineChart()
         //uPdate LineChart from webSocket
         this.wsClient2.connect("websocket/client2").subscribe(
           (message: any) => {
-            console.error(message)
+            //console.error(message)
             if (message.etat == "Connected") {
               if(message.PreviousDate[1]<=9){
                 this.m="0"+message.PreviousDate[1]
               }
-              let date = message.PreviousDate[0]+"-"+this.m+"-"+message.PreviousDate[2]
-              console.error(date)
+              if(message.PreviousDate[2]<=9){
+                this.j="0"+message.PreviousDate[2]
+              }
+              let date = message.PreviousDate[0]+"-"+this.m+"-"+this.j
+              console.warn(date)
               let Indexnb = this.dd.indexOf(date)
-              console.error(Indexnb)
+              console.warn(Indexnb)
               this.nb[Indexnb]--
               this.nbDis--
             }else{
               this.nb[6]++
               this.nbDis++
             }
-            console.error(this.nb)
-            console.error(this.dd)
+         //   console.error(this.nb)
+           // console.error(this.dd)
             this.updateChangedChartData(this.lineChart,this.nb,this.dd,0)
           },
           (error: any) => {

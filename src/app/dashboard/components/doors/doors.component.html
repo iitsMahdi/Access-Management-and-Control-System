@@ -70,6 +70,13 @@
           <option value="">Select a Controller</option>
           <option *ngFor="let c of contss" [value]="c.idCont">{{c.nomCont}}</option>
         </select>
+        <div *ngIf="cont">
+          <table class="table">
+            <tr>
+              <th *ngFor="let dr of doorStatus" [style.color]="dr.color">DR{{dr.nb}}</th>
+            </tr>
+          </table>
+        </div>
       </div>
       <div class="form-group">
         <label for="Wave">Waveshare:</label>

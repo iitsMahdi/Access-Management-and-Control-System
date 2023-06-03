@@ -28,7 +28,7 @@
             <td>{{ dep.nomDep }}</td>
             <td *ngIf="dep.cntrls && dep.cntrls.length > 0">{{ dep.cntrls.length }}</td>
             <td *ngIf="!dep.cntrls || dep.cntrls.length === 0">0</td>
-            <td *ngIf="dep.cntrls && dep.cntrls.porte && dep.cntrls.porte.length > 0">{{ dep.cntrls.porte.length }}</td>
+            <td *ngIf="dep.cntrls && dep.cntrls.porte && dep.cntrls.porte.length > 0">{{ dep.cntrls[0].porte.length }}</td>
             <td *ngIf="!dep.cntrls || !dep.cntrls.porte || dep.cntrls.porte.length === 0">0</td>
             <td>
               <button  class = "btn btn-info" (click) = "openDialogUp(dep.idDep)"><mat-icon>create</mat-icon>Update</button>

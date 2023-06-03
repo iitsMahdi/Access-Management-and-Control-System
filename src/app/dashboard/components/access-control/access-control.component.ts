@@ -188,7 +188,6 @@ export class AccessControlComponent implements OnInit {
       }
     });
   }
-
   getTodayEvent(){
     this.eventService.getACCEventToday().subscribe((evt:any)=>{
       console.log(evt)

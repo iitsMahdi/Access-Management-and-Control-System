@@ -23,6 +23,7 @@ export class DoorsComponent implements OnInit{
   doorForm !:FormGroup;
   cardNumber!: string;
   porte: Porte = new Porte();
+  doorStatus:any
 nbb:any
   deptss:any
   contss:any
@@ -49,6 +50,8 @@ roless=this.userAuthService.getRoles()
       this.getDoors()
       this.getConts()
       this.getWaves()
+
+
     }
 
     getConts(){
@@ -68,7 +71,13 @@ roless=this.userAuthService.getRoles()
     cont:string='';
     selectChangeCont(event : any){
       this.cont=event.target.value;
+        this.doorService.getDoorCnt(Number(this.cont)).subscribe((data:any)=>{
+          this.doorStatus=data
+          console.warn(data)
+        })
+
     }
+
 
     wv:string='';
     selectChangeWave(event : any){

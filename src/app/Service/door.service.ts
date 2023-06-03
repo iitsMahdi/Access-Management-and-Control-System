@@ -44,4 +44,7 @@ export class DoorService {
       return of(null)
     }
   }
+  getDoorCnt(id: number): Observable<any>{
+    return this.httpClient.get<any>(`${this.baseURL}/getDoorsCnt/${id}`);
+  }
 }

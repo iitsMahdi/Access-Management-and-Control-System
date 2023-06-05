@@ -40,7 +40,7 @@ export class DevicesComponent implements OnInit {
   sevedWaveShare: Waveshare = new Waveshare();
   savedDoor: Porte = new Porte();
   savedDepartement!: Departement;
-
+  readerStat:any
   constructor(
     private router: Router,
     private controllerService: ControllerService,
@@ -295,10 +295,15 @@ export class DevicesComponent implements OnInit {
       (result) => {
         //this.closeResult = `Closed with: ${result}`;
         this.onSubmit()
+
       },
       (reason) => {
         //this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
         console.log("form failed")
+        this.contForm.reset()
+        this.readerForm.reset()
+        this.waveForm.reset()
+
       },
     );
   }
@@ -313,6 +318,9 @@ export class DevicesComponent implements OnInit {
   doorS: string = '';
   selectChangeDoor(event: any) {
     this.doorS = event.target.value;
+    this.readerService.getReDoor(Number(this.doorS)).subscribe((data:any)=>{
+      this.readerStat=data
+    })
   }
   goToDeviceList() {
     this.router.navigate(['/alldevices']);
@@ -349,6 +357,7 @@ export class DevicesComponent implements OnInit {
       },
         error => console.log(error));
     });
+    this.contForm.reset()
   }
   saveReader(): void {
     this.savedReader.numLecteur= this.readerForm.value.NumL;
@@ -391,6 +400,7 @@ export class DevicesComponent implements OnInit {
         })
       }
     });
+    this.readerForm.reset()
 
   }
   saveWave() {
@@ -417,6 +427,8 @@ export class DevicesComponent implements OnInit {
       this.goToDeviceList();
     },
       error => console.log(error));
+      this.waveForm.reset()
+
   }
 
   onSubmit() {
@@ -447,7 +459,6 @@ export class DevicesComponent implements OnInit {
         //this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
         console.log("form failed")
         this.readerForm.reset();
-
       },
     );
 
@@ -597,6 +608,7 @@ export class DevicesComponent implements OnInit {
       });
     }
     )
+    this.contForm.reset()
 
   }
   updateRea(id: any) {
@@ -650,6 +662,7 @@ export class DevicesComponent implements OnInit {
       );
     }
     )
+    this.readerForm.reset()
 
   }
   updateWave(id: any) {
@@ -684,6 +697,7 @@ export class DevicesComponent implements OnInit {
       },
         error => console.log(error));
     }
+    this.waveForm.reset()
   }
 
 }

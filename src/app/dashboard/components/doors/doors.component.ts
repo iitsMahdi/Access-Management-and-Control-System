@@ -70,12 +70,14 @@ roless=this.userAuthService.getRoles()
 
     cont:string='';
     selectChangeCont(event : any){
+
+
+
       this.cont=event.target.value;
         this.doorService.getDoorCnt(Number(this.cont)).subscribe((data:any)=>{
           this.doorStatus=data
           console.warn(data)
         })
-
     }
 
 
@@ -282,7 +284,7 @@ roless=this.userAuthService.getRoles()
     this.doorService.getDoorById(id).subscribe(
       (data) => {
         const contObs = this.contService.getContById(data.cntrl.idCont)
-        const waveObs = this.wavesService.getWaveById(data.wsh.adresse)
+        const waveObs = this.wavesService.getWaveById(data.wsh.idwave)
 
         forkJoin([contObs,waveObs]).subscribe(([contData,waveData]) => {
           this.porte.cntrl=contData;
@@ -292,7 +294,7 @@ roless=this.userAuthService.getRoles()
             Swal.fire({
               position: 'center',
               icon: 'success',
-              title: 'Door added successfully',
+              title: 'Door updated successfully',
               showConfirmButton: false,
               timer: 1500
             });

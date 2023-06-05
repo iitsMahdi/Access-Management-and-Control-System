@@ -191,6 +191,13 @@
           <select name="door" id="door" class="my-select" required formControlName="door" (change)="selectChangeDoor($event)">
             <option *ngFor="let dr of doors" value="{{dr.idPorte}}">{{dr.nomPorte}}</option>
           </select>
+          <div *ngIf="doorS">
+            <table class="table">
+              <tr>
+                <th *ngFor="let dr of readerStat" [style.color]="dr.color">DR{{dr.nb}}</th>
+              </tr>
+            </table>
+          </div>
         </div>
     </form>
   </div>

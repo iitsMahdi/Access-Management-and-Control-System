@@ -9,6 +9,7 @@ import { HttpClient } from '@angular/common/http';
 export class ReaderService {
 
   readonly baseURL = "http://localhost:8080/Lecteur";
+  readonly doorURL = "http://localhost:8080/Porte";
 
 
   constructor(private httpClient: HttpClient) { }
@@ -40,5 +41,10 @@ export class ReaderService {
     }else{
       return of(null)
     }
+  }
+
+
+  getReDoor(id: number): Observable<any>{
+    return this.httpClient.get<any>(`${this.doorURL}/getLecsCnt/${id}`);
   }
 }

@@ -9,6 +9,7 @@ import { DepartementService } from 'src/app/Service/departement.service';
 import { ProfileService } from 'src/app/Service/profile.service';
 import { forkJoin } from 'rxjs';
 import { DoorService } from 'src/app/Service/door.service';
+import { CardSocketService } from 'src/app/Service/card-socket.service';
 
 
 @Component({
@@ -17,6 +18,7 @@ import { DoorService } from 'src/app/Service/door.service';
   styleUrls: ['./add-user.component.css']
 })
 export class AddUserComponent implements OnInit{
+
 
   userInfForm !:FormGroup;
   userPrevForm !:FormGroup;
@@ -34,6 +36,9 @@ export class AddUserComponent implements OnInit{
   education_step = false;
   idUser:any;
   user: User = new User();
+
+  msg:any="123456789"
+
   constructor(
     private deptService: DepartementService,
     private profService:ProfileService,
@@ -41,7 +46,8 @@ export class AddUserComponent implements OnInit{
     private formBuilder: FormBuilder ,
     private http:HttpClient,
     private userService: UserService,
-    private doorServices : DoorService
+    private doorServices : DoorService,
+    private cardSocket:CardSocketService
     ) {}
 
 
@@ -71,7 +77,18 @@ export class AddUserComponent implements OnInit{
     });
 
     this.getDepatement();
-    this.getProfiles()
+    this.getProfiles();
+
+    this.cardSocket.connect("websocket").subscribe(
+      (message: any) => {
+        this.userCredForm.controls["card"].setValue(message)
+      },
+      (error:any) => {
+        console.error('WebSocket error:', error);
+      }
+    );
+
+
   }
 
   next(){
@@ -281,5 +298,9 @@ export class AddUserComponent implements OnInit{
 
   onSubmit(){
     this.postUser();
+  }
+
+  sendM(){
+    this.cardSocket.sendMessage(this.msg)
   }
 }

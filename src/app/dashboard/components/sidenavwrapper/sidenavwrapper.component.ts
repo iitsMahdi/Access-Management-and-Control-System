@@ -30,6 +30,15 @@ export class SidenavwrapperComponent implements AfterViewInit,OnInit {
         window.location.reload()
       })
     }
+    let refToken=this.userAuthServ.getRefToken()
+    if(this.tokenExpired(refToken)){
+      this.userService.refreshToken().subscribe((data:any)=>{
+        console.warn("Refresh Token Refreshed")
+        this.userAuthServ.setToken(data.token)
+        this.userAuthServ.setRefToken(data.token)
+        window.location.reload()
+      })
+    }
   }
   private tokenExpired(token: string) {
     const expiry = (JSON.parse(atob(token.split('.')[1]))).exp;

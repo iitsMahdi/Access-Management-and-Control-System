@@ -6,21 +6,20 @@ input{
 .my-input {
   width: 40%;
   border-radius: 10px;
-  background-color: rgb(243, 233, 233);
-  border: none #1b5084 ;
+  background-color: rgb(198, 198, 203);
   padding: 10px;
   font-size: 18px;
   outline: none;
-  color: #ffffff;
-  background: -webkit-linear-gradient(to left, #ffffff, #3C91E6);
-  background: linear-gradient(to left, #ffffff, #3C91E6);
-  /* Add other styles as needed */
+  color: #000000;
+  border-color: white;
+
 }
 .title{
   font-size: 30px;
   font-weight: bold;
 }
 .demo-button{
+  border-color: white;
   margin-top: 50px;
   border-radius: 30px;
   padding:0.6em 2em;
@@ -85,6 +84,15 @@ img{
   background-color: #c82333;
   border-color: #bd2130;    transform: translateY(-2px);
 
+}
+
+.btn-info{
+  background-color: #369bb1;
+  border-color: #369bb1;    transform: translateY(-2px);
+}
+.btn-info:hover{
+  background-color: #324fc2;
+  border-color: #324fc2;    transform: translateY(-2px);
 }
 
 /******************************************************/

@@ -27,17 +27,18 @@
           <br><br>
           <img src="../../../assets/3pnt.png" alt="" [matMenuTriggerFor]="menu">
           <mat-menu #menu="matMenu">
-            <button mat-menu-item (click)="fileDownload()">Export CSV</button>
+            <button mat-menu-item (click)="downloadPDF()">Export Time attendance report</button>
           </mat-menu>
         </div>
-        <table class="table" >
+        <table class="table">
           <thead>
             <tr>
               <th>History'ID</th>
               <th>Date</th>
               <th>Time</th>
-              <th>Door</th>
               <th>Departement</th>
+              <th>Door</th>
+
               <th>Event ID</th>
               <th>User ID</th>
               <th>Etat</th>
@@ -49,8 +50,9 @@
               <td>{{msg.data.idhis}}</td>
               <td>{{msg.data.date[0]}}-{{msg.data.date[1]}}-{{msg.data.date[2]}}</td>
               <td>{{msg.data.time[0]}}:{{msg.data.time[1]}}:{{msg.data.time[2]}}</td>
-              <td>{{msg.data.nomporte}}</td>
               <td>{{msg.data.Departement}}</td>
+              <td>{{msg.data.nomporte}}</td>
+
               <td>{{msg.data.idevent}}</td>
               <td>{{msg.data.usr.id}}</td>
               <td>{{msg.data.etat}}</td>
@@ -62,8 +64,8 @@
               <td>{{msg.data.idHis}}</td>
               <td>{{msg.data.dateHistorique}}</td>
               <td>{{msg.data.timeHistorique}}</td>
-              <td>{{msg.data.prt.nomPorte}}</td>
               <td>{{msg.data.prt.cntrl.dept.nomDep}}</td>
+              <td>{{msg.data.prt.nomPorte}}</td>
               <td>{{msg.data.idEvent}}</td>
               <td><button (click)="account(msg.data.usr.id)">{{msg.data.usr.id}}</button></td>
               <td>{{msg.data.etatHistorique}}</td>
@@ -75,6 +77,34 @@
     </section>
   </section>
 </div>
+<!-----------------------------------Table Hidden----------------------------------------------------------------->
+<table class="table" id="pdf" hidden>
+  <thead>
+    <tr>
+      <th>Date</th>
+      <th>Time</th>
+      <th>Event</th>
+      <th>Departement</th>
+      <th>Door</th>
+
+
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let msg of pdfContent">
+      <td>{{msg.data.dateHistorique}}</td>
+      <td>{{msg.data.timeHistorique}}</td>
+      <td>{{msg.data.idEvent}}</td>
+      <td>{{msg.data.prt.cntrl.dept.nomDep}}</td>
+      <td>{{msg.data.prt.nomPorte}}</td>
+
+
+    </tr>
+  </tbody>
+</table>
+
+
+<!-----------PopUp---------------------------------------------------------------------------------------------------------------->
 <ng-template #content let-modal>
   <div class="modal-header">
     <h4 class="modal-title" id="modal-basic-title">Event Filter</h4>
@@ -151,6 +181,20 @@
             <option *ngFor="let dep of depts" value="{{dep.idDep}}">{{dep.nomDep}}</option>
           </select>
         </div>
+        <div class="input-group">
+          <br>
+          <label for="timeDeb">User's CIN</label>&nbsp;
+          <input
+            id="CIN"
+            class="form-control"
+            placeholder="CIN"
+            name="CIN"
+            ngbDatepicker
+            type="number"
+            formControlName="CIN"
+          />
+
+        </div><br>
       </div>
     </form>
   </div>

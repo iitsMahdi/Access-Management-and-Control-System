@@ -13,6 +13,11 @@ import { WebSocketService } from 'src/app/Service/web-socket.service';
 import { filterEV1 } from 'src/app/model/FilterEV1';
 import { Message } from 'src/app/model/message';
 import Swal from 'sweetalert2';
+import { jsPDF } from 'jspdf';
+import 'jspdf-autotable';
+import { EventService } from 'src/app/Service/event.service';
+import { UserService } from 'src/app/Service/user.service';
+
 
 @Component({
   selector: 'app-historique',
@@ -28,15 +33,19 @@ export class HistoriqueComponent implements OnInit{
   filterForm !:FormGroup;
   savedFilter:filterEV1=new filterEV1()
   depts:any
-
+  content !:Message;
+  pdfContent : Message[]=[]
+zeb !:string
   constructor(
     private wsClient3 : Client3Service,
     private toast:NgToastService,
     private modalService: NgbModal,
     private formBuilder: FormBuilder,
     private histService:HistoriqueService,
-    private DepService:DepartementService
-    ,    private router: Router,
+    private DepService:DepartementService,
+    private router: Router,
+    private evntService : EventService
+    ,private userserv:UserService
 
     ) { }
 
@@ -48,7 +57,8 @@ export class HistoriqueComponent implements OnInit{
       timeDeb:['',Validators.required],
       timeFin:['',Validators.required],
       etat:['',Validators.required],
-      dep:['',Validators.required]
+      dep:['',Validators.required],
+      CIN:['',Validators.required]
     });
     this.getDepartement()
     this.getTodayHist()
@@ -210,20 +220,72 @@ export class HistoriqueComponent implements OnInit{
         this.savedFilter.dep=null
       }else{
         this.savedFilter.dep=this.departement
-
+      }
+      if(!this.filterForm.value.CIN){
+        this.savedFilter.cin=null
+      }else{
+        this.savedFilter.cin=this.filterForm.value.CIN
       }
       console.log(this.savedFilter);
 
       this.histService.getFilterHist(this.savedFilter).subscribe((ev:any)=>{
         console.log(ev)
         this.clear();
+        this.messages.splice(0, this.messages.length);
         for (let i = 0; i < ev.length; i++) {
           const msg = {type: 'msg', data: ev[i]};
           this.messages.push(msg)
         }
+        this.generatePDFContent()
       })
     }
   }
+/*
+  generatePDFContent() {
+    for (let index = 0; index < this.messages.length; index++) {
+      const hist = this.messages[index];
+      console.warn(hist)
+      this.content=hist
+      this.evntService.getEventEtat(hist.data.idEvent).subscribe(
+        (data: string) => {
+          this.content.data.idEvent=data;
+          this.pdfContent.push(this.content);
+        },
+        (error) => {
+          console.error(error);
+        }
+      );
+    }
+  }
+*/
+
+generatePDFContent() {
+  const requests = this.messages.map((hist) => {
+    return new Promise((resolve, reject) => {
+      this.evntService.getEventEtat(hist.data.idEvent).subscribe(
+        (data: string) => {
+          const modifiedContent = { ...hist }; // Create a copy of hist to avoid overwriting
+          modifiedContent.data = { ...hist.data }; // Create a copy of data to avoid modifying the original object
+          modifiedContent.data.idEvent = data;
+          resolve(modifiedContent);
+        },
+        (error) => {
+          console.error(error);
+          reject(error);
+        }
+      );
+    });
+  });
+
+  Promise.all(requests)
+  .then((pdfContent) => {
+    this.pdfContent = pdfContent as Message[];
+  })
+  .catch((error) => {
+    console.error(error);
+  });
+}
+
 
   getTodayHist(){
     this.histService.getHistToday().subscribe((evt:any)=>{
@@ -268,5 +330,67 @@ export class HistoriqueComponent implements OnInit{
   startWs(){
     window.location.reload()
   }
+
+  downloadPDF() {
+    const hist = this.messages[0].data;
+    const doc = new jsPDF();
+
+    // Retrieve user data
+    const getUserData = new Promise((resolve, reject) => {
+      this.userserv.getUserById(hist.usr.id).subscribe(
+        (data: any) => {
+          resolve(data);
+        },
+        (error) => {
+          reject(error);
+        }
+      );
+    });
+
+    // Generate PDF after user data is retrieved
+    getUserData
+      .then((userData: any) => {
+        // Add content
+        const content = 'User: ' + userData.firstname + ' ' + userData.lastname +
+          '\nCIN: ' + userData.cin +
+          '\nProfile: ' + userData.prof.nomProfile+
+          "\nFiltred from : "+ this.savedFilter.dateDeb+ "\n              to : "+this.savedFilter.dateFin;
+        doc.setFontSize(12);
+        doc.text(content, 10, 20);
+
+        // Add title
+        const title = 'Time Attendance Report';
+        const titleWidth = doc.getTextWidth(title);
+        const titleX = (doc.internal.pageSize.getWidth() - titleWidth) / 2;
+        const titleY = 40;
+        doc.setFontSize(18);
+        doc.text(title, titleX, titleY);
+
+        // Add image
+        const imageSrc = '../../../assets/easy.png';
+        const imageWidth = 30; // Adjust the width of the image as needed
+        const imageHeight = 30; // Adjust the height of the image as needed
+        const imageX = doc.internal.pageSize.getWidth() - imageWidth - 10; // Position from the right edge
+        const imageY = 10; // Position from the top edge
+        doc.addImage(imageSrc, 'PNG', imageX, imageY, imageWidth, imageHeight);
+
+        // Add table
+        (doc as any).autoTable({ html: '#pdf', theme: 'grid', startY: titleY + 20 });
+
+        // Save the PDF
+        doc.save('time_attendance_report.pdf');
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  }
+
+
+
+
+
+
+
+
 }
 

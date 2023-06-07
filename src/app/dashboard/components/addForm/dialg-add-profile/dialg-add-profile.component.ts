@@ -27,7 +27,7 @@ ngOnInit(): void {
 
 saveProfile(){
 
-  this.profile.NomProfile=this.profileForm.value.NomProfile;
+  this.profile.nomProfile=this.profileForm.value.NomProfile;
   this.profileService.createProfile(this.profile).subscribe(data =>{
     console.log(data)
     Swal.fire({

@@ -121,6 +121,10 @@ export class AttendanceComponent implements  OnInit{
 		}
 	}
   onSubmit(){
+    let monthDeb: any;
+    let monthFin: any;
+    let dayDeb: any;
+    let dayFin: any;
     if((this.filterForm.value.dateDeb && !this.filterForm.value.dateFin ) ||(!this.filterForm.value.dateDeb && this.filterForm.value.dateFin ) ){
       Swal.fire({
         icon: 'error',
@@ -138,10 +142,16 @@ export class AttendanceComponent implements  OnInit{
         this.savedFilter.dateDeb=null
         this.savedFilter.dateFin=null
       }else{
-        let dd=this.filterForm.value.dateDeb.year+"-"+this.filterForm.value.dateDeb.month+"-"+this.filterForm.value.dateDeb.day
-        let df=this.filterForm.value.dateFin.year+"-"+this.filterForm.value.dateFin.month+"-"+this.filterForm.value.dateFin.day
-        this.savedFilter.dateDeb=dd
-        this.savedFilter.dateFin=df
+        monthDeb = this.filterForm.value.dateDeb?.month.toString().padStart(2, '0');
+        monthFin = this.filterForm.value.dateFin?.month.toString().padStart(2, '0');
+        dayDeb = this.filterForm.value.dateDeb?.day.toString().padStart(2, '0');
+        dayFin = this.filterForm.value.dateFin?.day.toString().padStart(2, '0');
+
+        const dd = this.filterForm.value.dateDeb?.year + '-' + monthDeb + '-' + dayDeb;
+        const df = this.filterForm.value.dateFin?.year + '-' + monthFin + '-' + dayFin;
+
+        this.savedFilter.dateDeb = dd;
+        this.savedFilter.dateFin = df;
       }
       if (!this.filterForm.value.timeDeb && !this.filterForm.value.timeFin){
         this.savedFilter.timeDeb=null

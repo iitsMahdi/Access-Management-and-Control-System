@@ -10,7 +10,7 @@ export class AuthInterceptorService implements HttpInterceptor {
   constructor(private authService: UserAuthService) {}
 
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-    if (req.url.includes('api/v1/auth/authenticate') || req.url.includes('websocket')) {
+    if (req.url.includes('api/v1/auth/authenticate') || req.url.includes('websocket')||req.url.includes('/auth/Reload-refresh-token')) {
       // Skip adding the token for login and WebSocket requests
       return next.handle(req);
     }

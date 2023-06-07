@@ -4,4 +4,6 @@ export class filterEV1 {
   timeDeb:any
   timeFin:any
   etat!:any;
-  dep!:any;}
+  dep!:any;
+  cin!:any
+}

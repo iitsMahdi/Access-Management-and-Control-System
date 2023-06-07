@@ -54,6 +54,8 @@ export class AdduserByUserComponent implements OnInit{
       phone:['',Validators.required],
       profile:['',Validators.required],
       role:['',Validators.required],
+      CIN:['',Validators.required],
+
     });
 
     this.userPrevForm=this.formBuilder.group({
@@ -174,6 +176,8 @@ export class AdduserByUserComponent implements OnInit{
   saveUI(){
     this.user.firstname=this.userInfForm.value.firstname;
     this.user.lastname=this.userInfForm.value.lastname;
+    this.user.cin=this.userInfForm.value.CIN;
+
     this.user.adresse=this.userInfForm.value.adresse;
     this.user.image=this.file.name;
     this.user.phone=this.userInfForm.value.phone;

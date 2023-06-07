@@ -1,4 +1,4 @@
 export class Profile{
   IdProf !:bigint;
-  NomProfile!:String;
+  nomProfile!:String;
 }

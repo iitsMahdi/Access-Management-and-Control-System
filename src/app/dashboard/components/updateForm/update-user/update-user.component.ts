@@ -56,6 +56,8 @@ export class UpdateUserComponent implements OnInit {
       phone:['',Validators.required],
       profile:['',Validators.required],
       role:['',Validators.required],
+      CIN:['',Validators.required],
+
     });
 
     this.userPrevForm=this.formBuilder.group({
@@ -85,6 +87,8 @@ export class UpdateUserComponent implements OnInit {
       this.userInfForm.controls["role"].setValue(data.role)
       //this.userInfForm.controls["image"].setValue(data.image)
       this.userInfForm.controls["profile"].setValue(data.prof.idProf)
+      this.userInfForm.controls["CIN"].setValue(data.cin)
+
     },
       (error) => {
         console.log(error)
@@ -199,6 +203,8 @@ export class UpdateUserComponent implements OnInit {
   saveUI(){
     this.user.firstname=this.userInfForm.value.firstname;
     this.user.lastname=this.userInfForm.value.lastname;
+    this.user.cin=this.userInfForm.value.CIN;
+
     this.user.adresse=this.userInfForm.value.adresse;
     this.user.image=this.file.name;
     this.user.phone=this.userInfForm.value.phone;

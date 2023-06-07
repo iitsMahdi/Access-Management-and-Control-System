@@ -16,6 +16,10 @@ export class EventService {
     return this.httpClient.get<Event[]>(`${this.baseURL}/all`);
   }
 
+getEventEtat(id: number): Observable<string> {
+  return this.httpClient.get(`${this.baseURL}/type-evt/${id}`, { responseType: 'text' });
+}
+
   async count(nameE: any): Promise<number> {
     try {
       const response = await this.httpClient.get<number>(`${this.baseURL}/count/${nameE}`).toPromise();

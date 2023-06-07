@@ -16,15 +16,15 @@
           <img src="../../../assets/3pnt.png" alt="" [matMenuTriggerFor]="menu">
         <mat-menu #menu="matMenu">
           <button mat-menu-item routerLink="/allProfiles">Manage Profile</button>
-          <button mat-menu-item (click)="fileDownload()">Export CSV</button>
+          <button mat-menu-item (click)="downloadPDF()">Export User List to PDF</button>
         </mat-menu>
         </div>
         <table class="table" >
           <thead>
             <tr>
-              <th> User ID</th>
+              <th > User ID</th>
               <th> Full Name </th>
-              <th> Adresse </th>
+              <th>CIN</th>
               <th> Phone </th>
               <th> Email Id</th>
               <th>Role</th>
@@ -33,9 +33,9 @@
           </thead>
           <tbody>
             <tr *ngFor = "let user of users | paginate: {itemsPerPage:8,currentPage:p};" >
-              <td class="userID"> {{ user.id }} </td>
-              <td> {{ user.firstname }} {{user.lastname}} </td>
-              <td> {{ user.adresse }} </td>
+              <td class="small-width"> {{ user.id }} </td>
+              <td > {{ user.firstname }} {{user.lastname}} </td>
+              <td> {{ user.cin }} </td>
               <td> {{ user.phone }} </td>
               <td> {{ user.email }} </td>
               <td> {{ user.role }} </td>
@@ -56,6 +56,39 @@
     </section>
   </section>
 </div>
+
+<!-------------------------------------------------------------------------------------->
+
+<table class="table" id="pdf" hidden>
+  <thead>
+    <tr>
+      <th > User ID</th>
+      <th> Full Name </th>
+      <th>CIN</th>
+      <th> Adresse </th>
+      <th> Phone </th>
+      <th> Email Id</th>
+      <th>Profile</th>
+      <th>Role</th>
+  </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor = "let user of users" >
+      <td class="userID"> {{ user.id }} </td>
+      <td> {{ user.firstname }} {{user.lastname}} </td>
+      <td> {{ user.cin }} </td>
+      <td> {{ user.adresse }} </td>
+      <td> {{ user.phone }} </td>
+      <td> {{ user.email }} </td>
+      <td> {{ user.prof?.nomProfile }} </td>
+      <td> {{ user.role }} </td>
+    </tr>
+
+  </tbody>
+</table>
+
+<!-------------------------------------------------------------------------------------->
+
 
 <ng-template #content let-modal>
   <div class="modal-header">

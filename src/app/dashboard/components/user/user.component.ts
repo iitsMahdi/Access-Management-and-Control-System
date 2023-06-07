@@ -10,6 +10,7 @@ import Swal from 'sweetalert2';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import e from 'cors';
+import jsPDF from 'jspdf';
 
 
 @Component({
@@ -227,6 +228,38 @@ export class UserComponent implements OnInit {
         text: "There is something wrong !!"
       })
     })
+  }
+
+  downloadPDF() {
+    const doc = new jsPDF()
+
+    const data = new Date();
+    const formattedDate = data.toLocaleDateString(); // Format the date as needed
+    const content = formattedDate;
+    doc.setFontSize(12);
+    doc.text(content, 10, 20);
+
+        // Add title
+        const title = 'User List';
+        const titleWidth = doc.getTextWidth(title);
+        const titleX = (doc.internal.pageSize.getWidth() - titleWidth) / 2;
+        const titleY = 40;
+        doc.setFontSize(18);
+        doc.text(title, titleX, titleY);
+
+        // Add image
+        const imageSrc = '../../../assets/easy.png';
+        const imageWidth = 30; // Adjust the width of the image as needed
+        const imageHeight = 30; // Adjust the height of the image as needed
+        const imageX = doc.internal.pageSize.getWidth() - imageWidth - 10; // Position from the right edge
+        const imageY = 10; // Position from the top edge
+        doc.addImage(imageSrc, 'PNG', imageX, imageY, imageWidth, imageHeight);
+
+        // Add table
+        (doc as any).autoTable({ html: '#pdf', theme: 'grid', startY: titleY + 20 });
+
+        // Save the PDF
+        doc.save('user_List.pdf');
   }
 
 

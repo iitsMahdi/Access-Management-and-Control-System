@@ -65,6 +65,9 @@ export class UserService {
   getRefreshToken(email: string): Observable<string> {
     return this.httpClient.get(`${this.baseURL}${this.EndPoint}/getref/${email}`, { responseType: 'text' });
   }
+  reload(email: string): Observable<string> {
+    return this.httpClient.get(`${this.baseURL}${this.EndPoint}/Reload-refresh-token/${email}`, { responseType: 'text' });
+  }
 
   logoutUser(){
     this.userAuthService.logOut();

@@ -16,4 +16,5 @@ export class User{
   depar: Departement | null = null;
   codePin!:any
   codeUid!:any
+  cin!:any
 }

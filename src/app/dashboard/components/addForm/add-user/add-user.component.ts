@@ -49,6 +49,8 @@ export class AddUserComponent implements OnInit{
     this.userInfForm=this.formBuilder.group({
       firstname:['',Validators.required],
       lastname:['',Validators.required],
+      CIN:['',Validators.required],
+
       adresse:['',Validators.required],
       image:['',Validators.required],
       phone:['',Validators.required],
@@ -192,6 +194,8 @@ export class AddUserComponent implements OnInit{
   saveUI(){
     this.user.firstname=this.userInfForm.value.firstname;
     this.user.lastname=this.userInfForm.value.lastname;
+    this.user.cin=this.userInfForm.value.CIN;
+
     this.user.adresse=this.userInfForm.value.adresse;
     this.user.image=this.file.name;
     this.user.phone=this.userInfForm.value.phone;

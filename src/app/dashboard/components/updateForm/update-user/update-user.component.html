@@ -27,17 +27,21 @@
                 </div>
                 <div class="row">
                   <div class="col">
+                    <div class="title"><b>CIN</b></div>
+                    <input type="text" name="CIN" id="CIN" class="my-input" placeholder="Enter your CIN" required formControlName="CIN">
+                  </div>
+                  <div class="col">
                     <div class="title"><b>Phone</b></div>
                     <input type="tel" name="phone" id="phone" class="my-input" placeholder="Enter your phone Number" required formControlName="phone" >
 
                   </div>
+
+                </div>
+                <div class="row">
                   <div class="col">
                     <div class="title"><b>Address</b></div>
                     <input type="text" name="adresse" id="adresse" class="my-input" placeholder="Enter your adress" required formControlName="adresse">
                   </div>
-                </div>
-                <div class="row">
-
                   <div class="col">
                     <div class="title"><b>Image</b></div>
                     <input type="file" name="image" id="image" class="my-input"  required  (change)="onChangeimg($event)" formControlName="image">

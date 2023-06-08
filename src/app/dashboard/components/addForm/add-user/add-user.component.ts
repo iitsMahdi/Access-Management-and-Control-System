@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Component, HostListener, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
@@ -142,22 +142,23 @@ export class AddUserComponent implements OnInit{
 
   file!:File;
   onChangeimg(event:any){
-    this.file=event.target.files[0] as File;
+    this.file=event.target.files[0]
   }
-
-  uploadImage() {
+  uploadFile() {
     if (this.file) {
-      const formData: FormData = new FormData();
-      formData.append('file', this.file, this.file.name);
+      const uploadData = new FormData();
+      uploadData.append('file', this.file, this.file.name);
 
-      this.http.post('http://your-backend-api/upload', formData).subscribe(
-        (response) => {
-          console.log('Image uploaded successfully.');
-        },
-        (error) => {
-          console.error('Error occurred while uploading the image.');
-        }
-      );
+    const headers = new HttpHeaders();
+    headers.append('Content-Type', 'multipart/form-data; boundary=----WebKitFormBoundary');
+    this.http.post('http://localhost:8080/User/api/upload', uploadData, { headers: headers }).subscribe(
+      response => {
+        console.log('File uploaded successfully');
+      },
+      error => {
+        console.log('File upload failed:', error);
+      }
+    );
     }
   }
 
@@ -212,9 +213,9 @@ export class AddUserComponent implements OnInit{
     this.user.firstname=this.userInfForm.value.firstname;
     this.user.lastname=this.userInfForm.value.lastname;
     this.user.cin=this.userInfForm.value.CIN;
-
     this.user.adresse=this.userInfForm.value.adresse;
     this.user.image=this.file.name;
+    this.uploadFile()
     this.user.phone=this.userInfForm.value.phone;
     this.user.role=this.role;
     const profObs = this.profService.getProfById(Number(this.profile));

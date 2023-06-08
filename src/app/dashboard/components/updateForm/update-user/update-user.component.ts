@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -16,7 +16,6 @@ import Swal from 'sweetalert2';
   styleUrls: ['./update-user.component.css']
 })
 export class UpdateUserComponent implements OnInit {
-  file!:File;
   userInfForm !:FormGroup;
   userPrevForm !:FormGroup;
   userCredForm !:FormGroup;
@@ -149,9 +148,28 @@ export class UpdateUserComponent implements OnInit {
         console.log(data)
       })
     }
-  onChangeimg(event:any){
-    this.file=event.target.files[0];
-  }
+
+    file!:File;
+    onChangeimg(event:any){
+      this.file=event.target.files[0]
+    }
+    uploadFile() {
+      if (this.file) {
+        const uploadData = new FormData();
+        uploadData.append('file', this.file, this.file.name);
+
+      const headers = new HttpHeaders();
+      headers.append('Content-Type', 'multipart/form-data; boundary=----WebKitFormBoundary');
+      this.http.post('http://localhost:8080/User/api/upload', uploadData, { headers: headers }).subscribe(
+        response => {
+          console.log('File uploaded successfully');
+        },
+        error => {
+          console.log('File upload failed:', error);
+        }
+      );
+      }
+    }
 
   profile:string='';
   selectChangeProfile(event : any){
@@ -199,14 +217,13 @@ export class UpdateUserComponent implements OnInit {
   selectChangeRole(event : any){
     this.role=event.target.value;
   }
-
   saveUI(){
     this.user.firstname=this.userInfForm.value.firstname;
     this.user.lastname=this.userInfForm.value.lastname;
     this.user.cin=this.userInfForm.value.CIN;
-
     this.user.adresse=this.userInfForm.value.adresse;
     this.user.image=this.file.name;
+    this.uploadFile()
     this.user.phone=this.userInfForm.value.phone;
     this.user.role=this.role;
     const profObs = this.profService.getProfById(Number(this.userInfForm.value.profile));
@@ -214,14 +231,12 @@ export class UpdateUserComponent implements OnInit {
       this.user.prof = profData;
     });
   }
-
   saveEmployee(){
     this.user.codeUid=this.userCredForm.value.card;
     this.user.codePin=this.userCredForm.value.pin;
     this.user.email=this.userCredForm.value.email;
     this.user.password=this.userCredForm.value.password
   }
-
   assignUser(){
     for (let i = 0; i < this.selectedDoors.length; i++) {
       this.userService.assignPortes(this.selectedDoors[i],this.id).subscribe(()=>{

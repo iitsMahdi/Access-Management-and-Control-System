@@ -42,6 +42,9 @@ export class LoginComponent implements OnInit{
 }
 
 login(loginForm: FormGroup,rls:String) {
+  if(loginForm.value.email!="" && loginForm.value.password!=""){
+
+
   console.log("role : "+this.userAuthService.getRoles())
 
   this.userService.login(loginForm).subscribe(
@@ -75,7 +78,13 @@ login(loginForm: FormGroup,rls:String) {
     })
       console.log(error);
     }
-  );
+  );}else{
+    Swal.fire({
+      icon: 'error',
+      title: 'Oops...',
+      text: 'You Should type your email and password'
+  })
+  }
 }
 
 getUserRole(loginForm:FormGroup):string{

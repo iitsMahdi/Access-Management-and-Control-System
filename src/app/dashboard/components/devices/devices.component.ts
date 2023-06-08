@@ -374,32 +374,61 @@ export class DevicesComponent implements OnInit {
     this.savedReader.dateStatus=`${year}-${m}-${d}`;
     const doorObs = this.doorService.getDoorById(Number(this.doorS))
     forkJoin([doorObs]).subscribe(([doorData]) => {
-      this.savedReader.prt = doorData;
       console.log(doorData);
       const objectCount = Object.keys(doorData.lecteur).length;
-      if (objectCount < 2) {
-        this.readerService.createReader(this.savedReader).subscribe(data => {
-          Swal.fire({
-            position: 'center',
-            icon: 'success',
-            title: 'Reader added successfully',
-            showConfirmButton: false,
-            timer: 1500
-          });
+      if (doorData.type=="Porte_Principale"){
+        if (objectCount < 2) {
+          this.savedReader.prt = doorData;
+          this.readerService.createReader(this.savedReader).subscribe(data => {
+            Swal.fire({
+              position: 'center',
+              icon: 'success',
+              title: 'Reader added successfully',
+              showConfirmButton: false,
+              timer: 1500
+            });
 
-          console.log(data);
-          this.goToDeviceList();
-          window.location.reload()
-        },
-          error => console.log(error));
-      } else {
-        Swal.fire({
-          icon: 'error',
-          title: 'Oops...',
-          text: "Door have already 2 Reader !!"
-        })
+            console.log(data);
+            this.goToDeviceList();
+            window.location.reload()
+          },
+            error => console.log(error));
+        } else {
+          Swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: "Door have already 2 Reader !!"
+          })
+        }
+      }else{
+          if (objectCount < 1) {
+            this.savedReader.prt = doorData;
+            this.readerService.createReader(this.savedReader).subscribe(data => {
+              Swal.fire({
+                position: 'center',
+                icon: 'success',
+                title: 'Reader added successfully',
+                showConfirmButton: false,
+                timer: 1500
+              });
+
+              console.log(data);
+              this.goToDeviceList();
+              window.location.reload()
+            },
+              error => console.log(error));
+          } else {
+            Swal.fire({
+              icon: 'error',
+              title: 'Oops...',
+              text: "Door have already 1 Reader !!"
+            })
+          }
+
       }
-    });
+      });
+
+
     this.readerForm.reset()
 
   }

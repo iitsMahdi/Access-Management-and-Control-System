@@ -54,7 +54,7 @@
               <td>{{msg.data.nomporte}}</td>
 
               <td>{{msg.data.idevent}}</td>
-              <td>{{msg.data.usr.id}}</td>
+              <td>{{msg.data.usr}}</td>
               <td>{{msg.data.etat}}</td>
               <td>{{msg.data.cause}}</td>
             </tr>
@@ -181,9 +181,11 @@
             <option *ngFor="let dep of depts" value="{{dep.idDep}}">{{dep.nomDep}}</option>
           </select>
         </div>
+        <br>
+        <h5>User's CIN</h5>
+
         <div class="input-group">
           <br>
-          <label for="timeDeb">User's CIN</label>&nbsp;
           <input
             id="CIN"
             class="form-control"
